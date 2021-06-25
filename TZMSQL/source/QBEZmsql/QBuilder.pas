@@ -29,7 +29,7 @@ unit QBuilder;
 
 interface
 
-uses
+uses lclplatformdef,
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Buttons, ExtCtrls, StdCtrls, ComCtrls, Menus, CheckLst, Grids,
   DB, DBGrids, LMessages, LCLIntf, LCLType, LCLProc,
