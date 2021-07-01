@@ -1,3 +1,8 @@
+OpenKantu 2022
+=========
+Algo Trading System for Delphi and FPC
+
+
 OpenKantu
 =========
 
