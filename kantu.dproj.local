@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2021/06/29 20:39:06.512,=C:\ATS\OpenKantu-master\kantu_main.pas</Transaction>
+    <Transaction>2021/06/29 20:46:04.587,=C:\ATS\OpenKantu-master\kantu_loadsymbol.pas</Transaction>
+    <Transaction>2021/07/01 21:14:09.864,=C:\ATS\OpenKantu-master\kantu_pricepattern.pas</Transaction>
+    <Transaction>2021/07/01 21:15:48.514,=C:\ATS\OpenKantu-master\kantu_filters.pas</Transaction>
+    <Transaction>2021/07/01 21:15:57.629,=C:\ATS\OpenKantu-master\kantu_custom_filter.pas</Transaction>
+    <Transaction>2021/07/01 21:17:25.463,=C:\ATS\OpenKantu-master\kantu_portfolioresults.pas</Transaction>
+    <Transaction>2021/07/01 21:18:19.890,=C:\ATS\OpenKantu-master\kantu_simulation.pas</Transaction>
+    <Transaction>2021/07/01 21:18:26.083,=C:\ATS\OpenKantu-master\kantu_simulation_show.pas</Transaction>
+    <Transaction>2021/07/01 21:19:22.351,=C:\ATS\OpenKantu-master\kantu_singlesystem.pas</Transaction>
+    <Transaction>2021/07/01 21:41:41.004,=C:\ATS\OpenKantu-master\Unit1.pas</Transaction>
+    <Transaction>2021/07/01 21:42:12.914,C:\ATS\OpenKantu-master\kantu_init.pas=C:\ATS\OpenKantu-master\Unit1.pas</Transaction>
+    <Transaction>2021/07/01 21:48:07.300,=C:\ATS\OpenKantu-master\kantu_definitions.pas</Transaction>
+    <Transaction>2021/07/01 21:48:22.005,=C:\ATS\OpenKantu-master\kantu_multithreading.pas</Transaction>
+    <Transaction>2021/07/01 21:48:28.429,=C:\ATS\OpenKantu-master\kantu_indicators.pas</Transaction>
+  </Transactions>
+</BorlandProject>

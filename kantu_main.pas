@@ -1058,7 +1058,7 @@ begin
   DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.DecimalSeparator := '.';
-
+ {$ENDIF}
   SetCurrentDir(mainProgramFolder);
 
   configFile := TStringList.Create;
@@ -1075,9 +1075,15 @@ begin
   end;
 
   configFile.Add(CustomFilterForm.CustomFormulaEdit.Text);
+
+  {$IFDEF DELPHI}
+{$ELSE}
+
   configFile.Add(DateTimeToStr(SimulationForm2.BeginInSampleCalendar.Date));
   configFile.Add(DateTimeToStr(SimulationForm2.EndInSampleCalendar.Date));
   configFile.Add(DateTimeToStr(SimulationForm2.EndOutOfSampleCalendar.Date));
+ {$ENDIF}
+
   configFile.Add(IntToStr(SimulationForm2.OptTargetComboBox.ItemIndex));
   configFile.Add(BoolToStr(SimulationForm2.UseSLCheck.Checked));
   configFile.Add(BoolToStr(SimulationForm2.UseTPCheck.Checked));
@@ -1087,15 +1093,19 @@ begin
   configFile.Add(BoolToStr(SimulationForm2.UseFixedSLTP.Checked));
   configFile.Add(BoolToStr(SimulationForm2.UseFixedHour.Checked));
 
+ {$IFDEF DELPHI}
+{$ELSE}
+
   for i := 0 to ResultsGrid.ColCount - 1 do
     configFile.Add(BoolToStr(ResultsGrid.Columns.Items[i].Visible));
+ {$ENDIF}
 
   configFile.Add(BoolToStr(FiltersForm.isLastYearProfitCheck.Checked));
 
   configFile.SaveToFile('config.ini');
 
   configFile.Free;
-{$ENDIF}
+
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
