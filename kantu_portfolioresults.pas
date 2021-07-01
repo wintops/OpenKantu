@@ -1,6 +1,8 @@
 unit kantu_portfolioResults;
 
+{$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
@@ -24,7 +26,11 @@ var
 
 implementation
 
+{$IFDEF DELPHI}
+{$R *.dfm}
+{$ELSE}
 {$R *.lfm}
+{$ENDIF}
 
 end.
 

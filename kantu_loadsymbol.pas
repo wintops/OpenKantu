@@ -1,12 +1,20 @@
 unit kantu_loadSymbol;
 
+{$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
+{$ENDIF}
+
 
 interface
 
 uses
+   {$IFNDEF DELPHI}
+ZMConnection, ZMQueryDataSet,
+{$ENDIF}
+
   Classes, SysUtils, db, FileUtil, Forms, Controls, Graphics, Dialogs, CheckLst,
-  StdCtrls, DbCtrls, DBGrids, ZMConnection, ZMQueryDataSet, kantu_definitions, kantu_simulation, kantu_singleSystem;
+  StdCtrls, DbCtrls, DBGrids,  kantu_definitions, kantu_simulation, kantu_singleSystem,
+  Vcl.Grids, Vcl.ExtCtrls;
 
 type
 
@@ -17,25 +25,25 @@ type
     Button2: TButton;
     Button3: TButton;
     OpenDialog1: TOpenDialog;
-    updateLoadedButton: TButton;
     SymbolsList: TCheckListBox;
     Datasource1: TDatasource;
     SymbolsGrid: TDBGrid;
     DBNavigator1: TDBNavigator;
     Label1: TLabel;
+       {$IFNDEF DELPHI}
     ZMConnection1: TZMConnection;
     ZMQueryDataSet1: TZMQueryDataSet;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
-    procedure DBNavigator1BeforeAction(Sender: TObject; Button: TDBNavButtonType
-      );
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    {$ENDIF}
   private
     { private declarations }
   public
     { public declarations }
+      {$IFNDEF DELPHI}
     procedure updateIndicatorLoadedSymbols;
+{$ENDIF}
   end;
 
 var
@@ -43,10 +51,16 @@ var
 
 implementation
 
+{$IFDEF DELPHI}
+{$R *.dfm}
+{$ELSE}
 {$R *.lfm}
+{$ENDIF}
 
 { TloadSymbol }
 uses kantu_main, kantu_indicators;
+
+      {$IFNDEF DELPHI}
 
 procedure TloadSymbol.updateIndicatorLoadedSymbols;
 var
@@ -192,16 +206,7 @@ begin
 
 end;
 
-procedure TloadSymbol.DBNavigator1BeforeAction(Sender: TObject;
-  Button: TDBNavButtonType);
-begin
-
-end;
-
-procedure TloadSymbol.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-
-end;
+    {$ENDIF}
 
 end.
 

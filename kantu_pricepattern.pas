@@ -1,6 +1,8 @@
 unit kantu_pricepattern;
 
+{$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
@@ -29,7 +31,11 @@ implementation
 
 uses kantu_main;
 
+{$IFDEF DELPHI}
+{$R *.dfm}
+{$ELSE}
 {$R *.lfm}
+{$ENDIF}
 
 { TPricePatternForm }
 

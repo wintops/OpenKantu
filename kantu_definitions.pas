@@ -1,10 +1,15 @@
 unit kantu_definitions;
 
+{$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
 uses
+{$IFDEF DELPHI}
+  Types,
+{$ENDIF}
   Classes, SysUtils;
 
 type

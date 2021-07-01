@@ -1,11 +1,16 @@
 unit kantu_multithreading;
 
+{$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
 uses
-  Classes, SysUtils, Dialogs, Forms,kantu_definitions,  LCLProc, dateutils, kantu_simulation, math;
+   {$IFNDEF DELPHI}
+LCLProc,
+{$ENDIF}
+  Classes, SysUtils, Dialogs, Forms,kantu_definitions,  dateutils, kantu_simulation, math;
 
 Type
     TMyIndiThread = class(TThread)
@@ -135,7 +140,14 @@ uses kantu_regular_simulation, kantu_main, kantu_indicators  ;
             end;
 
             if ( isPositiveCount = Length(LoadedIndiHistoryData))then
-            Synchronize(@syncSimulation);
+
+
+            {$IFDEF DELPHI}
+
+{$ELSE}
+   Synchronize(@syncSimulation);
+{$ENDIF}
+
 
             j := j + 1;
             simulationsRan := simulationsRan + 1;

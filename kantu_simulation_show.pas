@@ -1,6 +1,8 @@
 unit kantu_simulation_show;
 
+{$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
@@ -37,9 +39,7 @@ type
     UseSLCheck: TCheckBox;
     UseTPCheck: TCheckBox;
     procedure BeginInSampleCalendarDayChanged(Sender: TObject);
-    procedure BeginInSampleEditChange(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure EndOutOfSampleEditChange(Sender: TObject);
     procedure UsedInputsListClickCheck(Sender: TObject);
     procedure UseFixedHourChange(Sender: TObject);
     procedure UseFixedSLTPChange(Sender: TObject);
@@ -55,8 +55,6 @@ type
     procedure BeginInSampleEditClick(Sender: TObject);
     procedure EndInSampleEditClick(Sender: TObject);
     procedure EndOutOfSampleEditClick(Sender: TObject);
-    procedure OptionsGridPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-      aState: TGridDrawState);
   private
     { private declarations }
   public
@@ -70,7 +68,11 @@ implementation
 
 uses kantu_indicators, kantu_main;
 
+{$IFDEF DELPHI}
+{$R *.dfm}
+{$ELSE}
 {$R *.lfm}
+{$ENDIF}
 
 { TSimulationForm2 }
 
@@ -79,11 +81,12 @@ var
   date: TDateTime;
   userString: string;
 begin
-
+  {$IFDEF DELPHI}
+{$ELSE}
   DefaultFormatSettings.ShortDateFormat 	 := 'dd/mm/yyyy' ;
   DefaultFormatSettings.DateSeparator 	         := '/' ;
   DefaultFormatSettings.DecimalSeparator 	 := '.' ;
-
+ {$ENDIF}
   {$IFDEF DARWIN}
   try
   UserString := InputBox('Enter date in dd/mm/yyyy format', 'Type date', DateTimeToStr(SimulationForm2.EndInSampleCalendar.Date));
@@ -112,10 +115,13 @@ var
   date: TDateTime;
   userString: string;
 begin
-
-  DefaultFormatSettings.ShortDateFormat 	 := 'dd/mm/yyyy' ;
+  {$IFDEF DELPHI}
+{$ELSE}
+      DefaultFormatSettings.ShortDateFormat 	 := 'dd/mm/yyyy' ;
   DefaultFormatSettings.DateSeparator 	         := '/' ;
   DefaultFormatSettings.DecimalSeparator 	 := '.' ;
+{$ENDIF}
+
 
   {$IFDEF DARWIN}
   try
@@ -145,21 +151,18 @@ begin
 
 end;
 
-procedure TSimulationForm2.OptionsGridPrepareCanvas(sender: TObject; aCol,
-  aRow: Integer; aState: TGridDrawState);
-begin
-end;
-
-
 procedure TSimulationForm2.BeginInSampleEditClick(Sender: TObject);
 var
   date: TDateTime;
   userString: string;
 begin
-
-  DefaultFormatSettings.ShortDateFormat 	 := 'dd/mm/yyyy' ;
+   {$IFDEF DELPHI}
+{$ELSE}
+     DefaultFormatSettings.ShortDateFormat 	 := 'dd/mm/yyyy' ;
   DefaultFormatSettings.DateSeparator 	         := '/' ;
   DefaultFormatSettings.DecimalSeparator 	 := '.' ;
+
+{$ENDIF}
 
 
   {$IFDEF DARWIN}
@@ -221,11 +224,6 @@ begin
   BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.Date);
 end;
 
-procedure TSimulationForm2.BeginInSampleEditChange(Sender: TObject);
-begin
-
-end;
-
 procedure TSimulationForm2.Button1Click(Sender: TObject);
 begin
      if OptionsPanel.Visible = false then
@@ -238,11 +236,6 @@ begin
         end;
 end;
 
-
-procedure TSimulationForm2.EndOutOfSampleEditChange(Sender: TObject);
-begin
-
-end;
 
 procedure TSimulationForm2.UsedInputsListClickCheck(Sender: TObject);
 var
