@@ -6,17 +6,22 @@ unit kantu_main;
 
 interface
 
+{$IFDEF DELPHI}
+
+{$ELSE}
+
+{$ENDIF}
 uses
 {$IFDEF DELPHI}
   VclTee.TeeGDIPlus, VclTee.Series, VclTee.BubbleCh, VclTee.TeEngine,
   VclTee.TeeProcs, VclTee.Chart,
 {$ELSE}
-  lclintf,
+  lclintf,FileUtil,
   TAGraph, TASeries,
   TAFuncSeries, TAMultiSeries, TATools, TASources,
   ZMConnection, laz_synapse,
 {$ENDIF}
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, Grids,
+  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, Menus, Grids,
   StdCtrls, ComCtrls, Buttons, ExtCtrls, ExtDlgs, kantu_definitions,
   kantu_simulation, kantu_pricepattern, Math, kantu_filters,
   kantu_custom_filter,
@@ -333,15 +338,17 @@ procedure TMainForm.MenuItem4Click(Sender: TObject);
 begin
 
   loadSymbol.SymbolsList.Clear;
-  loadSymbol.Datasource1.Enabled := False; // Manual refresh of linked DBGrid
-  loadSymbol.Datasource1.Enabled := True;
 
 {$IFDEF DELPHI}
 {$ELSE}
+
+  loadSymbol.Datasource1.Enabled := False; // Manual refresh of linked DBGrid
+  loadSymbol.Datasource1.Enabled := True;
+
   loadSymbol.ZMQueryDataSet1.SQL.Clear;
   loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
   loadSymbol.ZMQueryDataSet1.QueryExecute;
-{$ENDIF}
+
   with loadSymbol.SymbolsGrid.DataSource.DataSet do
     // begin
     // first;
@@ -354,7 +361,7 @@ begin
 
   // loadSymbol.SymbolsGrid.Columns[0].Width := 150;
   // loadSymbol.SymbolsGrid.Columns[1].Width := 250;
-
+ {$ENDIF}
   loadSymbol.Visible := True;
 
 end;
@@ -1211,8 +1218,7 @@ procedure TMainForm.MenuItem20Click(Sender: TObject);
 begin
 
   //OpenURL('http://newsite.asirikuy.com');
-  ShowMessage
-    ('OpenKantu, an open source price-action based system generator made by Daniel Fernandez. Copyright Asirikuy 2013-2014. Visit Asirikuy.com for more information');
+ // ShowMessage  ('OpenKantu, an open source price-action based system generator made by Daniel Fernandez. Copyright Asirikuy 2013-2014. Visit Asirikuy.com for more information');
 end;
 
 procedure TMainForm.MenuItem23Click(Sender: TObject);

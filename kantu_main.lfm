@@ -1,31 +1,30 @@
 object MainForm: TMainForm
-  Left = 740
+  Left = 558
   Height = 730
-  Top = 473
+  Top = 284
   Width = 879
   Caption = 'Kantu - Price pattern parameterless system generator. By Daniel Fernandez @ Asirikuy.com 2013'
-  ClientHeight = 700
+  ClientHeight = 708
   ClientWidth = 879
   Menu = MainMenu1
   OnClose = FormClose
-  OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.2.6.0'
+  LCLVersion = '2.0.12.0'
   Visible = True
   WindowState = wsMaximized
   object selectedPatternLabel: TLabel
     Left = 313
-    Height = 25
+    Height = 19
     Top = 433
-    Width = 10
+    Width = 8
     Caption = '0'
     ParentColor = False
     Visible = False
   end
   object PageControl1: TPageControl
     Left = 3
-    Height = 697
+    Height = 705
     Top = 3
     Width = 876
     ActivePage = TabSheet1
@@ -34,9 +33,8 @@ object MainForm: TMainForm
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Simulation Results'
-      ClientHeight = 659
+      ClientHeight = 673
       ClientWidth = 868
-      OnExit = TabSheet1Exit
       OnShow = TabSheet1Show
       object ResultsGrid: TStringGrid
         Left = 21
@@ -115,11 +113,13 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Ideal R'
+            Width = 64
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'R^2'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -143,6 +143,7 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Cons.Wins'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -154,6 +155,7 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Win %'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -165,6 +167,7 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Skewness'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -176,11 +179,13 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'PF'
+            Width = 64
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Std.Dev'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -191,11 +196,13 @@ object MainForm: TMainForm
           item
             Alignment = taCenter
             Title.Caption = 'Total ME'
+            Width = 64
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'SQN'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -213,11 +220,13 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Bars out'
+            Width = 64
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'OSP'
+            Width = 64
           end        
           item
             Alignment = taCenter
@@ -445,7 +454,7 @@ object MainForm: TMainForm
       end
       object PageControl2: TPageControl
         Left = 20
-        Height = 258
+        Height = 272
         Top = 392
         Width = 832
         ActivePage = TabSheet4
@@ -454,20 +463,22 @@ object MainForm: TMainForm
         TabOrder = 3
         object TabSheet4: TTabSheet
           Caption = 'Balance Curve'
-          ClientHeight = 220
+          ClientHeight = 240
           ClientWidth = 824
           object Chart1: TChart
             Left = -7
-            Height = 217
+            Height = 237
             Top = 5
             Width = 822
             AxisList = <            
               item
                 Grid.Visible = False
+                Marks.LabelBrush.Style = bsClear
                 Minors = <>
                 Title.LabelFont.Orientation = 900
                 Title.Visible = True
                 Title.Caption = 'Balance (USD)'
+                Title.LabelBrush.Style = bsClear
               end            
               item
                 Grid.Visible = False
@@ -478,6 +489,7 @@ object MainForm: TMainForm
                 Marks.LabelFont.Pitch = fpVariable
                 Marks.LabelFont.Quality = fqDraft
                 Marks.Format = '%2:s'
+                Marks.LabelBrush.Style = bsClear
                 Marks.OverlapPolicy = opHideNeighbour
                 Marks.Style = smsLabel
                 Minors = <>
@@ -485,12 +497,15 @@ object MainForm: TMainForm
                 Range.UseMin = True
                 Title.Visible = True
                 Title.Caption = 'Date (mm/yyyy)'
+                Title.LabelBrush.Style = bsClear
               end            
               item
                 Grid.Visible = False
                 Visible = False
                 Alignment = calBottom
+                Marks.LabelBrush.Style = bsClear
                 Minors = <>
+                Title.LabelBrush.Style = bsClear
               end>
             BackColor = clWhite
             Depth = 2
@@ -503,7 +518,6 @@ object MainForm: TMainForm
             )
             Anchors = [akTop, akLeft, akRight, akBottom]
             Color = clWhite
-            ParentColor = False
             PopupMenu = PopupMenu5
             object BalanceCurve: TLineSeries
               LinePen.Color = 6568253
@@ -511,14 +525,12 @@ object MainForm: TMainForm
             end
             object zeroLine: TConstantLine
               Pen.Style = psDot
-              Position = 0
             end
             object inSampleEndLine: TConstantLine
               LineStyle = lsVertical
               Pen.Color = clGreen
               Pen.Style = psDot
               Pen.Width = 2
-              Position = 0
             end
             object BalanceCurvePortfolio: TLineSeries
               LinePen.Color = clGreen
@@ -544,7 +556,6 @@ object MainForm: TMainForm
               LineStyle = lsVertical
               Pen.Color = clGreen
               Pen.Style = psDot
-              Position = 0
             end
           end
         end
@@ -560,17 +571,21 @@ object MainForm: TMainForm
             AxisList = <            
               item
                 Grid.Visible = False
+                Marks.LabelBrush.Style = bsClear
                 Minors = <>
                 Title.LabelFont.Orientation = 900
                 Title.Visible = True
                 Title.Caption = 'Total ME (MFE-MAE)'
+                Title.LabelBrush.Style = bsClear
               end            
               item
                 Grid.Visible = False
                 Alignment = calBottom
+                Marks.LabelBrush.Style = bsClear
                 Minors = <>
                 Title.Visible = True
                 Title.Caption = 'Bars from entry'
+                Title.LabelBrush.Style = bsClear
               end>
             BackColor = clWhite
             Foot.Brush.Color = clBtnFace
@@ -582,7 +597,6 @@ object MainForm: TMainForm
             )
             Anchors = [akTop, akLeft, akRight, akBottom]
             Color = clWhite
-            ParentColor = False
             object ME_Longs: TBarSeries
               BarBrush.Color = 13279082
               BarOffsetPercent = 50
@@ -604,15 +618,19 @@ object MainForm: TMainForm
         AxisList = <        
           item
             Grid.Visible = False
+            Marks.LabelBrush.Style = bsClear
             Minors = <>
             Title.LabelFont.Orientation = 900
+            Title.LabelBrush.Style = bsClear
           end        
           item
             Grid.Visible = False
             Visible = False
             Alignment = calBottom
+            Marks.LabelBrush.Style = bsClear
             Marks.OverlapPolicy = opHideNeighbour
             Minors = <>
+            Title.LabelBrush.Style = bsClear
           end>
         BackColor = clWhite
         Foot.Brush.Color = clBtnFace
@@ -623,7 +641,6 @@ object MainForm: TMainForm
           'TAChart'
         )
         Anchors = [akTop, akLeft, akRight]
-        ParentColor = False
         Visible = False
         object GraphOHLC_Up: TBoxAndWhiskerSeries
           Active = False
@@ -665,9 +682,9 @@ object MainForm: TMainForm
       end
       object LabelCheck: TCheckBox
         Left = 73
-        Height = 29
+        Height = 23
         Top = 101
-        Width = 177
+        Width = 138
         Caption = 'Show Trade Labels'
         OnChange = LabelCheckChange
         TabOrder = 6
@@ -675,9 +692,9 @@ object MainForm: TMainForm
       end
       object ohlcCheck: TCheckBox
         Left = 73
-        Height = 29
+        Height = 23
         Top = 117
-        Width = 125
+        Width = 99
         Caption = 'Show OHLC'
         OnChange = ohlcCheckChange
         TabOrder = 7
@@ -730,9 +747,11 @@ object MainForm: TMainForm
           end        
           item
             Title.Caption = 'Type'
+            Width = 64
           end        
           item
             Title.Caption = 'Volume'
+            Width = 64
           end>
         FixedCols = 0
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goSmoothScroll]
@@ -755,8 +774,8 @@ object MainForm: TMainForm
     end
   end
   object MainMenu1: TMainMenu
-    left = 528
-    top = 56
+    Left = 528
+    Top = 56
     object MenuItem1: TMenuItem
       Caption = 'Simulation'
       object MenuItem3: TMenuItem
@@ -837,7 +856,6 @@ object MainForm: TMainForm
           0000BDB7AC28B9B2A76800000000BAB3A868C1BBB028C0BAB028B9B2A7680000
           0000BAB3A868BEB8AD2800000000000000000000000000000000
         }
-        OnClick = MenuItem5Click
         object MenuItem18: TMenuItem
           Caption = 'Define filters'
           Bitmap.Data = {
@@ -957,7 +975,6 @@ object MainForm: TMainForm
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000
         }
-        OnClick = MenuItem8Click
         object MenuItem16: TMenuItem
           Caption = 'Main Symbol'
           Bitmap.Data = {
@@ -1258,16 +1275,16 @@ object MainForm: TMainForm
   object OpenSymbolHistoryDialog: TOpenDialog
     DefaultExt = '.csv'
     Filter = 'History data file|*.csv'
-    left = 528
-    top = 128
+    Left = 528
+    Top = 128
   end
   object SaveDialog1: TSaveDialog
-    left = 696
-    top = 384
+    Left = 696
+    Top = 384
   end
   object PopupMenu1: TPopupMenu
-    left = 632
-    top = 240
+    Left = 632
+    Top = 240
     object MenuItem13: TMenuItem
       Caption = 'Save contents to CSV'
       Bitmap.Data = {
@@ -1463,18 +1480,18 @@ object MainForm: TMainForm
     end
   end
   object OpenKantuLibraryDialog: TOpenDialog
-    left = 688
-    top = 304
+    Left = 688
+    Top = 304
   end
   object SaveDialogMQL4: TSaveDialog
     DefaultExt = '.mq4'
     Filter = '*.mq4'
-    left = 568
-    top = 168
+    Left = 568
+    Top = 168
   end
   object PopupMenu2: TPopupMenu
-    left = 600
-    top = 344
+    Left = 600
+    Top = 344
     object MenuItem24: TMenuItem
       Caption = 'Save contents to CSV'
       Bitmap.Data = {
@@ -1517,8 +1534,8 @@ object MainForm: TMainForm
     end
   end
   object PopupMenu3: TPopupMenu
-    left = 688
-    top = 184
+    Left = 688
+    Top = 184
     object MenuItem25: TMenuItem
       Caption = 'Save contents to CSV'
       Bitmap.Data = {
@@ -1560,8 +1577,8 @@ object MainForm: TMainForm
     end
   end
   object PopupMenu4: TPopupMenu
-    left = 560
-    top = 392
+    Left = 560
+    Top = 392
     object MenuItem26: TMenuItem
       Caption = 'Save contents to CSV'
       Bitmap.Data = {
@@ -1603,8 +1620,8 @@ object MainForm: TMainForm
     end
   end
   object PopupMenu5: TPopupMenu
-    left = 568
-    top = 280
+    Left = 568
+    Top = 280
     object MenuItem27: TMenuItem
       Caption = 'Save graph to BMP'
       Bitmap.Data = {
@@ -1647,15 +1664,15 @@ object MainForm: TMainForm
     end
   end
   object PopupMenu6: TPopupMenu
-    left = 326
-    top = 365
+    Left = 326
+    Top = 365
     object MenuItem34: TMenuItem
       Caption = 'Save contents to CSV'
     end
   end
   object PopupMenu7: TPopupMenu
-    left = 319
-    top = 157
+    Left = 319
+    Top = 157
     object MenuItem33: TMenuItem
       Caption = 'Save graph to BMP'
     end
@@ -1663,7 +1680,7 @@ object MainForm: TMainForm
   object SaveDialog2: TSaveDialog
     DefaultExt = '.csv'
     Filter = 'csv|*.csv'
-    left = 446
-    top = 302
+    Left = 446
+    Top = 302
   end
 end

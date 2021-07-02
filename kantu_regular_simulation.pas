@@ -7,10 +7,11 @@ unit kantu_regular_simulation;
 interface
 
 uses
-{$IFNDEF DELPHI}
-  fpexprpars,
+{$IFDEF DELPHI}
+{$ELSE}
+  fpexprpars,FileUtil,
 {$ENDIF}
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, Grids,
+  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, Menus, Grids,
   Buttons, kantu_definitions, Math, dateUtils, kantu_main, kantu_loadSymbol,
   kantu_simulation, kantu_filters, kantu_custom_filter, kantu_multithreading,
   kantu_pricepattern, kantu_portfolioResults;
@@ -258,7 +259,7 @@ var
 {$IFDEF DELPHI}
 begin
 {$ELSE}
-end;
+
 FParser:
 TFPExpressionParser;
 parserResult:

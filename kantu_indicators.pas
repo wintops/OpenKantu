@@ -10,10 +10,11 @@ uses
 {$IFDEF DELPHI}
   VclTee.Series,
 {$ELSE}
+  FileUtil,
   fpexprpars, TAGraph, TASeries,
   TAFuncSeries, TAMultiSeries,
 {$ENDIF}
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus, Grids,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, Grids,
   Buttons, kantu_definitions, Math, dateUtils,
   kantu_simulation, kantu_filters, kantu_custom_filter, kantu_multithreading,
   kantu_pricepattern, kantu_portfolioResults, kantu_simulation_show;
@@ -444,7 +445,6 @@ begin
 
   end;
 
-
   simulationResults := runIndicatorSimulation
     (indicatorEntryPatterns[StrToInt(MainForm.ResultsGrid.Cells
     [IDX_GRID_RESULT_NUMBER, 1]) - 1],
@@ -452,9 +452,9 @@ begin
     [IDX_GRID_RESULT_NUMBER, 1]) - 1], FIRST_SYMBOL,
     SimulationForm.useSLCheck.Checked, SimulationForm.useTPCheck.Checked,
 
-    0,//SimulationForm.EndInSampleCalendar.Date,
-    0,//SimulationForm.EndOutOfSampleCalendar.Date,
-     true);
+    0, // SimulationForm.EndInSampleCalendar.Date,
+    0, // SimulationForm.EndOutOfSampleCalendar.Date,
+    true);
   simulationResultsFinal.totalLongSignals :=
     simulationResultsFinal.totalLongSignals +
     simulationResults.totalLongSignals;
@@ -1020,7 +1020,8 @@ var
   averageProfit, averageLoss: double;
   dataForFit: TRealPointArray;
   dataforFit2: TRealPointArray;
-  standardDeviationTrades, averageTrades: {$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
+  standardDeviationTrades, averageTrades:
+  {$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
   m1, m2, m3, m4, tradeKurtosis, tradeSkewness: extended;
   m, b, r: extended;
   carriedBalance: double;
@@ -1028,8 +1029,10 @@ var
   tradeEachYear: boolean;
   ME_Long, ME_Short: double;
   regressionResiduals: array of double;
-  averageResiduals, standardDeviationResiduals: {$IFDEF DELPHI}double{$ELSE} extended{$ENDIF};
-  idealR, idealRstandardDeviation: {$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
+  averageResiduals, standardDeviationResiduals:
+  {$IFDEF DELPHI}double{$ELSE} extended{$ENDIF};
+  idealR, idealRstandardDeviation:
+  {$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
   idealRPeriodCorrelations: array of double;
 begin
 
@@ -2249,13 +2252,12 @@ Var
 Begin
 
   Result := true;
-  {$IFDEF DELPHI}
-  {$ELSE}
+{$IFDEF DELPHI}
+{$ELSE}
   DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.DecimalSeparator := '.';
-  {$ENDIF}
-
+{$ENDIF}
   // open progress bar form
   MainForm.StatusLabel.Caption := 'Symbol data loading progress...';
   MainForm.StatusLabel.Visible := true;
@@ -2280,6 +2282,12 @@ Begin
 
   MainForm.ProgressBar1.Max := Ts.count;
 
+  {$IFDEF DELPHI}
+
+{$ELSE}
+
+
+
   LoadedIndiHistoryData[n].symbol := loadSymbol.SymbolsGrid.DataSource.DataSet.
     Fields[0].AsString;
   LoadedIndiHistoryData[n].spread := loadSymbol.SymbolsGrid.DataSource.DataSet.
@@ -2300,7 +2308,7 @@ Begin
     loadSymbol.SymbolsGrid.DataSource.DataSet.Fields[9].AsInteger;
   LoadedIndiHistoryData[n].MinimumStop :=
     loadSymbol.SymbolsGrid.DataSource.DataSet.Fields[10].AsFloat;
-
+ {$ENDIF}
   temp.Clear;
   MainForm.ParseDelimited(temp, Ts[0], ',');
 
@@ -2753,9 +2761,8 @@ begin
   MainForm.upperStdDev.Clear;
   MainForm.lowerStdDev.Clear;
 
-  {$IFDEF DELPHI}
+{$IFDEF DELPHI}
 {$ELSE}
-
   MainForm.Chart1.AxisList[1].Marks.Source := MainForm.balanceCurve.Source;
 
   MainForm.TradeGrid.RowCount := 1;
@@ -2873,15 +2880,14 @@ begin
 
   PortfolioResultForm.Visible := true;
 
-  {$IFDEF DELPHI}
+{$IFDEF DELPHI}
 {$ELSE}
-
   MainForm.Chart1.AxisList.BottomAxis.Range.Max :=
     simulationResultsPortfolio.trades[Length(simulationResultsPortfolio.trades)
     - 1].closeTime;
   MainForm.Chart1.AxisList.BottomAxis.Range.Min :=
     simulationResultsPortfolio.trades[0].closeTime;
-  {$ENDIF}
+{$ENDIF}
 end;
 
 Procedure runSingleSystem(usedSymbol: integer; patternToUse: TIndicatorPattern;

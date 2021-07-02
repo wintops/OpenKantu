@@ -4,17 +4,17 @@ unit kantu_loadSymbol;
 {$mode objfpc}{$H+}
 {$ENDIF}
 
-
 interface
 
 uses
-   {$IFNDEF DELPHI}
-ZMConnection, ZMQueryDataSet,
+{$IFDEF DELPHI}
+  Vcl.Grids, Vcl.ExtCtrls,
+{$ELSE}
+  ZMConnection, ZMQueryDataSet, FileUtil, DbCtrls, DBGrids, db,
 {$ENDIF}
-
-  Classes, SysUtils, db, FileUtil, Forms, Controls, Graphics, Dialogs, CheckLst,
-  StdCtrls, DbCtrls, DBGrids,  kantu_definitions, kantu_simulation, kantu_singleSystem,
-  Vcl.Grids, Vcl.ExtCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, CheckLst,
+  StdCtrls, kantu_definitions, kantu_simulation, kantu_singleSystem, Data.db,
+  Vcl.DBGrids, Vcl.DbCtrls;
 
 type
 
@@ -26,22 +26,23 @@ type
     Button3: TButton;
     OpenDialog1: TOpenDialog;
     SymbolsList: TCheckListBox;
+
+    Label1: TLabel;
+{$IFNDEF DELPHI}
     Datasource1: TDatasource;
     SymbolsGrid: TDBGrid;
     DBNavigator1: TDBNavigator;
-    Label1: TLabel;
-       {$IFNDEF DELPHI}
     ZMConnection1: TZMConnection;
     ZMQueryDataSet1: TZMQueryDataSet;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
-    {$ENDIF}
+{$ENDIF}
   private
     { private declarations }
   public
     { public declarations }
-      {$IFNDEF DELPHI}
+{$IFNDEF DELPHI}
     procedure updateIndicatorLoadedSymbols;
 {$ENDIF}
   end;
@@ -60,41 +61,46 @@ implementation
 { TloadSymbol }
 uses kantu_main, kantu_indicators;
 
-      {$IFNDEF DELPHI}
+{$IFNDEF DELPHI}
 
 procedure TloadSymbol.updateIndicatorLoadedSymbols;
 var
   i: integer;
 begin
 
-  LoadedIndiHistoryData := nil ;
+  LoadedIndiHistoryData := nil;
   SingleSystem.SymbolsCombo.Clear;
 
-  for i:= 0 to SymbolsList.Count -1 do
+  for i := 0 to SymbolsList.Count - 1 do
   begin
 
-       if SymbolsList.Checked[i] then
-       begin
-         loadSymbol.ZMQueryDataSet1.SQL.Clear;
-         loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
-         loadSymbol.ZMQueryDataSet1.SQL.Add('WHERE Symbol = ' + SymbolsList.Items[i]);
-         loadSymbol.ZMQueryDataSet1.QueryExecute;
-         if FileExists(SymbolsGrid.DataSource.DataSet.Fields[1].AsString) = false then
-         begin
-           ShowMessage('Selected history file does not exist. Please check path to be valid.');
-           Exit;
-         end;
+    if SymbolsList.Checked[i] then
+    begin
+      loadSymbol.ZMQueryDataSet1.SQL.Clear;
+      loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
+      loadSymbol.ZMQueryDataSet1.SQL.Add('WHERE Symbol = ' +
+        SymbolsList.Items[i]);
+      loadSymbol.ZMQueryDataSet1.QueryExecute;
+      if FileExists(SymbolsGrid.DataSource.DataSet.Fields[1].AsString) = false
+      then
+      begin
+        ShowMessage
+          ('Selected history file does not exist. Please check path to be valid.');
+        Exit;
+      end;
 
-         LoadIndicatorsAndHistory(SymbolsGrid.DataSource.DataSet.Fields[1].AsString);
-         SingleSystem.SymbolsCombo.Items.Add(SymbolsGrid.DataSource.DataSet.Fields[0].AsString);
+      LoadIndicatorsAndHistory(SymbolsGrid.DataSource.DataSet.Fields[1]
+        .AsString);
+      SingleSystem.SymbolsCombo.Items.Add(SymbolsGrid.DataSource.DataSet.Fields
+        [0].AsString);
 
-       end;
+    end;
 
   end;
 
   if Length(LoadedIndiHistoryData) = 0 then
-  ShowMessage('No instruments were selected for loading. Make sure you check the checkbox for the instruments you wish to load');
-
+    ShowMessage
+      ('No instruments were selected for loading. Make sure you check the checkbox for the instruments you wish to load');
 
   loadSymbol.ZMQueryDataSet1.SQL.Clear;
   loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
@@ -102,97 +108,113 @@ begin
 
 end;
 
-
 procedure TloadSymbol.Button1Click(Sender: TObject);
 begin
-    ZMQueryDataset1.TableName:='symbols';
-     ShowMessage('Dataset is going to be saved to: '+ ZMQueryDataset1.ZMConnection.DatabasePathFull+ZMQueryDataset1.TableName+'.csv');
-    ZMQueryDataset1.SaveToTable(';');
+  ZMQueryDataSet1.TableName := 'symbols';
+  ShowMessage('Dataset is going to be saved to: ' +
+    ZMQueryDataSet1.ZMConnection.DatabasePathFull + ZMQueryDataSet1.TableName
+    + '.csv');
+  ZMQueryDataSet1.SaveToTable(';');
 
-    loadSymbol.SymbolsList.Clear;
+  loadSymbol.SymbolsList.Clear;
 
-   loadSymbol.Datasource1.Enabled:=False; //Manual refresh of linked DBGrid
-   loadSymbol.Datasource1.Enabled:=True;
-   loadSymbol.ZMQueryDataSet1.SQL.Clear;
-   loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
-   loadSymbol.ZMQueryDataSet1.QueryExecute;
+  loadSymbol.Datasource1.Enabled := false; // Manual refresh of linked DBGrid
+  loadSymbol.Datasource1.Enabled := True;
+  loadSymbol.ZMQueryDataSet1.SQL.Clear;
+  loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
+  loadSymbol.ZMQueryDataSet1.QueryExecute;
 
-    with loadSymbol.SymbolsGrid.DataSource.DataSet do
- // begin
-   // first;
-     while not loadSymbol.SymbolsGrid.DataSource.DataSet.EOF do
-     begin
-        loadSymbol.SymbolsList.Items.Add(loadSymbol.SymbolsGrid.Columns[0].Field.AsString) ;
-        loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
-     end ;
+  with loadSymbol.SymbolsGrid.DataSource.DataSet do
+    // begin
+    // first;
+    while not loadSymbol.SymbolsGrid.DataSource.DataSet.EOF do
+    begin
+      loadSymbol.SymbolsList.Items.Add(loadSymbol.SymbolsGrid.Columns[0]
+        .Field.AsString);
+      loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
+    end;
 end;
 
 procedure TloadSymbol.Button2Click(Sender: TObject);
 var
-  symbol,datafile,timeframe,minStop,slippage,spread,contractSize,commission,isVolume,pointConversion,roundLots: string;
+  symbol, datafile, timeframe, minStop, slippage, spread, contractSize,
+    commission, isVolume, pointConversion, roundLots: string;
   database: TStringList;
 begin
-  symbol       :=  InputBox('Symbol', 'Please enter the desired symbol name', '') ;
+  symbol := InputBox('Symbol', 'Please enter the desired symbol name', '');
 
   ShowMessage('Please now select the data file that you want to use.');
 
   datafile := '';
 
   If OpenDialog1.Execute then
-  datafile := OpenDialog1.FileName;
+    datafile := OpenDialog1.FileName;
 
   if datafile = '' then
   begin
-    ShowMessage('No valid data file selected. Aborting new instrument addition');
+    ShowMessage
+      ('No valid data file selected. Aborting new instrument addition');
     Exit;
   end;
 
-  timeframe    :=  InputBox('Timeframe', 'Please enter the time frame for the data in minutes', '') ;
-  slippage     :=  InputBox('Slippage', 'Please enter the maximum slippage desired', '') ;
-  spread       :=  InputBox('Spread', 'Please enter the spread used', '') ;
-  contractSize :=  InputBox('Contract size', 'Please enter the dollar values per pip when trading the standard contract size (1 lot)', '') ;
-  commission   :=  InputBox('Commission', 'Please enter the commission charger per trade in USD', '') ;
-  isVolume     :=  InputBox('Volume', 'Does the data contain volume information ? (0=no, 1=yes))', '') ;
-  pointConversion       :=  InputBox('Point Conversion', 'Please enter the multiplication factor to convert from absolute price value to pips', '') ;
-  roundLots :=  InputBox('Lot size rounding', 'To how many decimal places do you want to round lot sizes?', '') ;
-  minStop :=  InputBox('Min stop size', 'How many price units do you want to have as a minimum SL/TP distance? (Should be number with decimal, if you want 0 type 0.0)', '') ;
+  timeframe := InputBox('Timeframe',
+    'Please enter the time frame for the data in minutes', '');
+  slippage := InputBox('Slippage',
+    'Please enter the maximum slippage desired', '');
+  spread := InputBox('Spread', 'Please enter the spread used', '');
+  contractSize := InputBox('Contract size',
+    'Please enter the dollar values per pip when trading the standard contract size (1 lot)',
+    '');
+  commission := InputBox('Commission',
+    'Please enter the commission charger per trade in USD', '');
+  isVolume := InputBox('Volume',
+    'Does the data contain volume information ? (0=no, 1=yes))', '');
+  pointConversion := InputBox('Point Conversion',
+    'Please enter the multiplication factor to convert from absolute price value to pips',
+    '');
+  roundLots := InputBox('Lot size rounding',
+    'To how many decimal places do you want to round lot sizes?', '');
+  minStop := InputBox('Min stop size',
+    'How many price units do you want to have as a minimum SL/TP distance? (Should be number with decimal, if you want 0 type 0.0)',
+    '');
 
   database := TStringList.Create;
 
-  {$IFDEF DARWIN}
-  database.LoadFromFile(GetCurrentDir + '/kantu.app/Contents/MacOS/symbols/symbols.csv');
-  {$ELSE}
+{$IFDEF DARWIN}
+  database.LoadFromFile(GetCurrentDir +
+    '/kantu.app/Contents/MacOS/symbols/symbols.csv');
+{$ELSE}
   database.LoadFromFile(GetCurrentDir + '/symbols/symbols.csv');
-  {$ENDIF}
+{$ENDIF}
+  database.Add(symbol + ';' + datafile + ';' + timeframe + ';' + slippage + ';'
+    + spread + ';' + contractSize + ';' + commission + ';' + isVolume + ';' +
+    pointConversion + ';' + roundLots + ';' + minStop);
 
-  database.Add(symbol+';'+datafile+';'+timeframe+';'+slippage+';'+spread+';'+contractSize+';'+commission+';'+isVolume+';'+pointConversion+';'+roundLots+';'+minStop);
-
-  {$IFDEF DARWIN}
-  database.SaveToFile(GetCurrentDir + '/kantu.app/Contents/MacOS/symbols/symbols.csv');
-  {$ELSE}
+{$IFDEF DARWIN}
+  database.SaveToFile(GetCurrentDir +
+    '/kantu.app/Contents/MacOS/symbols/symbols.csv');
+{$ELSE}
   database.SaveToFile(GetCurrentDir + '/symbols/symbols.csv');
-  {$ENDIF}
-
+{$ENDIF}
   database.Free;
 
   loadSymbol.SymbolsList.Clear;
 
-   loadSymbol.Datasource1.Enabled:=False; //Manual refresh of linked DBGrid
-   loadSymbol.Datasource1.Enabled:=True;
-   loadSymbol.ZMQueryDataSet1.SQL.Clear;
-   loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
-   loadSymbol.ZMQueryDataSet1.QueryExecute;
+  loadSymbol.Datasource1.Enabled := false; // Manual refresh of linked DBGrid
+  loadSymbol.Datasource1.Enabled := True;
+  loadSymbol.ZMQueryDataSet1.SQL.Clear;
+  loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
+  loadSymbol.ZMQueryDataSet1.QueryExecute;
 
-    with loadSymbol.SymbolsGrid.DataSource.DataSet do
- // begin
-   // first;
-     while not loadSymbol.SymbolsGrid.DataSource.DataSet.EOF do
-     begin
-        loadSymbol.SymbolsList.Items.Add(loadSymbol.SymbolsGrid.Columns[0].Field.AsString) ;
-        loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
-     end ;
-
-
+  with loadSymbol.SymbolsGrid.DataSource.DataSet do
+    // begin
+    // first;
+    while not loadSymbol.SymbolsGrid.DataSource.DataSet.EOF do
+    begin
+      loadSymbol.SymbolsList.Items.Add(loadSymbol.SymbolsGrid.Columns[0]
+        .Field.AsString);
+      loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
+    end;
 
 end;
 
@@ -206,7 +228,6 @@ begin
 
 end;
 
-    {$ENDIF}
+{$ENDIF}
 
 end.
-

@@ -1,20 +1,20 @@
 unit kantu_custom_filter;
-
 {$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
 {$ENDIF}
 
-
 interface
-
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Grids,
+
+{$IFDEF DELPHI}
+
+{$ELSE}
+  FileUtil,
+{$ENDIF}
+  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, Grids,
   StdCtrls;
-
 type
-
   { TCustomFilterForm }
-
   TCustomFilterForm = class(TForm)
     Button1: TButton;
     CustomFilterGrid: TStringGrid;
@@ -27,24 +27,17 @@ type
   public
     { public declarations }
   end;
-
 var
   CustomFilterForm: TCustomFilterForm;
-
 implementation
-
 {$IFDEF DELPHI}
 {$R *.dfm}
 {$ELSE}
 {$R *.lfm}
 {$ENDIF}
-
 { TCustomFilterForm }
-
 procedure TCustomFilterForm.Button1Click(Sender: TObject);
 begin
   CustomFilterForm.Visible := False;
 end;
-
 end.
-

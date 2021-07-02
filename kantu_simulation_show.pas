@@ -7,7 +7,12 @@ unit kantu_simulation_show;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+{$IFDEF DELPHI}
+
+{$ELSE}
+  FileUtil,
+{$ENDIF}
+  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, Grids, ExtDlgs, CheckLst, kantu_simulation, kantu_definitions;
 
 type

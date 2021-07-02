@@ -43,33 +43,6 @@ object loadSymbol: TloadSymbol
     ParentFont = False
     TabOrder = 0
   end
-  object DBNavigator1: TDBNavigator
-    Left = 600
-    Top = 8
-    Width = 240
-    Height = 25
-    DataSource = Datasource1
-    TabOrder = 1
-  end
-  object SymbolsGrid: TDBGrid
-    Left = 216
-    Top = 40
-    Width = 625
-    Height = 336
-    DataSource = Datasource1
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -12
-    TitleFont.Name = 'Tahoma'
-    TitleFont.Style = []
-  end
   object Button1: TButton
     Left = 710
     Top = 384
@@ -82,7 +55,7 @@ object loadSymbol: TloadSymbol
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 1
   end
   object Button2: TButton
     Left = 560
@@ -96,7 +69,7 @@ object loadSymbol: TloadSymbol
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 2
   end
   object Button3: TButton
     Left = 432
@@ -110,14 +83,10 @@ object loadSymbol: TloadSymbol
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
-  end
-  object Datasource1: TDataSource
-    Left = 280
-    Top = 248
+    TabOrder = 3
   end
   object OpenDialog1: TOpenDialog
-    Left = 347
-    Top = 16
+    Left = 243
+    Top = 368
   end
 end
