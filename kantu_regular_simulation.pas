@@ -31,6 +31,8 @@ procedure saveResultsToFile(filename: string;
 
 implementation
 
+uses kantu_utils;
+
 function round2(const Number: extended; const Places: longint): extended;
 var
   t: extended;
@@ -132,7 +134,7 @@ procedure updateBalanceChart(simulationResultsFinal,
 var
   i: integer;
 begin
-
+  {$IFDEF TEECHART}
   MainForm.BalanceCurve.Clear;
   MainForm.BalanceCurveFit.Clear;
   MainForm.BalanceCurvePortfolio.Clear;
@@ -199,7 +201,7 @@ begin
     // MainForm.BalanceCurveFitPortfolio.AddXY(simulationResultsFinalPortfolio.trades[i-1].closeTime, simulationResultsFinalPortfolio.linearFitSlope*simulationResultsFinalPortfolio.trades[i-1].closeTime + simulationResultsFinalPortfolio.linearFitIntercept, FormatDateTime('mm/yyyy', simulationResultsFinalPortfolio.trades[i-1].closeTime));
 
   end;
-
+  {$ENDIF}
   MainForm.StatusLabel.Visible := false;
 
 end;

@@ -7,22 +7,24 @@ unit kantu_main;
 interface
 
 {$IFDEF DELPHI}
-
 {$ELSE}
-
 {$ENDIF}
+
 uses
 {$IFDEF DELPHI}
+{$IFDEF TEECHART}
   VclTee.TeeGDIPlus, VclTee.Series, VclTee.BubbleCh, VclTee.TeEngine,
   VclTee.TeeProcs, VclTee.Chart,
+{$ENDIF}
 {$ELSE}
-  lclintf,FileUtil,
+  lclintf, FileUtil,
   TAGraph, TASeries,
   TAFuncSeries, TAMultiSeries, TATools, TASources,
   ZMConnection, laz_synapse,
 {$ENDIF}
-  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, Menus, Grids,
-  StdCtrls, ComCtrls, Buttons, ExtCtrls, ExtDlgs, kantu_definitions,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, Grids,
+  StdCtrls, Buttons, ExtCtrls, // ExtDlgs, ComCtrls,
+  kantu_definitions,
   kantu_simulation, kantu_pricepattern, Math, kantu_filters,
   kantu_custom_filter,
   kantu_loadSymbol, kantu_portfolioresults, dateUtils, kantu_singleSystem;
@@ -32,15 +34,21 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+  {$IFDEF TEECHART}
     BalanceCurve: TLineSeries;
     BalanceCurveFit: TLineSeries;
     BalanceCurveFitPortfolio: TLineSeries;
     BalanceCurvePortfolio: TLineSeries;
-    Button1: TButton;
-    Button2: TButton;
-    Chart1: TChart;
+        Chart1: TChart;
     Chart2: TChart;
     ChartOHLC: TChart;
+    GraphOpenTrades: TBubbleSeries;
+    GraphCloseTrades: TBubbleSeries;
+
+    {$ENDIF}
+    Button1: TButton;
+    Button2: TButton;
+
     MenuItem37: TMenuItem;
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
@@ -74,8 +82,6 @@ type
     MenuItem67: TMenuItem;
     ohlcCheck: TCheckBox;
     LabelCheck: TCheckBox;
-    GraphOpenTrades: TBubbleSeries;
-    GraphCloseTrades: TBubbleSeries;
 {$IFDEF DELPHI}
 {$ELSE}
     GraphOHLC_Up: TBoxAndWhiskerSeries;
@@ -87,11 +93,7 @@ type
     MenuItem33: TMenuItem;
     MenuItem34: TMenuItem;
     MenuItem35: TMenuItem;
-    ME_Shorts: TBarSeries;
-    ME_Longs: TBarSeries;
     extraLabel: TLabel;
-
-    lowerStdDev: TLineSeries;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem11: TMenuItem;
@@ -118,8 +120,6 @@ type
     OpenSymbolHistoryDialog: TOpenDialog;
     OutOfSampleAnalysisLabel: TLabel;
 
-    PageControl1: TPageControl;
-    PageControl2: TPageControl;
     PopupMenu1: TPopupMenu;
     PopupMenu2: TPopupMenu;
     PopupMenu3: TPopupMenu;
@@ -127,19 +127,13 @@ type
     PopupMenu5: TPopupMenu;
     PopupMenu6: TPopupMenu;
     PopupMenu7: TPopupMenu;
-    ProgressBar1: TProgressBar;
     ResultsGrid: TStringGrid;
     SaveDialog1: TSaveDialog;
     SaveDialog2: TSaveDialog;
     SaveDialogMQL4: TSaveDialog;
     selectedPatternLabel: TLabel;
     StatusLabel: TLabel;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
-    TabSheet4: TTabSheet;
-    TabSheet5: TTabSheet;
     TradeGrid: TStringGrid;
-    upperStdDev: TLineSeries;
 
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -183,7 +177,9 @@ type
     selectedSystem: Integer;
     selectedSymbol: Integer;
     totalSystems: double;
+      {$IFDEF TEECHART}
     tradeLines: array of TLineSeries;
+    {$ENDIF}
     function CheckBeforeSimulation: boolean;
     function isDataLoaded: boolean;
     procedure ExportToMQL4;
@@ -212,7 +208,8 @@ implementation
 {$R *.lfm}
 {$ENDIF}
 
-uses kantu_indicators, kantu_regular_simulation, kantu_simulation_show;
+uses kantu_utils,
+  kantu_indicators, kantu_regular_simulation, kantu_simulation_show;
 
 procedure TMainForm.parseConfig;
 var
@@ -319,7 +316,7 @@ var
 begin
   delta := Length(delimiter);
   txt := value + delimiter;
-  sl.BeginUpdate;
+  // sl.BeginUpdate;
   sl.Clear;
   try
     while Length(txt) > 0 do
@@ -330,7 +327,7 @@ begin
       txt := Copy(txt, dx + delta, MaxInt);
     end;
   finally
-    sl.EndUpdate;
+    // sl.EndUpdate;
   end;
 end;
 
@@ -341,7 +338,6 @@ begin
 
 {$IFDEF DELPHI}
 {$ELSE}
-
   loadSymbol.Datasource1.Enabled := False; // Manual refresh of linked DBGrid
   loadSymbol.Datasource1.Enabled := True;
 
@@ -361,7 +357,7 @@ begin
 
   // loadSymbol.SymbolsGrid.Columns[0].Width := 150;
   // loadSymbol.SymbolsGrid.Columns[1].Width := 250;
- {$ENDIF}
+{$ENDIF}
   loadSymbol.Visible := True;
 
 end;
@@ -417,7 +413,9 @@ begin
     GraphOHLC_Down.Active := False;
   end;
 {$ENDIF}
+ {$IFDEF TEECHART}
   ChartOHLC.Repaint;
+  {$ENDIF}
 
 end;
 
@@ -953,11 +951,11 @@ begin
     Result := AnsiCompareText(ResultsGrid.Cells[ACol, ARow],
       ResultsGrid.Cells[BCol, BRow]);
   end;
-  {$IFDEF DELPHI}
+{$IFDEF DELPHI}
 {$ELSE}
   if ResultsGrid.SortOrder = soDescending then
     Result := -Result;
-    {$ENDIF}
+{$ENDIF}
 end;
 
 procedure TMainForm.ResultsGridGetCellHint(Sender: TObject; ACol, ARow: Integer;
@@ -1048,7 +1046,9 @@ end;
 
 procedure TMainForm.Button2Click(Sender: TObject);
 begin
+ {$IFDEF TEECHART}
   ChartOHLC.Visible := False;
+  {$ENDIF}
   Button2.Visible := False;
   LabelCheck.Visible := False;
   ohlcCheck.Visible := False;
@@ -1065,7 +1065,7 @@ begin
   DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.DecimalSeparator := '.';
- {$ENDIF}
+{$ENDIF}
   SetCurrentDir(mainProgramFolder);
 
   configFile := TStringList.Create;
@@ -1083,14 +1083,12 @@ begin
 
   configFile.Add(CustomFilterForm.CustomFormulaEdit.Text);
 
-  {$IFDEF DELPHI}
+{$IFDEF DELPHI}
 {$ELSE}
-
   configFile.Add(DateTimeToStr(SimulationForm2.BeginInSampleCalendar.Date));
   configFile.Add(DateTimeToStr(SimulationForm2.EndInSampleCalendar.Date));
   configFile.Add(DateTimeToStr(SimulationForm2.EndOutOfSampleCalendar.Date));
- {$ENDIF}
-
+{$ENDIF}
   configFile.Add(IntToStr(SimulationForm2.OptTargetComboBox.ItemIndex));
   configFile.Add(BoolToStr(SimulationForm2.UseSLCheck.Checked));
   configFile.Add(BoolToStr(SimulationForm2.UseTPCheck.Checked));
@@ -1100,13 +1098,11 @@ begin
   configFile.Add(BoolToStr(SimulationForm2.UseFixedSLTP.Checked));
   configFile.Add(BoolToStr(SimulationForm2.UseFixedHour.Checked));
 
- {$IFDEF DELPHI}
+{$IFDEF DELPHI}
 {$ELSE}
-
   for i := 0 to ResultsGrid.ColCount - 1 do
     configFile.Add(BoolToStr(ResultsGrid.Columns.Items[i].Visible));
- {$ENDIF}
-
+{$ENDIF}
   configFile.Add(BoolToStr(FiltersForm.isLastYearProfitCheck.Checked));
 
   configFile.SaveToFile('config.ini');
@@ -1117,11 +1113,12 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-  MainForm.Enabled := False;
+ // MainForm.Enabled := False;
 end;
 
 procedure TMainForm.LabelCheckChange(Sender: TObject);
 begin
+ {$IFDEF TEECHART}
   if LabelCheck.Checked then
   begin
     GraphOpenTrades.Marks.Visible := True;
@@ -1133,6 +1130,7 @@ begin
     GraphOpenTrades.Marks.Visible := False;
     GraphCloseTrades.Marks.Visible := False;
   end;
+  {$ENDIF}
 end;
 
 procedure TMainForm.MenuItem11Click(Sender: TObject);
@@ -1217,8 +1215,8 @@ end;
 procedure TMainForm.MenuItem20Click(Sender: TObject);
 begin
 
-  //OpenURL('http://newsite.asirikuy.com');
- // ShowMessage  ('OpenKantu, an open source price-action based system generator made by Daniel Fernandez. Copyright Asirikuy 2013-2014. Visit Asirikuy.com for more information');
+  // OpenURL('http://newsite.asirikuy.com');
+  // ShowMessage  ('OpenKantu, an open source price-action based system generator made by Daniel Fernandez. Copyright Asirikuy 2013-2014. Visit Asirikuy.com for more information');
 end;
 
 procedure TMainForm.MenuItem23Click(Sender: TObject);
@@ -1237,8 +1235,10 @@ end;
 
 procedure TMainForm.MenuItem27Click(Sender: TObject);
 begin
+ {$IFDEF TEECHART}
   if SaveDialog1.Execute then
     Chart1.SaveToBitmapFile(SaveDialog1.FileName);
+    {$ENDIF}
 end;
 
 procedure TMainForm.MenuItem28Click(Sender: TObject);

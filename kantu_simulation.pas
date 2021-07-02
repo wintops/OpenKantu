@@ -12,9 +12,10 @@ uses
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, ExtDlgs, kantu_definitions, Math, dateutils, Grids,
-  Buttons, CheckLst;
+  Buttons;
 
 type
+ TGridDrawState=integer;
 
 {$IFDEF DELPHI}
 TCalendarDialog=class(TOpenDialog)
@@ -40,10 +41,10 @@ end;
     Label3: TLabel;
     LROriginCheck: TCheckBox;
     OptionsGrid: TStringGrid;
-    OptionsPanel: TPanel;
+
     OptTargetComboBox: TComboBox;
     UseDayFilter: TCheckBox;
-    UsedInputsList: TCheckListBox;
+    UsedInputsList: TListBox;
     UseFixedHour: TCheckBox;
     UseFixedSLTP: TCheckBox;
     UseHourFilter: TCheckBox;
@@ -74,6 +75,8 @@ uses kantu_main;
 {$ELSE}
 {$R *.lfm}
 {$ENDIF}
+
+
 
 procedure TSimulationForm.EndInSampleEditClick(Sender: TObject);
 begin

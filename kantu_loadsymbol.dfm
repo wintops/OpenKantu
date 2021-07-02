@@ -29,7 +29,7 @@ object loadSymbol: TloadSymbol
     ParentColor = False
     ParentFont = False
   end
-  object SymbolsList: TCheckListBox
+  object SymbolsList: TListBox
     Left = 24
     Top = 40
     Width = 184

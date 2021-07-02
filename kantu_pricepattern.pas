@@ -25,7 +25,7 @@ type
 var
   PricePatternForm: TPricePatternForm;
 implementation
-uses kantu_main;
+uses kantu_main,kantu_utils;
 {$IFDEF DELPHI}
 {$R *.dfm}
 {$ELSE}

@@ -76,7 +76,7 @@ function nCr(n, r: integer): double;
 
 implementation
 
-uses kantu_singleSystem, kantu_main, kantu_regular_simulation, kantu_loadSymbol;
+uses kantu_utils,kantu_singleSystem, kantu_main, kantu_regular_simulation, kantu_loadSymbol;
 
 Function nCr(n, r: integer): double;
 var
@@ -148,6 +148,7 @@ var
   i: integer;
 begin
 
+ {$IFDEF TEECHART}
   MainForm.balanceCurve.Clear;
   MainForm.BalanceCurveFit.Clear;
   MainForm.BalanceCurvePortfolio.Clear;
@@ -227,7 +228,7 @@ begin
 
     MainForm.StatusLabel.Visible := false;
   end;
-
+{$ENDIF}
 end;
 
 procedure mergeIndicatorSimulationResults(var simulationResultsPortfolio
@@ -243,12 +244,14 @@ var
 begin
 
   systemCount := Length(simulationResultsPortfolio);
+  {$IFDEF LLCL}
   initialProgressBarPosition := MainForm.ProgressBar1.Position;
   initialProgressBarMax := MainForm.ProgressBar1.Max;
-  initialStatusLabel := MainForm.StatusLabel.Caption;
-
   MainForm.ProgressBar1.Position := 0;
   MainForm.ProgressBar1.Max := HoursBetween(startingTime, endingTime);
+  {$ENDIF}
+  initialStatusLabel := MainForm.StatusLabel.Caption;
+
 
   simulationResultsFinalPortfolio.absoluteProfitLongs := 0;
   simulationResultsFinalPortfolio.absoluteProfitShorts := 0;
@@ -260,8 +263,10 @@ begin
 
   for i := 0 to HoursBetween(startingTime, endingTime) - 1 do
   begin
+  {$IFDEF LLCL}
 
     MainForm.ProgressBar1.Position := MainForm.ProgressBar1.Position + 1;
+  {$ENDIF}
     MainForm.StatusLabel.Caption := 'Merging results ' +
       IntToStr(simulationResultsFinalPortfolio.totalTrades) + ' merged';
 
@@ -371,9 +376,11 @@ begin
         Length(simulationResultsPortfolio);
     end;
   end;
+                {$IFDEF LLCL}
 
   MainForm.ProgressBar1.Position := initialProgressBarPosition;
   MainForm.ProgressBar1.Max := initialProgressBarMax;
+  {$ENDIF}
   MainForm.StatusLabel.Caption := initialStatusLabel;
 
 end;
@@ -555,8 +562,10 @@ begin
 
   Result := false;
 
+  {$IFDEF LLCL1}
   if SimulationForm.UsedInputsList.Checked[listIndex] then
     Result := true;
+  {$ENDIF}
 
 end;
 
@@ -2261,7 +2270,10 @@ Begin
   // open progress bar form
   MainForm.StatusLabel.Caption := 'Symbol data loading progress...';
   MainForm.StatusLabel.Visible := true;
+    {$IFDEF LLCL}
+
   MainForm.ProgressBar1.Position := 0;
+  {$ENDIF}
 
   Ts := TStringList.Create;
 
@@ -2280,7 +2292,10 @@ Begin
 
   temp := TStringList.Create;
 
+    {$IFDEF LLCL}
+
   MainForm.ProgressBar1.Max := Ts.count;
+  {$ENDIF}
 
   {$IFDEF DELPHI}
 
@@ -2339,10 +2354,12 @@ Begin
     SimulationForm2.UsedInputsList.Items.Add(typeString1);
     SingleSystem.ComboBox1.Items.Add(typeString1);
     SingleSystem.ComboBox2.Items.Add(typeString1);
+      {$IFDEF LLCL1}
     SimulationForm.UsedInputsList.Checked[SimulationForm.UsedInputsList.count -
       1] := true;
     SimulationForm2.UsedInputsList.Checked[SimulationForm2.UsedInputsList.count
       - 1] := true;
+      {$ENDIF}
   end;
 
   for i := 0 to Ts.count - 1 do
@@ -2353,7 +2370,10 @@ Begin
 
     if i Mod 100 = 0 then
     begin
+      {$IFDEF LLCL1}
+
       MainForm.ProgressBar1.Position := i + 100;
+      {$ENDIF}
       Application.ProcessMessages;
     end;
 
@@ -2460,9 +2480,13 @@ begin
 
   MainForm.StatusLabel.Visible := true;
   MainForm.isCancel := false;
+    {$IFDEF LLCL1}
+
   MainForm.ProgressBar1.Position := 0;
   MainForm.ProgressBar1.Max := StrToInt(SimulationForm.OptionsGrid.Cells[1,
     IDX_OPT_REQUESTED_SYSTEMS]);
+  {$ENDIF}
+
   // MainForm.Visible := false;
 
   validResults := 0;
@@ -2512,8 +2536,9 @@ begin
       IntToStr(MainForm.ResultsGrid.RowCount - 1) + '/' +
       SimulationForm.OptionsGrid.Cells[1, IDX_OPT_REQUESTED_SYSTEMS] +
       ' Avg time/sim : ' + FloatToStr(MainForm.simulationTime / 1000);
+        {$IFDEF LLCL1}
     MainForm.ProgressBar1.Position := MainForm.ResultsGrid.RowCount - 1;
-
+   {$ENDIF}
     if (isIndicatorPositiveResult(simulationResults)) then
     begin
 
@@ -2582,8 +2607,10 @@ begin
 
   MainForm.StatusLabel.Visible := true;
   MainForm.isCancel := false;
+{$IFDEF LLCL1}
   MainForm.ProgressBar1.Position := 0;
   MainForm.ProgressBar1.Max := resultQuota;
+   {$ENDIF}
   // MainForm.Visible := false;
   simulationsRan := 0;
   validResults := 0;
@@ -2645,7 +2672,9 @@ begin
         FloatToStr(simulationsRan) + '  runs, valid ' + IntToStr(validResults) +
         '/' + SimulationForm.OptionsGrid.Cells[1, IDX_OPT_REQUESTED_SYSTEMS] +
         ' Avg time/sim : ' + FloatToStr(MainForm.simulationTime / 1000);
+     {$IFDEF LLCL1}
       MainForm.ProgressBar1.Position := validResults;
+      {$ENDIF}
       Application.ProcessMessages;
 
     end;
@@ -2755,11 +2784,13 @@ begin
   getIndicatorStatistics(simulationResultsPortfolio);
   // ShowMessage(FloatToStr(simulationResultsPortfolio.modifiedSharpeRatio));
 
+   {$IFDEF TEECHART}
   MainForm.balanceCurve.Clear;
   MainForm.balanceCurve.Clear;
   MainForm.BalanceCurveFit.Clear;
   MainForm.upperStdDev.Clear;
   MainForm.lowerStdDev.Clear;
+  {$ENDIF}
 
 {$IFDEF DELPHI}
 {$ELSE}
@@ -2840,6 +2871,7 @@ begin
     end;
   end;
 
+   {$IFDEF TEECHART}
   for i := 1 to Length(simulationResultsPortfolio.balanceCurve) - 1 do
   begin
 
@@ -2877,6 +2909,7 @@ begin
     end;
 
   end;
+  {$ENDIF}
 
   PortfolioResultForm.Visible := true;
 

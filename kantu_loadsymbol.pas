@@ -8,13 +8,12 @@ interface
 
 uses
 {$IFDEF DELPHI}
-  Vcl.Grids, Vcl.ExtCtrls,
+  Grids, ExtCtrls,
 {$ELSE}
   ZMConnection, ZMQueryDataSet, FileUtil, DbCtrls, DBGrids, db,
 {$ENDIF}
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, CheckLst,
-  StdCtrls, kantu_definitions, kantu_simulation, kantu_singleSystem, Data.db,
-  Vcl.DBGrids, Vcl.DbCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, //CheckLst,
+  StdCtrls, kantu_definitions, kantu_simulation, kantu_singleSystem;
 
 type
 
@@ -25,7 +24,7 @@ type
     Button2: TButton;
     Button3: TButton;
     OpenDialog1: TOpenDialog;
-    SymbolsList: TCheckListBox;
+    SymbolsList: TListBox;
 
     Label1: TLabel;
 {$IFNDEF DELPHI}

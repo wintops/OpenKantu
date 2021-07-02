@@ -68,7 +68,7 @@ object SimulationForm: TSimulationForm
     Height = 21
     Style = csDropDownList
     ItemIndex = 0
-    TabOrder = 0
+    TabOrder = 8
     Text = 'Balance'
     Items.Strings = (
       'Balance'
@@ -93,9 +93,9 @@ object SimulationForm: TSimulationForm
     Left = 304
     Top = 197
     Width = 183
-    Height = 33
+    Height = 21
     ReadOnly = True
-    TabOrder = 1
+    TabOrder = 9
     Text = '01/01/2009'
     OnClick = EndInSampleEditClick
   end
@@ -103,8 +103,8 @@ object SimulationForm: TSimulationForm
     Left = 304
     Top = 144
     Width = 183
-    Height = 33
-    TabOrder = 2
+    Height = 21
+    TabOrder = 10
     Text = '01/01/1985'
     OnClick = BeginInSampleEditClick
   end
@@ -112,18 +112,19 @@ object SimulationForm: TSimulationForm
     Left = 304
     Top = 253
     Width = 183
-    Height = 33
+    Height = 21
     ReadOnly = True
-    TabOrder = 3
+    TabOrder = 11
     Text = '01/01/2020'
     OnClick = EndOutOfSampleEditClick
   end
-  object UsedInputsList: TCheckListBox
+  object UsedInputsList: TListBox
     Left = 504
     Top = 32
     Width = 120
     Height = 576
-    TabOrder = 4
+    ItemHeight = 13
+    TabOrder = 12
   end
   object Button1: TButton
     Left = 304
@@ -131,76 +132,68 @@ object SimulationForm: TSimulationForm
     Width = 183
     Height = 25
     Caption = 'Show Options'
+    TabOrder = 13
+  end
+  object UseSLCheck: TCheckBox
+    Left = 23
+    Top = 16
+    Width = 144
+    Height = 29
+    Caption = 'Use Stop-Loss'
+    TabOrder = 0
+  end
+  object UseTPCheck: TCheckBox
+    Left = 23
+    Top = 43
+    Width = 150
+    Height = 29
+    Caption = 'Use Take-Profit'
+    TabOrder = 1
+  end
+  object UseHourFilter: TCheckBox
+    Left = 23
+    Top = 127
+    Width = 147
+    Height = 29
+    Caption = 'Use Hour Filter'
+    TabOrder = 2
+  end
+  object UseDayFilter: TCheckBox
+    Left = 23
+    Top = 154
+    Width = 138
+    Height = 29
+    Caption = 'Use Day Filter'
+    TabOrder = 3
+  end
+  object LROriginCheck: TCheckBox
+    Left = 23
+    Top = 192
+    Width = 169
+    Height = 29
+    Caption = 'LR through origin'
+    TabOrder = 4
+  end
+  object UseFixedSLTP: TCheckBox
+    Left = 23
+    Top = 72
+    Width = 154
+    Height = 29
+    Caption = 'Use Fixed SL/TP'
     TabOrder = 5
   end
-  object OptionsPanel: TPanel
-    Left = 312
-    Top = 64
-    Width = 183
-    Height = 512
+  object UseFixedHour: TCheckBox
+    Left = 23
+    Top = 100
+    Width = 150
+    Height = 29
+    Caption = 'Use Fixed Hour'
     TabOrder = 6
-    Visible = False
-    object UseSLCheck: TCheckBox
-      Left = 23
-      Top = 16
-      Width = 144
-      Height = 29
-      Caption = 'Use Stop-Loss'
-      TabOrder = 0
-    end
-    object UseTPCheck: TCheckBox
-      Left = 23
-      Top = 43
-      Width = 150
-      Height = 29
-      Caption = 'Use Take-Profit'
-      TabOrder = 1
-    end
-    object UseHourFilter: TCheckBox
-      Left = 23
-      Top = 127
-      Width = 147
-      Height = 29
-      Caption = 'Use Hour Filter'
-      TabOrder = 2
-    end
-    object UseDayFilter: TCheckBox
-      Left = 23
-      Top = 154
-      Width = 138
-      Height = 29
-      Caption = 'Use Day Filter'
-      TabOrder = 3
-    end
-    object LROriginCheck: TCheckBox
-      Left = 23
-      Top = 192
-      Width = 169
-      Height = 29
-      Caption = 'LR through origin'
-      TabOrder = 4
-    end
-    object UseFixedSLTP: TCheckBox
-      Left = 23
-      Top = 72
-      Width = 154
-      Height = 29
-      Caption = 'Use Fixed SL/TP'
-      TabOrder = 5
-    end
-    object UseFixedHour: TCheckBox
-      Left = 23
-      Top = 100
-      Width = 150
-      Height = 29
-      Caption = 'Use Fixed Hour'
-      TabOrder = 6
-    end
   end
   object OptionsGrid: TStringGrid
     Left = 20
     Top = 8
-    Width = 292
+    Width = 261
     Height = 600
     ColCount = 2
     RowCount = 15

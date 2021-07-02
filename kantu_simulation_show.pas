@@ -1,11 +1,8 @@
 unit kantu_simulation_show;
-
 {$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
 {$ENDIF}
-
 interface
-
 uses
 {$IFDEF DELPHI}
 
@@ -13,12 +10,9 @@ uses
   FileUtil,
 {$ENDIF}
   Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Grids, ExtDlgs, CheckLst, kantu_simulation, kantu_definitions;
-
+  StdCtrls, Grids, ExtDlgs,  kantu_simulation, kantu_definitions;
 type
-
   { TSimulationForm2 }
-
   TSimulationForm2 = class(TForm)
     BeginInSampleCalendar: TCalendarDialog;
     BeginInSampleEdit: TEdit;
@@ -26,9 +20,8 @@ type
     LROriginCheck: TCheckBox;
     Label3: TLabel;
     OptionsGrid: TStringGrid;
-    OptionsPanel: TPanel;
     UseDayFilter: TCheckBox;
-    UsedInputsList: TCheckListBox;
+    UsedInputsList: TListBox;
     EndInSampleCalendar: TCalendarDialog;
     EndInSampleEdit: TEdit;
     EndOutOfSampleCalendar: TCalendarDialog;
@@ -44,7 +37,6 @@ type
     UseSLCheck: TCheckBox;
     UseTPCheck: TCheckBox;
     procedure BeginInSampleCalendarDayChanged(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure UsedInputsListClickCheck(Sender: TObject);
     procedure UseFixedHourChange(Sender: TObject);
     procedure UseFixedSLTPChange(Sender: TObject);
@@ -65,22 +57,16 @@ type
   public
     { public declarations }
   end;
-
 var
   SimulationForm2: TSimulationForm2;
-
 implementation
-
 uses kantu_indicators, kantu_main;
-
 {$IFDEF DELPHI}
 {$R *.dfm}
 {$ELSE}
 {$R *.lfm}
 {$ENDIF}
-
 { TSimulationForm2 }
-
 procedure TSimulationForm2.EndInSampleEditClick(Sender: TObject);
 var
   date: TDateTime;
@@ -104,7 +90,6 @@ begin
   end;
   {$ENDIF}
 
-
  {$IFNDEF DARWIN}
  if EndInSampleCalendar.Execute then  begin
     EndInSampleEdit.Text := DateTimeToStr(EndInSampleCalendar.Date);
@@ -112,9 +97,7 @@ begin
  end;
  {$ENDIF}
 
-
 end;
-
 procedure TSimulationForm2.EndOutOfSampleEditClick(Sender: TObject);
 var
   date: TDateTime;
@@ -126,7 +109,6 @@ begin
   DefaultFormatSettings.DateSeparator 	         := '/' ;
   DefaultFormatSettings.DecimalSeparator 	 := '.' ;
 {$ENDIF}
-
 
   {$IFDEF DARWIN}
   try
@@ -140,22 +122,18 @@ begin
   end;
   {$ENDIF}
 
-
  {$IFNDEF DARWIN}
  if EndOutOfSampleCalendar.Execute then  begin
     EndOutOfSampleEdit.Text := DateTimeToStr(EndOutOfSampleCalendar.Date);
     SimulationForm.EndOutOfSampleCalendar.Date := SimulationForm2.EndOutOfSampleCalendar.Date;
  end;
  {$ENDIF}
-
   if (EndOutOfSampleCalendar.Date < EndInSampleCalendar.Date) then
   begin
   EndOutOfSampleCalendar.Date := Now;
   SimulationForm.EndOutOfSampleCalendar.Date := SimulationForm2.EndOutOfSampleCalendar.Date;
   end;
-
 end;
-
 procedure TSimulationForm2.BeginInSampleEditClick(Sender: TObject);
 var
   date: TDateTime;
@@ -166,15 +144,11 @@ begin
      DefaultFormatSettings.ShortDateFormat 	 := 'dd/mm/yyyy' ;
   DefaultFormatSettings.DateSeparator 	         := '/' ;
   DefaultFormatSettings.DecimalSeparator 	 := '.' ;
-
 {$ENDIF}
-
 
   {$IFDEF DARWIN}
   try
-
   UserString := InputBox('Enter date in dd/mm/yyyy format', 'Type date', DateTimeToStr(SimulationForm2.BeginInSampleCalendar.Date)  )  ;
-
 
   date := StrToDateTime(userString)  ;
   SimulationForm.BeginInSampleCalendar.Date := date;
@@ -185,107 +159,76 @@ begin
   end;
   {$ENDIF}
 
-
  {$IFNDEF DARWIN}
  if BeginInSampleCalendar.Execute then  begin
     BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.Date);
     SimulationForm.BeginInSampleCalendar.Date := SimulationForm2.BeginInSampleCalendar.Date;
  end;
  {$ENDIF}
-
 end;
-
 procedure TSimulationForm2.OptionsGridEditingDone(Sender: TObject);
 var
   i:integer;
 begin
-
   for i := 1 to SimulationForm2.OptionsGrid.RowCount-1 do
    begin
    SimulationForm.OptionsGrid.Cells[1,i] := SimulationForm2.OptionsGrid.Cells[1,i];
    end;
-
 end;
-
 procedure TSimulationForm2.OptTargetComboBoxChange(Sender: TObject);
 begin
      SimulationForm.OptTargetComboBox.ItemIndex := SimulationForm2.OptTargetComboBox.ItemIndex;
 end;
 
-
 procedure TSimulationForm2.EndOutOfSampleCalendarDayChanged(Sender: TObject);
 begin
     SimulationForm.EndOutOfSampleCalendar.Date := SimulationForm2.EndOutOfSampleCalendar.Date;
 end;
-
 procedure TSimulationForm2.EndInSampleCalendarDayChanged(Sender: TObject);
 begin
   SimulationForm.EndInSampleCalendar.Date := SimulationForm2.EndInSampleCalendar.Date;
 end;
-
 procedure TSimulationForm2.BeginInSampleCalendarDayChanged(Sender: TObject);
 begin
   SimulationForm.BeginInSampleCalendar.Date := SimulationForm2.BeginInSampleCalendar.Date;
   BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.Date);
 end;
-
-procedure TSimulationForm2.Button1Click(Sender: TObject);
-begin
-     if OptionsPanel.Visible = false then
-        begin
-            OptionsPanel.Visible := true  ;
-            Button1.Caption := 'Hide Options' ;
-        end else begin
-            OptionsPanel.Visible := false;
-            Button1.Caption := 'Show Options' ;
-        end;
-end;
-
-
 procedure TSimulationForm2.UsedInputsListClickCheck(Sender: TObject);
 var
   i: integer;
 begin
+  {$IFDEF LLCL1}
   for i := 0 to SimulationForm.UsedInputsList.Count-1 do
    SimulationForm.UsedInputsList.Checked[i] := SimulationForm2.UsedInputsList.Checked[i];
+   {$ENDIF}
 end;
-
 procedure TSimulationForm2.UseFixedHourChange(Sender: TObject);
 begin
      SimulationForm.UseFixedHour.Checked := SimulationForm2.UseFixedHour.Checked
 end;
-
 procedure TSimulationForm2.UseFixedSLTPChange(Sender: TObject);
 begin
     SimulationForm.UseFixedSLTP.Checked := SimulationForm2.UseFixedSLTP.Checked
 end;
-
 procedure TSimulationForm2.LROriginCheckChange(Sender: TObject);
 begin
     SimulationForm.LROriginCheck.Checked := SimulationForm2.LROriginCheck.Checked;
 end;
-
 procedure TSimulationForm2.UseDayFilterChange(Sender: TObject);
 begin
     SimulationForm.UseDayFilter.Checked := SimulationForm2.UseDayFilter.Checked;
 end;
-
 procedure TSimulationForm2.UseHourFilterChange(Sender: TObject);
 begin
    SimulationForm.UseHourFilter.Checked := SimulationForm2.UseHourFilter.Checked;
 end;
-
 procedure TSimulationForm2.UseSLCheckChange(Sender: TObject);
 begin
     SimulationForm.UseSLCheck.Checked := SimulationForm2.UseSLCheck.Checked;
 end;
 
-
 procedure TSimulationForm2.UseTPCheckChange(Sender: TObject);
 begin
-
   SimulationForm.UseTPCheck.Checked := SimulationForm2.UseTPCheck.Checked;
 end;
-
 end.
-

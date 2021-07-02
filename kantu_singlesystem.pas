@@ -49,7 +49,7 @@ type
 var
   SingleSystem: TSingleSystem;
 implementation
-uses kantu_main;
+uses kantu_main,kantu_utils;
 {$IFDEF DELPHI}
 {$R *.dfm}
 {$ELSE}
@@ -133,9 +133,9 @@ var
   selectedForDelete: integer;
   patternTempCopy: TIndicatorPattern;
 begin
-     for i:= 0 to RulesList.Count-1 do
+     for i:= 0 to RulesList.items.Count-1 do
      begin
-       if RulesList.Selected[i] then
+     if RulesList.ItemIndex=i then     //! if RulesList.Selected[i] then
        selectedForDelete := i;
      end;
 
@@ -165,7 +165,7 @@ begin
           patternToUse.tradingRules[i][IDX_SECOND_INDICATOR] := patternTempCopy.tradingRules[i][IDX_SECOND_INDICATOR];
      end;
 
-     RulesList.Items.Delete(selectedForDelete);
+     //! RulesList.Items.Delete(selectedForDelete);
 
 end;
 
