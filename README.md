@@ -1,7 +1,9 @@
-OpenKantu 2022
+Kantu 2022
 =========
 Algo Trading System for Delphi and FPC
 
+ UI for Web / Mobile / Native
+ 
 More detail see [Wiki](https://github.com/wintops/OpenKantu-2022/wiki)
 
 OpenKantu
