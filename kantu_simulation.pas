@@ -15,15 +15,15 @@ uses
   Buttons;
 
 type
- TGridDrawState=integer;
+  TGridDrawState = integer;
 
 {$IFDEF DELPHI}
-TCalendarDialog=class(TOpenDialog)
-public
-  Date:TDateTime;
-end;
- {$ENDIF}
 
+  TCalendarDialog = class(TOpenDialog)
+  public
+    Date: TDateTime;
+  end;
+{$ENDIF}
   { TSimulationForm }
 
   TSimulationForm = class(TForm)
@@ -54,8 +54,9 @@ end;
     procedure BeginInSampleEditClick(Sender: TObject);
     procedure EndInSampleEditClick(Sender: TObject);
     procedure EndOutOfSampleEditClick(Sender: TObject);
-    procedure OptionsGridPrepareCanvas(Sender: TObject; aCol, aRow: Integer;
+    procedure OptionsGridPrepareCanvas(Sender: TObject; aCol, aRow: integer;
       aState: TGridDrawState);
+    procedure FormCreate(Sender: TObject);
 
   private
     { private declarations }
@@ -75,8 +76,6 @@ uses kantu_main;
 {$ELSE}
 {$R *.lfm}
 {$ENDIF}
-
-
 
 procedure TSimulationForm.EndInSampleEditClick(Sender: TObject);
 begin
@@ -99,8 +98,19 @@ begin
 
 end;
 
+procedure TSimulationForm.FormCreate(Sender: TObject);
+begin
+{$IFDEF DELPHI}
+  BeginInSampleCalendar := TCalendarDialog.Create(Self);
+
+  EndInSampleCalendar := TCalendarDialog(Self);
+
+  EndOutOfSampleCalendar := TCalendarDialog(Self);
+{$ENDIF}
+end;
+
 procedure TSimulationForm.OptionsGridPrepareCanvas(Sender: TObject;
-  aCol, aRow: Integer; aState: TGridDrawState);
+  aCol, aRow: integer; aState: TGridDrawState);
 begin
   If (aRow = 1) or (aRow = 6) or (aRow = 10) or (aRow = 14) or (aRow = 16) then
     OptionsGrid.Canvas.Brush.Color := clLtGray;

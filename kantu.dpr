@@ -16,11 +16,11 @@ uses
   kantu_simulation in 'kantu_simulation.pas' {SimulationForm} ,
   kantu_simulation_show in 'kantu_simulation_show.pas' {SimulationForm2} ,
   kantu_singlesystem in 'kantu_singlesystem.pas' {SingleSystem} ,
-  kantu_init in 'kantu_init.pas',
   kantu_definitions in 'kantu_definitions.pas',
   kantu_indicators in 'kantu_indicators.pas',
   kantu_multithreading in 'kantu_multithreading.pas',
-  kantu_utils in 'kantu_utils.pas';
+  kantu_utils in 'kantu_utils.pas',
+  kantu_init in 'kantu_init.pas';
 
 {$R *.res}
 

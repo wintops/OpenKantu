@@ -34,18 +34,18 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
-  {$IFDEF TEECHART}
+{$IFDEF TEECHART}
     BalanceCurve: TLineSeries;
     BalanceCurveFit: TLineSeries;
     BalanceCurveFitPortfolio: TLineSeries;
     BalanceCurvePortfolio: TLineSeries;
-        Chart1: TChart;
+    Chart1: TChart;
     Chart2: TChart;
     ChartOHLC: TChart;
     GraphOpenTrades: TBubbleSeries;
     GraphCloseTrades: TBubbleSeries;
 
-    {$ENDIF}
+{$ENDIF}
     Button1: TButton;
     Button2: TButton;
 
@@ -177,9 +177,9 @@ type
     selectedSystem: Integer;
     selectedSymbol: Integer;
     totalSystems: double;
-      {$IFDEF TEECHART}
+{$IFDEF TEECHART}
     tradeLines: array of TLineSeries;
-    {$ENDIF}
+{$ENDIF}
     function CheckBeforeSimulation: boolean;
     function isDataLoaded: boolean;
     procedure ExportToMQL4;
@@ -221,7 +221,8 @@ begin
     exit;
 
 {$IFDEF DELPHI}
-{$ELSE}
+  DefaultFormatSettings := FormatSettings;
+{$ENDIF}
   DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.DecimalSeparator := '.';
@@ -232,6 +233,8 @@ begin
   configFile := TStringList.Create;
 
   configFile.LoadFromFile('config.ini');
+  if configFile.Count < 110 then
+    exit;
 
   for i := 1 to SimulationForm2.OptionsGrid.RowCount - 1 do
   begin
@@ -268,42 +271,47 @@ begin
   SimulationForm.EndOutOfSampleCalendar.Date := StrToDateTime(configFile[j]);
   SimulationForm.EndOutOfSampleEdit.Text := configFile[j];
   j := j + 1;
-  SimulationForm2.OptTargetComboBox.ItemIndex := StrToInt(configFile[j]);
-  SimulationForm.OptTargetComboBox.ItemIndex := StrToInt(configFile[j]);
+  SimulationForm2.OptTargetComboBox.ItemIndex := StrToIntDef(configFile[j], 0);
+  SimulationForm.OptTargetComboBox.ItemIndex := StrToIntDef(configFile[j], 0);
   j := j + 1;
-  SimulationForm2.UseSLCheck.Checked := StrToBool(configFile[j]);
-  SimulationForm.UseSLCheck.Checked := StrToBool(configFile[j]);
+  SimulationForm2.UseSLCheck.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.UseSLCheck.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
-  SimulationForm2.UseTPCheck.Checked := StrToBool(configFile[j]);
-  SimulationForm.UseTPCheck.Checked := StrToBool(configFile[j]);
+  SimulationForm2.UseTPCheck.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.UseTPCheck.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
-  SimulationForm2.UseHourFilter.Checked := StrToBool(configFile[j]);
-  SimulationForm.UseHourFilter.Checked := StrToBool(configFile[j]);
+  SimulationForm2.UseHourFilter.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.UseHourFilter.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
-  SimulationForm2.UseDayFilter.Checked := StrToBool(configFile[j]);
-  SimulationForm.UseDayFilter.Checked := StrToBool(configFile[j]);
+  SimulationForm2.UseDayFilter.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.UseDayFilter.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
-  SimulationForm2.LROriginCheck.Checked := StrToBool(configFile[j]);
-  SimulationForm.LROriginCheck.Checked := StrToBool(configFile[j]);
+  SimulationForm2.LROriginCheck.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.LROriginCheck.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
-  SimulationForm2.UseFixedSLTP.Checked := StrToBool(configFile[j]);
-  SimulationForm.UseFixedSLTP.Checked := StrToBool(configFile[j]);
+  SimulationForm2.UseFixedSLTP.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.UseFixedSLTP.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
-  SimulationForm2.UseFixedHour.Checked := StrToBool(configFile[j]);
-  SimulationForm.UseFixedHour.Checked := StrToBool(configFile[j]);
+  SimulationForm2.UseFixedHour.Checked := StrToBoolDef(configFile[j], False);
+  SimulationForm.UseFixedHour.Checked := StrToBoolDef(configFile[j], False);
   j := j + 1;
 
   for i := 0 to ResultsGrid.ColCount - 1 do
   begin
-    ResultsGrid.Columns.Items[i].Visible := StrToBool(configFile[j]);
+{$IFDEF DELPHI}
+    // ResultsGrid.Cols[i]
+{$ELSE}
+    ResultsGrid.Columns.Items[i].Visible := StrToBoolDef(configFile[j], False);
+{$ENDIF}
     j := j + 1;
   end;
 
-  FiltersForm.isLastYearProfitCheck.Checked := StrToBool(configFile[j]);
+  FiltersForm.isLastYearProfitCheck.Checked :=
+    StrToBoolDef(configFile[j], False);
   j := j + 1;
 
   configFile.Free;
-{$ENDIF}
+
 end;
 
 procedure TMainForm.ParseDelimited(const sl: TStrings; const value: string;
@@ -332,11 +340,27 @@ begin
 end;
 
 procedure TMainForm.MenuItem4Click(Sender: TObject);
+var
+  Items, rows: TStringList;
+  i: Integer;
 begin
 
   loadSymbol.SymbolsList.Clear;
 
 {$IFDEF DELPHI}
+  Items := TStringList.Create;
+  rows := TStringList.Create;
+  Items.LoadFromFile('symbols\symbols.csv');
+  for i := 1 to Items.Count - 1 do
+  begin
+    rows.CommaText := Items[i];
+    if rows.Count > 1 then
+
+      loadSymbol.SymbolsList.Items.Add(rows[0]);
+  end;
+
+  Items.Free;
+  rows.Free;
 {$ELSE}
   loadSymbol.Datasource1.Enabled := False; // Manual refresh of linked DBGrid
   loadSymbol.Datasource1.Enabled := True;
@@ -413,10 +437,9 @@ begin
     GraphOHLC_Down.Active := False;
   end;
 {$ENDIF}
- {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   ChartOHLC.Repaint;
-  {$ENDIF}
-
+{$ENDIF}
 end;
 
 function TMainForm.findSymbol(symbolString: string): Integer;
@@ -1046,9 +1069,9 @@ end;
 
 procedure TMainForm.Button2Click(Sender: TObject);
 begin
- {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   ChartOHLC.Visible := False;
-  {$ENDIF}
+{$ENDIF}
   Button2.Visible := False;
   LabelCheck.Visible := False;
   ohlcCheck.Visible := False;
@@ -1113,12 +1136,12 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
- // MainForm.Enabled := False;
+  // MainForm.Enabled := False;
 end;
 
 procedure TMainForm.LabelCheckChange(Sender: TObject);
 begin
- {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   if LabelCheck.Checked then
   begin
     GraphOpenTrades.Marks.Visible := True;
@@ -1130,7 +1153,7 @@ begin
     GraphOpenTrades.Marks.Visible := False;
     GraphCloseTrades.Marks.Visible := False;
   end;
-  {$ENDIF}
+{$ENDIF}
 end;
 
 procedure TMainForm.MenuItem11Click(Sender: TObject);
@@ -1235,10 +1258,10 @@ end;
 
 procedure TMainForm.MenuItem27Click(Sender: TObject);
 begin
- {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   if SaveDialog1.Execute then
     Chart1.SaveToBitmapFile(SaveDialog1.FileName);
-    {$ENDIF}
+{$ENDIF}
 end;
 
 procedure TMainForm.MenuItem28Click(Sender: TObject);

@@ -3,7 +3,7 @@ unit kantu_init;
 interface
 
 uses SysUtils, Classes, Forms,
-  kantu_main;
+   kantu_definitions,kantu_main;
 
 procedure init;
 
@@ -11,7 +11,7 @@ implementation
 
 procedure assignMainCaption();
 begin
-  MainForm.Caption := 'OpenKantu 2022';
+  MainForm.Caption := KANTU_NAME;
 end;
 
 function slash(value: string): string;
@@ -38,8 +38,10 @@ begin
 end;
 
 procedure setMainFolder;
+{$IFDEF DARWIN}
 var
   authenticationLoad: TStringList;
+{$ENDIF}
 begin
 
   MainForm.mainProgramFolder := GetCurrentDir;
@@ -58,14 +60,8 @@ begin
   Randomize;
   // CheckValidity();
   assignMainCaption;
-{$IFDEF DELPHI}
-{$ELSE}
-  // set proper formatting
-  DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
-  DefaultFormatSettings.DateSeparator := '.';
-  DefaultFormatSettings.DecimalSeparator := '.';
 
-{$ENDIF}
+
   MainForm.Enabled := true;
   setMainFolder;
   MainForm.parseConfig;

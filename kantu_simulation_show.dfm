@@ -14,6 +14,7 @@ object SimulationForm2: TSimulationForm2
   FormStyle = fsStayOnTop
   OldCreateOrder = True
   Position = poMainFormCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Label15: TLabel

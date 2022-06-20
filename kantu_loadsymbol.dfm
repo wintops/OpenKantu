@@ -31,7 +31,7 @@ object loadSymbol: TloadSymbol
   end
   object SymbolsList: TListBox
     Left = 24
-    Top = 40
+    Top = 36
     Width = 184
     Height = 336
     Font.Charset = DEFAULT_CHARSET
@@ -72,11 +72,11 @@ object loadSymbol: TloadSymbol
     TabOrder = 2
   end
   object Button3: TButton
-    Left = 432
-    Top = 384
+    Left = 434
+    Top = 387
     Width = 120
     Height = 25
-    Caption = 'Load Inputs'
+    Caption = 'Load '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -84,6 +84,7 @@ object loadSymbol: TloadSymbol
     Font.Style = []
     ParentFont = False
     TabOrder = 3
+    OnClick = Button3Click
   end
   object OpenDialog1: TOpenDialog
     Left = 243

@@ -27,6 +27,7 @@ type
     SymbolsList: TListBox;
 
     Label1: TLabel;
+    procedure Button3Click(Sender: TObject);
 {$IFNDEF DELPHI}
     Datasource1: TDatasource;
     SymbolsGrid: TDBGrid;
@@ -35,15 +36,15 @@ type
     ZMQueryDataSet1: TZMQueryDataSet;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
+
 {$ENDIF}
   private
     { private declarations }
   public
     { public declarations }
-{$IFNDEF DELPHI}
+
     procedure updateIndicatorLoadedSymbols;
-{$ENDIF}
+
   end;
 
 var
@@ -60,7 +61,7 @@ implementation
 { TloadSymbol }
 uses kantu_main, kantu_indicators;
 
-{$IFNDEF DELPHI}
+
 
 procedure TloadSymbol.updateIndicatorLoadedSymbols;
 var
@@ -69,7 +70,7 @@ begin
 
   LoadedIndiHistoryData := nil;
   SingleSystem.SymbolsCombo.Clear;
-
+  {$IFNDEF DELPHI}
   for i := 0 to SymbolsList.Count - 1 do
   begin
 
@@ -104,8 +105,11 @@ begin
   loadSymbol.ZMQueryDataSet1.SQL.Clear;
   loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
   loadSymbol.ZMQueryDataSet1.QueryExecute;
-
+  {$ENDIF}
 end;
+
+
+{$IFNDEF DELPHI}
 
 procedure TloadSymbol.Button1Click(Sender: TObject);
 begin
@@ -217,6 +221,8 @@ begin
 
 end;
 
+{$ENDIF}
+
 procedure TloadSymbol.Button3Click(Sender: TObject);
 begin
 
@@ -227,6 +233,8 @@ begin
 
 end;
 
-{$ENDIF}
+
+
+
 
 end.

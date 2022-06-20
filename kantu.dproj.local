@@ -11,7 +11,7 @@
     <Transaction>2021/07/01 21:18:26.000.083,=C:\ATS\OpenKantu-master\kantu_simulation_show.pas</Transaction>
     <Transaction>2021/07/01 21:19:22.000.351,=C:\ATS\OpenKantu-master\kantu_singlesystem.pas</Transaction>
     <Transaction>2021/07/01 21:41:41.000.004,=C:\ATS\OpenKantu-master\Unit1.pas</Transaction>
-    <Transaction>2021/07/01 21:42:12.000.914,C:\ATS\OpenKantu-master\Unit1.pas=C:\ATS\OpenKantu-master\kantu_init.pas</Transaction>
+    <Transaction>2021/07/01 21:42:12.000.914,C:\ATS\OpenKantu-master\kantu_init.pas=C:\ATS\OpenKantu-master\Unit1.pas</Transaction>
     <Transaction>2021/07/01 21:48:07.000.300,=C:\ATS\OpenKantu-master\kantu_definitions.pas</Transaction>
     <Transaction>2021/07/01 21:48:22.000.005,=C:\ATS\OpenKantu-master\kantu_multithreading.pas</Transaction>
     <Transaction>2021/07/01 21:48:28.000.429,=C:\ATS\OpenKantu-master\kantu_indicators.pas</Transaction>
