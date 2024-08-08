@@ -1,4 +1,4 @@
-Kantu 2022
+Kantu 2024
 =========
 Algo Trading System for Delphi and FPC
 
