@@ -7,6 +7,7 @@ interface
 
 uses
 {$IFDEF DELPHI}
+ Vcl.ComCtrls,
 {$ELSE}
   FileUtil,
 {$ENDIF}
@@ -16,18 +17,16 @@ uses
 type
   { TSimulationForm2 }
   TSimulationForm2 = class(TForm)
-    BeginInSampleCalendar: TCalendarDialog;
-    BeginInSampleEdit: TEdit;
+      BeginInSampleCalendar: TDateTimePicker;
+
+    EndInSampleCalendar: TDateTimePicker;
+    EndOutOfSampleCalendar: TDateTimePicker;
     Button1: TButton;
     LROriginCheck: TCheckBox;
     Label3: TLabel;
     OptionsGrid: TStringGrid;
     UseDayFilter: TCheckBox;
     UsedInputsList: TListBox;
-    EndInSampleCalendar: TCalendarDialog;
-    EndInSampleEdit: TEdit;
-    EndOutOfSampleCalendar: TCalendarDialog;
-    EndOutOfSampleEdit: TEdit;
     Label1: TLabel;
     Label15: TLabel;
     Label16: TLabel;
@@ -79,19 +78,23 @@ var
   date: TDateTime;
   userString: string;
 begin
+
+
 {$IFDEF DELPHI}
 {$ELSE}
+
+{$ENDIF}
+{$IFDEF DARWIN}
+
   DefaultFormatSettings.ShortDateFormat := 'dd/mm/yyyy';
   DefaultFormatSettings.DateSeparator := '/';
   DefaultFormatSettings.DecimalSeparator := '.';
-{$ENDIF}
-{$IFDEF DARWIN}
   try
     userString := InputBox('Enter date in dd/mm/yyyy format', 'Type date',
       DateTimeToStr(SimulationForm2.EndInSampleCalendar.date));
     date := StrToDateTime(userString);
     SimulationForm.EndInSampleCalendar.date := date;
-    EndInSampleEdit.Text := DateTimeToStr(date);
+    //EndInSampleEdit.Text := DateTimeToStr(date);
     SimulationForm2.EndInSampleCalendar.date :=
       SimulationForm.EndInSampleCalendar.date;
   Except
@@ -100,12 +103,16 @@ begin
   end;
 {$ENDIF}
 {$IFNDEF DARWIN}
+{$IFNDEF DELPHI}
   if EndInSampleCalendar.Execute then
   begin
     EndInSampleEdit.Text := DateTimeToStr(EndInSampleCalendar.date);
-    SimulationForm.EndInSampleCalendar.date :=
-      SimulationForm2.EndInSampleCalendar.date;
+ {$ENDIF}
+    SimulationForm.EndInSampleCalendar.date :=     SimulationForm2.EndInSampleCalendar.date;
+
+{$IFNDEF DELPHI}
   end;
+ {$ENDIF}
 {$ENDIF}
 end;
 
@@ -114,19 +121,22 @@ var
   date: TDateTime;
   userString: string;
 begin
+
+
 {$IFDEF DELPHI}
 {$ELSE}
+
+{$ENDIF}
+{$IFDEF DARWIN}
   DefaultFormatSettings.ShortDateFormat := 'dd/mm/yyyy';
   DefaultFormatSettings.DateSeparator := '/';
   DefaultFormatSettings.DecimalSeparator := '.';
-{$ENDIF}
-{$IFDEF DARWIN}
   try
     userString := InputBox('Enter date in dd/mm/yyyy format', 'Type date',
       DateTimeToStr(SimulationForm2.EndOutOfSampleCalendar.date));
     date := StrToDateTime(userString);
     SimulationForm.EndOutOfSampleCalendar.date := date;
-    EndOutOfSampleEdit.Text := DateTimeToStr(date);
+  //  EndOutOfSampleEdit.Text := DateTimeToStr(date);
     SimulationForm2.EndOutOfSampleCalendar.date :=
       SimulationForm.EndOutOfSampleCalendar.date;
   Except
@@ -135,9 +145,9 @@ begin
   end;
 {$ENDIF}
 {$IFNDEF DARWIN}
-  if EndOutOfSampleCalendar.Execute then
+//  if EndOutOfSampleCalendar.Execute then
   begin
-    EndOutOfSampleEdit.Text := DateTimeToStr(EndOutOfSampleCalendar.date);
+  //  EndOutOfSampleEdit.Text := DateTimeToStr(EndOutOfSampleCalendar.date);
     SimulationForm.EndOutOfSampleCalendar.date :=
       SimulationForm2.EndOutOfSampleCalendar.date;
   end;
@@ -153,11 +163,7 @@ end;
 procedure TSimulationForm2.FormCreate(Sender: TObject);
 begin
 {$IFDEF DELPHI}
-  BeginInSampleCalendar := TCalendarDialog.Create(Self);
 
-  EndInSampleCalendar := TCalendarDialog(Self);
-
-  EndOutOfSampleCalendar := TCalendarDialog(Self);
 {$ENDIF}
 end;
 
@@ -166,31 +172,36 @@ var
   date: TDateTime;
   userString: string;
 begin
+
+
 {$IFDEF DELPHI}
 {$ELSE}
+
+{$ENDIF}
+{$IFDEF DARWIN}
+
   DefaultFormatSettings.ShortDateFormat := 'dd/mm/yyyy';
   DefaultFormatSettings.DateSeparator := '/';
   DefaultFormatSettings.DecimalSeparator := '.';
-{$ENDIF}
-{$IFDEF DARWIN}
+
   try
     userString := InputBox('Enter date in dd/mm/yyyy format', 'Type date',
       DateTimeToStr(SimulationForm2.BeginInSampleCalendar.date));
 
     date := StrToDateTime(userString);
     SimulationForm.BeginInSampleCalendar.date := date;
-    BeginInSampleEdit.Text := DateTimeToStr(date);
+   // BeginInSampleEdit.Text := DateTimeToStr(date);
     SimulationForm2.BeginInSampleCalendar.date :=
       SimulationForm.BeginInSampleCalendar.date;
   Except
     on Exception do
       ShowMessage('Invalid Date format, please enter a valid date.');
   end;
-{$ENDIF}
+ {$ENDIF}
 {$IFNDEF DARWIN}
-  if BeginInSampleCalendar.Execute then
+ // if BeginInSampleCalendar.Execute then
   begin
-    BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.date);
+   // BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.date);
     SimulationForm.BeginInSampleCalendar.date :=
       SimulationForm2.BeginInSampleCalendar.date;
   end;
@@ -230,7 +241,7 @@ procedure TSimulationForm2.BeginInSampleCalendarDayChanged(Sender: TObject);
 begin
   SimulationForm.BeginInSampleCalendar.date :=
     SimulationForm2.BeginInSampleCalendar.date;
-  BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.date);
+ // BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.date);
 end;
 
 procedure TSimulationForm2.UsedInputsListClickCheck(Sender: TObject);

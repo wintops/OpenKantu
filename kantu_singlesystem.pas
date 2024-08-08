@@ -49,7 +49,8 @@ type
 var
   SingleSystem: TSingleSystem;
 implementation
-uses kantu_main,kantu_utils;
+uses kantu_main, ktCode,ktUtils;
+
 {$IFDEF DELPHI}
 {$R *.dfm}
 {$ELSE}
@@ -81,8 +82,11 @@ begin
 end;
 procedure TSingleSystem.Button3Click(Sender: TObject);
 begin
-  if MainForm.isDataLoaded = false then
-  Exit;
+  if isDataLoaded = false then
+  begin
+  ShowMessage('Please load data before running a simulation.');
+    exit;
+  end;
   patternToUse.allowLongSignals:= true;
   patternToUse.allowShortSignals:= true;
   if SymbolsCombo.ItemIndex < 0 then
@@ -119,7 +123,9 @@ begin
   closingPatternToUse.dayFilter := StrToInt(EditDayFilter.Text) ;
   end else
   SimulationForm.UseDayFilter.Checked  := false;
+
   runSingleSystem(SymbolsCombo.ItemIndex, patternToUse, closingPatternToUse);
+
 end;
 procedure TSingleSystem.Button4Click(Sender: TObject);
 var

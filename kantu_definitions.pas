@@ -383,10 +383,12 @@ const
 
   // program version
 
-  KANTU_VERSION = '3.2022.5';
-  KANTU_NAME='OpenKantu 2022';
+  KANTU_VERSION = '2024.1.8';
+  KANTU_NAME='OpenKantu 2024';
 
 {$IFDEF DELPHI}
+const
+OptionNames:array of string=   ['Number of rules','Max Shift','Shift variation step','StopLoss (if fixed)','TakeProfit (if fixed)','TrailingStop (if fixed)','Hour (if fixed)','SL/TP/TL Shift variation Step','Max SL/TP/TL ','Number of Cores','Bars used for ME analysis','Number of requested systems','Value'];
 
 var
   DefaultFormatSettings: TFormatSettings;

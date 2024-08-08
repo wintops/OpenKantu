@@ -7,7 +7,9 @@ unit kantu_simulation;
 interface
 
 uses
-{$IFNDEF DELPHI}
+{$IFDEF DELPHI}
+Vcl.ComCtrls,
+ {$ELSE}
   FileUtil,
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
@@ -19,21 +21,19 @@ type
 
 {$IFDEF DELPHI}
 
-  TCalendarDialog = class(TOpenDialog)
-  public
-    Date: TDateTime;
-  end;
+
+//  TCalendarDialog = class(TOpenDialog)
+//  public
+//    Date: TDateTime;
+//  end;
 {$ENDIF}
   { TSimulationForm }
 
   TSimulationForm = class(TForm)
-    BeginInSampleCalendar: TCalendarDialog;
-    BeginInSampleEdit: TEdit;
+    BeginInSampleCalendar: TDateTimePicker;
     Button1: TButton;
-    EndInSampleCalendar: TCalendarDialog;
-    EndInSampleEdit: TEdit;
-    EndOutOfSampleCalendar: TCalendarDialog;
-    EndOutOfSampleEdit: TEdit;
+    EndInSampleCalendar: TDateTimePicker;
+    EndOutOfSampleCalendar: TDateTimePicker;
     Label1: TLabel;
     Label15: TLabel;
     Label16: TLabel;
@@ -50,10 +50,12 @@ type
     UseHourFilter: TCheckBox;
     UseSLCheck: TCheckBox;
     UseTPCheck: TCheckBox;
+    {$IFNDEF DELPHI}
     procedure BeginInSampleCalendarDayChanged(Sender: TObject);
     procedure BeginInSampleEditClick(Sender: TObject);
     procedure EndInSampleEditClick(Sender: TObject);
     procedure EndOutOfSampleEditClick(Sender: TObject);
+  {$ENDIF}
     procedure OptionsGridPrepareCanvas(Sender: TObject; aCol, aRow: integer;
       aState: TGridDrawState);
     procedure FormCreate(Sender: TObject);
@@ -77,6 +79,24 @@ uses kantu_main;
 {$R *.lfm}
 {$ENDIF}
 
+
+
+procedure TSimulationForm.FormCreate(Sender: TObject);
+begin
+{$IFDEF DELPHI}
+
+{$ENDIF}
+end;
+
+procedure TSimulationForm.OptionsGridPrepareCanvas(Sender: TObject;
+  aCol, aRow: integer; aState: TGridDrawState);
+begin
+  If (aRow = 1) or (aRow = 6) or (aRow = 10) or (aRow = 14) or (aRow = 16) then
+    OptionsGrid.Canvas.Brush.Color := clLtGray;
+end;
+
+{$IFNDEF DELPHI}
+
 procedure TSimulationForm.EndInSampleEditClick(Sender: TObject);
 begin
 
@@ -98,24 +118,6 @@ begin
 
 end;
 
-procedure TSimulationForm.FormCreate(Sender: TObject);
-begin
-{$IFDEF DELPHI}
-  BeginInSampleCalendar := TCalendarDialog.Create(Self);
-
-  EndInSampleCalendar := TCalendarDialog(Self);
-
-  EndOutOfSampleCalendar := TCalendarDialog(Self);
-{$ENDIF}
-end;
-
-procedure TSimulationForm.OptionsGridPrepareCanvas(Sender: TObject;
-  aCol, aRow: integer; aState: TGridDrawState);
-begin
-  If (aRow = 1) or (aRow = 6) or (aRow = 10) or (aRow = 14) or (aRow = 16) then
-    OptionsGrid.Canvas.Brush.Color := clLtGray;
-end;
-
 procedure TSimulationForm.BeginInSampleCalendarDayChanged(Sender: TObject);
 begin
   BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.Date);
@@ -128,5 +130,7 @@ begin
     BeginInSampleEdit.Text := DateTimeToStr(BeginInSampleCalendar.Date);
 
 end;
+
+{$ENDIF}
 
 end.

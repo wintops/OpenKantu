@@ -13,7 +13,6 @@ object MainForm: TMainForm
   Font.Name = 'Tahoma'
   Font.Style = []
   Menu = MainMenu1
-  OldCreateOrder = True
   Position = poDesktopCenter
   Visible = True
   WindowState = wsMaximized
@@ -22,7 +21,6 @@ object MainForm: TMainForm
   DesignSize = (
     879
     700)
-  PixelsPerInch = 96
   TextHeight = 13
   object selectedPatternLabel: TLabel
     Left = 313
@@ -43,7 +41,7 @@ object MainForm: TMainForm
     ParentColor = False
   end
   object StatusLabel: TLabel
-    Left = 108
+    Left = 4
     Top = 5
     Width = 549
     Height = 16
@@ -62,9 +60,9 @@ object MainForm: TMainForm
   end
   object TradeGrid: TStringGrid
     Left = 4
-    Top = 4
+    Top = 51
     Width = 809
-    Height = 261
+    Height = 214
     Anchors = [akLeft, akTop, akRight, akBottom]
     ColCount = 10
     FixedCols = 0
@@ -72,6 +70,8 @@ object MainForm: TMainForm
     FixedRows = 0
     PopupMenu = PopupMenu2
     TabOrder = 0
+    ExplicitWidth = 803
+    ExplicitHeight = 197
     ColWidths = (
       129
       125
@@ -99,6 +99,7 @@ object MainForm: TMainForm
     ShowHint = True
     TabOrder = 1
     OnClick = ResultsGridClick
+    ExplicitWidth = 825
     ColWidths = (
       20
       60
@@ -203,9 +204,16 @@ object MainForm: TMainForm
     TabOrder = 5
     OnClick = Button1Click
   end
+  object ProgressBar1: TProgressBar
+    Left = 136
+    Top = 27
+    Width = 497
+    Height = 23
+    TabOrder = 6
+  end
   object MainMenu1: TMainMenu
-    Left = 448
-    Top = 104
+    Left = 288
+    Top = 65528
     object MenuItem1: TMenuItem
       Caption = 'Simulation'
       object MenuItem3: TMenuItem
@@ -262,7 +270,7 @@ object MainForm: TMainForm
       Caption = 'History'
       object MenuItem4: TMenuItem
         Caption = 'Load Symbol'
-        OnClick = MenuItem4Click
+        OnClick = showloadSymbol
       end
     end
     object MenuItem20: TMenuItem

@@ -12,9 +12,7 @@ object SingleSystem: TSingleSystem
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsStayOnTop
-  OldCreateOrder = True
   Position = poMainFormCenter
-  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 24
@@ -116,6 +114,7 @@ object SingleSystem: TSingleSystem
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
+    ItemHeight = 14
     ParentFont = False
     TabOrder = 0
   end
@@ -168,7 +167,7 @@ object SingleSystem: TSingleSystem
     Left = 24
     Top = 120
     Width = 80
-    Height = 23
+    Height = 22
     Style = csDropDownList
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -182,7 +181,7 @@ object SingleSystem: TSingleSystem
     Left = 176
     Top = 120
     Width = 80
-    Height = 23
+    Height = 22
     Style = csDropDownList
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -196,7 +195,7 @@ object SingleSystem: TSingleSystem
     Left = 112
     Top = 120
     Width = 40
-    Height = 23
+    Height = 22
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -210,7 +209,7 @@ object SingleSystem: TSingleSystem
     Left = 264
     Top = 120
     Width = 40
-    Height = 23
+    Height = 22
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -224,7 +223,7 @@ object SingleSystem: TSingleSystem
     Left = 104
     Top = 184
     Width = 56
-    Height = 23
+    Height = 22
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -237,7 +236,7 @@ object SingleSystem: TSingleSystem
     Left = 248
     Top = 188
     Width = 56
-    Height = 23
+    Height = 22
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -250,7 +249,7 @@ object SingleSystem: TSingleSystem
     Left = 104
     Top = 213
     Width = 56
-    Height = 23
+    Height = 22
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -263,7 +262,7 @@ object SingleSystem: TSingleSystem
     Left = 248
     Top = 213
     Width = 56
-    Height = 23
+    Height = 22
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -276,7 +275,7 @@ object SingleSystem: TSingleSystem
     Left = 29
     Top = 244
     Width = 275
-    Height = 23
+    Height = 22
     Style = csDropDownList
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

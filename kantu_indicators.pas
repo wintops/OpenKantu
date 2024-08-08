@@ -8,7 +8,10 @@ interface
 
 uses
 {$IFDEF DELPHI}
+
+{$IFDEF TEECHART}
   VclTee.Series,
+{$ENDIF}
 {$ELSE}
   FileUtil,
   fpexprpars, TAGraph, TASeries,
@@ -26,7 +29,9 @@ var
   indicatorEntryPatterns: array of TIndicatorPattern;
   indicatorClosePatterns: array of TIndicatorPattern;
   indicatorWFAResults: array of TIndicatorSimulationResults;
+{$IFDEF TEECHART}
   indicatorWFAResultsLineSeries: array of TLineSeries;
+{$ENDIF}
   globalAllowLongSignals: boolean;
   globalAllowShortSignals: boolean;
   allPatterns: array of TIndicatorPattern;
@@ -76,7 +81,9 @@ function nCr(n, r: integer): double;
 
 implementation
 
-uses kantu_utils,kantu_singleSystem, kantu_main, kantu_regular_simulation, kantu_loadSymbol;
+uses ktCode,ktUtils,
+  kantu_singleSystem, kantu_main, kantu_regular_simulation,
+  kantu_loadSymbol;
 
 Function nCr(n, r: integer): double;
 var
@@ -148,7 +155,7 @@ var
   i: integer;
 begin
 
- {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   MainForm.balanceCurve.Clear;
   MainForm.BalanceCurveFit.Clear;
   MainForm.BalanceCurvePortfolio.Clear;
@@ -244,14 +251,13 @@ var
 begin
 
   systemCount := Length(simulationResultsPortfolio);
-  {$IFDEF LLCL}
+{$IFDEF LLCL}
   initialProgressBarPosition := MainForm.ProgressBar1.Position;
   initialProgressBarMax := MainForm.ProgressBar1.Max;
   MainForm.ProgressBar1.Position := 0;
   MainForm.ProgressBar1.Max := HoursBetween(startingTime, endingTime);
-  {$ENDIF}
+{$ENDIF}
   initialStatusLabel := MainForm.StatusLabel.Caption;
-
 
   simulationResultsFinalPortfolio.absoluteProfitLongs := 0;
   simulationResultsFinalPortfolio.absoluteProfitShorts := 0;
@@ -263,10 +269,9 @@ begin
 
   for i := 0 to HoursBetween(startingTime, endingTime) - 1 do
   begin
-  {$IFDEF LLCL}
-
+{$IFDEF LLCL}
     MainForm.ProgressBar1.Position := MainForm.ProgressBar1.Position + 1;
-  {$ENDIF}
+{$ENDIF}
     MainForm.StatusLabel.Caption := 'Merging results ' +
       IntToStr(simulationResultsFinalPortfolio.totalTrades) + ' merged';
 
@@ -376,11 +381,10 @@ begin
         Length(simulationResultsPortfolio);
     end;
   end;
-                {$IFDEF LLCL}
-
+{$IFDEF LLCL}
   MainForm.ProgressBar1.Position := initialProgressBarPosition;
   MainForm.ProgressBar1.Max := initialProgressBarMax;
-  {$ENDIF}
+{$ENDIF}
   MainForm.StatusLabel.Caption := initialStatusLabel;
 
 end;
@@ -444,11 +448,11 @@ begin
     simulationResultsFinal.totalTrades :=
       simulationResultsFinal.totalTrades + 1;
 
-    { if simulationResults.balanceCurve[i+1]+simulationResultsInSample.absoluteProfit < expectedBalance-simulationResultsInSample.standardDeviationResiduals*3 then
+     if simulationResults.balanceCurve[i+1]+simulationResultsInSample.absoluteProfit < expectedBalance-simulationResultsInSample.standardDeviationResiduals*3 then
       begin
       SimulationForm.EndOutOfSampleCalendar.Date := simulationResults.trades[i].closeTime;
       break;
-      end; }
+      end;
 
   end;
 
@@ -459,8 +463,8 @@ begin
     [IDX_GRID_RESULT_NUMBER, 1]) - 1], FIRST_SYMBOL,
     SimulationForm.useSLCheck.Checked, SimulationForm.useTPCheck.Checked,
 
-    0, // SimulationForm.EndInSampleCalendar.Date,
-    0, // SimulationForm.EndOutOfSampleCalendar.Date,
+    SimulationForm.EndInSampleCalendar.Date,
+    SimulationForm.EndOutOfSampleCalendar.Date,
     true);
   simulationResultsFinal.totalLongSignals :=
     simulationResultsFinal.totalLongSignals +
@@ -562,11 +566,14 @@ begin
 
   Result := false;
 
-  {$IFDEF LLCL1}
+{$IFDEF LLCL2}
   if SimulationForm.UsedInputsList.Checked[listIndex] then
     Result := true;
-  {$ENDIF}
+{$ELSE}
+  if SimulationForm.UsedInputsList.Selected[listIndex] then
+    Result := true;
 
+{$ENDIF}
 end;
 
 Function generateRandomIndicatorPattern(maxRules, maxCandleShift: integer)
@@ -1030,7 +1037,7 @@ var
   dataForFit: TRealPointArray;
   dataforFit2: TRealPointArray;
   standardDeviationTrades, averageTrades:
-  {$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
+{$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
   m1, m2, m3, m4, tradeKurtosis, tradeSkewness: extended;
   m, b, r: extended;
   carriedBalance: double;
@@ -1039,9 +1046,9 @@ var
   ME_Long, ME_Short: double;
   regressionResiduals: array of double;
   averageResiduals, standardDeviationResiduals:
-  {$IFDEF DELPHI}double{$ELSE} extended{$ENDIF};
+{$IFDEF DELPHI}double{$ELSE} extended{$ENDIF};
   idealR, idealRstandardDeviation:
-  {$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
+{$IFDEF DELPHI} double{$ELSE} extended{$ENDIF};
   idealRPeriodCorrelations: array of double;
 begin
 
@@ -1271,7 +1278,7 @@ begin
 
     // fits to y = m*x+b
     try
-      MainForm.LinearLeastSquares(dataForFit, m, b, r);
+      LinearLeastSquares(dataForFit, m, b, r);
     except
       on Exception do
         // do nothing if there is an exception
@@ -1420,7 +1427,7 @@ begin
         r := 0;
 
         try
-          MainForm.LinearLeastSquaresNormal(dataforFit2, m, b, r);
+          LinearLeastSquaresNormal(dataforFit2, m, b, r);
         except
           on Exception do
             //
@@ -2258,23 +2265,31 @@ Var
   temp: TStringList;
   i, j, n: integer;
   typeString1: string;
+  AFormatSettings: TFormatSettings;
 Begin
 
   Result := true;
+
+{$IFDEF FPC}
+{$ELSE}
+  AFormatSettings := TFormatSettings.Create;
+{$ENDIF}
+  AFormatSettings.LongDateFormat := 'yyyy/mm/dd hh:nn';
+  // DefaultFormatSettings.ShortDateFormat := 'yyyy/mm/dd';
+  // DefaultFormatSettings.ShortTimeFormat:='hh:nn';
+
+  // DefaultFormatSettings.DateSeparator := '/';
+  // DefaultFormatSettings.DecimalSeparator := '.';
+
 {$IFDEF DELPHI}
 {$ELSE}
-  DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
-  DefaultFormatSettings.DateSeparator := '.';
-  DefaultFormatSettings.DecimalSeparator := '.';
 {$ENDIF}
   // open progress bar form
   MainForm.StatusLabel.Caption := 'Symbol data loading progress...';
   MainForm.StatusLabel.Visible := true;
-    {$IFDEF LLCL}
-
+{$IFDEF LLCL}
   MainForm.ProgressBar1.Position := 0;
-  {$ENDIF}
-
+{$ENDIF}
   Ts := TStringList.Create;
 
   Ts.LoadFromFile(PairDataFile);
@@ -2292,17 +2307,16 @@ Begin
 
   temp := TStringList.Create;
 
-    {$IFDEF LLCL}
-
+{$IFDEF LLCL}
   MainForm.ProgressBar1.Max := Ts.count;
-  {$ENDIF}
-
-  {$IFDEF DELPHI}
+{$ENDIF}
+{$IFDEF DELPHI}
+  LoadedIndiHistoryData[n].symbol :=
+    ChangeFileExt(ExtractFileName(PairDataFile), '');
+  LoadedIndiHistoryData[n].isVolume := true;
+  LoadedIndiHistoryData[n].timeframe := 5;
 
 {$ELSE}
-
-
-
   LoadedIndiHistoryData[n].symbol := loadSymbol.SymbolsGrid.DataSource.DataSet.
     Fields[0].AsString;
   LoadedIndiHistoryData[n].spread := loadSymbol.SymbolsGrid.DataSource.DataSet.
@@ -2323,9 +2337,9 @@ Begin
     loadSymbol.SymbolsGrid.DataSource.DataSet.Fields[9].AsInteger;
   LoadedIndiHistoryData[n].MinimumStop :=
     loadSymbol.SymbolsGrid.DataSource.DataSet.Fields[10].AsFloat;
- {$ENDIF}
+{$ENDIF}
   temp.Clear;
-  MainForm.ParseDelimited(temp, Ts[0], ',');
+  ParseDelimited(temp, Ts[0], ',');
 
   SetLength(LoadedIndicatorData[n], 4);
 
@@ -2354,12 +2368,12 @@ Begin
     SimulationForm2.UsedInputsList.Items.Add(typeString1);
     SingleSystem.ComboBox1.Items.Add(typeString1);
     SingleSystem.ComboBox2.Items.Add(typeString1);
-      {$IFDEF LLCL1}
+{$IFDEF LLCL2}
     SimulationForm.UsedInputsList.Checked[SimulationForm.UsedInputsList.count -
       1] := true;
     SimulationForm2.UsedInputsList.Checked[SimulationForm2.UsedInputsList.count
       - 1] := true;
-      {$ENDIF}
+{$ENDIF}
   end;
 
   for i := 0 to Ts.count - 1 do
@@ -2370,54 +2384,64 @@ Begin
 
     if i Mod 100 = 0 then
     begin
-      {$IFDEF LLCL1}
-
+{$IFDEF LLCL1}
       MainForm.ProgressBar1.Position := i + 100;
-      {$ENDIF}
+{$ENDIF}
       Application.ProcessMessages;
     end;
 
+{$IFDEF DELPHI}
+    temp.CommaText := Ts[i];
+{$ELSE}
     MainForm.ParseDelimited(temp, Ts[i], ',');
-
-    LoadedIndiHistoryData[n].time[i] := StrToDateTime(temp[0] + ' ' + temp[1]);
-
-    LoadedIndiHistoryData[n].OHLC[i].open := StrToFloat(temp[2]);
-    LoadedIndiHistoryData[n].OHLC[i].high := StrToFloat(temp[3]);
-    LoadedIndiHistoryData[n].OHLC[i].low := StrToFloat(temp[4]);
-    LoadedIndiHistoryData[n].OHLC[i].close := StrToFloat(temp[5]);
-
-    if LoadedIndiHistoryData[n].isVolume then
-      LoadedIndiHistoryData[n].OHLC[i].volume := StrToFloat(temp[6])
-    else
-      LoadedIndiHistoryData[n].OHLC[i].volume := 0;
-
-    for j := 2 to 5 do
+{$ENDIF}
+    if temp.count > 5 then
     begin
-      LoadedIndicatorData[n][j - 2].data[i] := StrToFloat(temp[j]);
+      LoadedIndiHistoryData[n].time[i] :=
+        StrToDateTime(temp[0] + ' ' + copy(temp[1], 1, 2) + ':' + copy(temp[1],
+        3, 2), AFormatSettings);
+
+      LoadedIndiHistoryData[n].OHLC[i].open := StrToFloat(temp[2]);
+      LoadedIndiHistoryData[n].OHLC[i].high := StrToFloat(temp[3]);
+      LoadedIndiHistoryData[n].OHLC[i].low := StrToFloat(temp[4]);
+      LoadedIndiHistoryData[n].OHLC[i].close := StrToFloat(temp[5]);
+
+      if LoadedIndiHistoryData[n].isVolume then
+        LoadedIndiHistoryData[n].OHLC[i].volume := StrToFloat(temp[6])
+      else
+        LoadedIndiHistoryData[n].OHLC[i].volume := 0;
+
+      for j := 2 to 5 do
+      begin
+        LoadedIndicatorData[n][j - 2].data[i] := StrToFloat(temp[j]);
+      end;
     end;
 
   end;
 
   // check data for corrupt dates
-  for i := 1 to Length(LoadedIndiHistoryData[n].time) - 1 do
-  begin
+  {
+    for i := 1 to Length(LoadedIndiHistoryData[n].time) - 1 do
+    begin
 
     if LoadedIndiHistoryData[n].time[i] < LoadedIndiHistoryData[n].time[i - 1]
     then
     begin
-      ShowMessage
-        ('Data format is valid but data has corrupt dates. Corrupt date found : '
-        + DateTimeToStr(LoadedIndiHistoryData[n].time[i]) + ' is after ' +
-        DateTimeToStr(LoadedIndiHistoryData[n].time[i - 1]));
-      LoadedIndiHistoryData[n].OHLC := nil;
-      LoadedIndiHistoryData[n].time := nil;
-      Result := false;
-      Break;
+    ShowMessage
+    ('Data format is valid but data has corrupt dates. Corrupt date found : '
+    + DateTimeToStr(LoadedIndiHistoryData[n].time[i]) + ' is after ' +
+    DateTimeToStr(LoadedIndiHistoryData[n].time[i - 1]));
+    LoadedIndiHistoryData[n].OHLC := nil;
+    LoadedIndiHistoryData[n].time := nil;
+    Result := false;
+    Break;
     end;
 
-  end;
-
-  ShowMessage('Loaded data for symbol ' + LoadedIndiHistoryData[n].symbol +
+    end;
+  }
+  // ShowMessage
+  MainForm.StatusLabel.Caption :=
+    ('Loaded data for symbol ' + LoadedIndiHistoryData[n].symbol +
     IntToStr(LoadedIndiHistoryData[n].timeframe) + ' from ' +
     DateTimeToStr(LoadedIndiHistoryData[n].time[0]) + ' to ' +
     DateTimeToStr(LoadedIndiHistoryData[n].time[Length(LoadedIndiHistoryData[n]
@@ -2443,7 +2467,7 @@ Begin
 
   temp.Free;
 
-  MainForm.StatusLabel.Visible := false;
+  // MainForm.StatusLabel.Visible := false;
 
 end;
 
@@ -2467,6 +2491,8 @@ begin
     IDX_OPT_MAX_CANDLE_SHIFT]);
   resultQuota := StrToInt(SimulationForm.OptionsGrid.Cells[1,
     IDX_OPT_REQUESTED_SYSTEMS]);
+
+
   startDate := SimulationForm.BeginInSampleCalendar.Date;
   endDate := SimulationForm.EndInSampleCalendar.Date;
   endOutOfSampleDate := SimulationForm.EndOutOfSampleCalendar.Date;
@@ -2480,12 +2506,11 @@ begin
 
   MainForm.StatusLabel.Visible := true;
   MainForm.isCancel := false;
-    {$IFDEF LLCL1}
-
+{$IFDEF LLCL1}
   MainForm.ProgressBar1.Position := 0;
   MainForm.ProgressBar1.Max := StrToInt(SimulationForm.OptionsGrid.Cells[1,
     IDX_OPT_REQUESTED_SYSTEMS]);
-  {$ENDIF}
+{$ENDIF}
 
   // MainForm.Visible := false;
 
@@ -2536,9 +2561,9 @@ begin
       IntToStr(MainForm.ResultsGrid.RowCount - 1) + '/' +
       SimulationForm.OptionsGrid.Cells[1, IDX_OPT_REQUESTED_SYSTEMS] +
       ' Avg time/sim : ' + FloatToStr(MainForm.simulationTime / 1000);
-        {$IFDEF LLCL1}
+{$IFDEF LLCL1}
     MainForm.ProgressBar1.Position := MainForm.ResultsGrid.RowCount - 1;
-   {$ENDIF}
+{$ENDIF}
     if (isIndicatorPositiveResult(simulationResults)) then
     begin
 
@@ -2610,7 +2635,7 @@ begin
 {$IFDEF LLCL1}
   MainForm.ProgressBar1.Position := 0;
   MainForm.ProgressBar1.Max := resultQuota;
-   {$ENDIF}
+{$ENDIF}
   // MainForm.Visible := false;
   simulationsRan := 0;
   validResults := 0;
@@ -2672,9 +2697,9 @@ begin
         FloatToStr(simulationsRan) + '  runs, valid ' + IntToStr(validResults) +
         '/' + SimulationForm.OptionsGrid.Cells[1, IDX_OPT_REQUESTED_SYSTEMS] +
         ' Avg time/sim : ' + FloatToStr(MainForm.simulationTime / 1000);
-     {$IFDEF LLCL1}
+{$IFDEF LLCL1}
       MainForm.ProgressBar1.Position := validResults;
-      {$ENDIF}
+{$ENDIF}
       Application.ProcessMessages;
 
     end;
@@ -2752,7 +2777,7 @@ begin
         [StrToInt(MainForm.ResultsGrid.Cells[IDX_GRID_RESULT_NUMBER, i]) - 1],
         indicatorClosePatterns[StrToInt(MainForm.ResultsGrid.Cells
         [IDX_GRID_RESULT_NUMBER, i]) - 1],
-        MainForm.findSymbol(MainForm.ResultsGrid.Cells[IDX_GRID_SYMBOL, i]),
+        findSymbol(MainForm.ResultsGrid.Cells[IDX_GRID_SYMBOL, i]),
         SimulationForm.useSLCheck.Checked, SimulationForm.useTPCheck.Checked,
         SimulationForm.BeginInSampleCalendar.Date,
         SimulationForm.EndInSampleCalendar.Date, false);
@@ -2784,14 +2809,13 @@ begin
   getIndicatorStatistics(simulationResultsPortfolio);
   // ShowMessage(FloatToStr(simulationResultsPortfolio.modifiedSharpeRatio));
 
-   {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   MainForm.balanceCurve.Clear;
   MainForm.balanceCurve.Clear;
   MainForm.BalanceCurveFit.Clear;
   MainForm.upperStdDev.Clear;
   MainForm.lowerStdDev.Clear;
-  {$ENDIF}
-
+{$ENDIF}
 {$IFDEF DELPHI}
 {$ELSE}
   MainForm.Chart1.AxisList[1].Marks.Source := MainForm.balanceCurve.Source;
@@ -2871,7 +2895,7 @@ begin
     end;
   end;
 
-   {$IFDEF TEECHART}
+{$IFDEF TEECHART}
   for i := 1 to Length(simulationResultsPortfolio.balanceCurve) - 1 do
   begin
 
@@ -2909,8 +2933,7 @@ begin
     end;
 
   end;
-  {$ENDIF}
-
+{$ENDIF}
   PortfolioResultForm.Visible := true;
 
 {$IFDEF DELPHI}

@@ -12,10 +12,8 @@ object SimulationForm2: TSimulationForm2
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsStayOnTop
-  OldCreateOrder = True
   Position = poMainFormCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object Label15: TLabel
     Left = 321
@@ -127,27 +125,29 @@ object SimulationForm2: TSimulationForm2
       'Custom Filter'
       '')
   end
-  object EndInSampleEdit: TEdit
+  object EndInSampleCalendar: TDateTimePicker
     Left = 321
     Top = 197
     Width = 183
     Height = 22
+    Date = 45512.000000000000000000
+    Time = 0.838751249997585500
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ReadOnly = True
     TabOrder = 9
-    Text = '01/01/2009'
     OnClick = EndInSampleEditClick
   end
-  object BeginInSampleEdit: TEdit
+  object BeginInSampleCalendar: TDateTimePicker
     Left = 321
     Top = 144
     Width = 183
     Height = 22
+    Date = 45512.000000000000000000
+    Time = 0.838800636571249900
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -155,23 +155,22 @@ object SimulationForm2: TSimulationForm2
     Font.Style = []
     ParentFont = False
     TabOrder = 10
-    Text = '01/01/1985'
     OnClick = BeginInSampleEditClick
   end
-  object EndOutOfSampleEdit: TEdit
+  object EndOutOfSampleCalendar: TDateTimePicker
     Left = 321
     Top = 253
     Width = 183
     Height = 22
+    Date = 45512.000000000000000000
+    Time = 0.838800659723347100
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ReadOnly = True
     TabOrder = 11
-    Text = '01/01/2020'
     OnClick = EndOutOfSampleEditClick
   end
   object UsedInputsList: TListBox
@@ -275,5 +274,21 @@ object SimulationForm2: TSimulationForm2
     ColWidths = (
       180
       81)
+    RowHeights = (
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24
+      24)
   end
 end
