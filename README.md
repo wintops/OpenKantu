@@ -1,4 +1,4 @@
-Kantu 2024
+Kantu 2025
 =========
 Algo Trading System for Delphi and FPC
 
@@ -9,6 +9,6 @@ More detail see [Wiki](https://github.com/wintops/OpenKantu-2022/wiki)
 OpenKantu
 =========
 
-This repository contains source code for the OpenKantu trading system generator, which uses price action based rules for the automatic generation of trading strategies. For binaries please go to mechanicalforex.com
+This repository contains source code for the OpenKantu trading system generator, which uses price action based rules for the automatic generation of trading strategies. 
 
-Please view the KantuManual.doc for a detailed overview of the whole software.
+
