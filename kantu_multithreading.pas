@@ -39,7 +39,7 @@ Type
 
 implementation
 
-uses kantu_regular_simulation, kantu_main, kantu_indicators,kantu_utils;
+uses kantu_regular_simulation, kantu_main, kantu_indicators,ktUtils;
 
 constructor TMyIndiThread.Create(CreateSuspended: Boolean);
 begin
@@ -78,9 +78,12 @@ begin
     IntToStr(MainForm.ResultsGrid.RowCount - 1) + '/' +
     IntToStr(strategiesRequested) + ' Avg time/sim : ' +
     FloatToStr(MainForm.simulationTime / 1000);
-      {$IFDEF LLCL}
 
   MainForm.ProgressBar1.Position := MainForm.ResultsGrid.RowCount - 1;
+
+
+      {$IFDEF LLCL}
+
   {$ENDIF}
   j := 0;
   i := 1 + i;
@@ -141,3 +144,5 @@ begin
 end;
 
 end.
+
+

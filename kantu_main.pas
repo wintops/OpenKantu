@@ -3,10 +3,9 @@ unit kantu_main;
 {$IFNDEF DELPHI}
 {$mode objfpc}{$H+}
 {$ENDIF}
-
 {
-2024
-8.8 Add ktInit ,ktCode, ktUtils....
+  2024
+  8.8 Add ktInit ,ktCode, ktUtils....
 
 }
 
@@ -18,41 +17,39 @@ interface
 
 uses
 {$IFDEF DELPHI}
-ktCode,
-{$IFDEF TEECHART}
-  VclTee.TeeGDIPlus, VclTee.Series, VclTee.BubbleCh, VclTee.TeEngine,
-  VclTee.TeeProcs, VclTee.Chart,
-{$ENDIF}
+
 {$ELSE}
   lclintf, FileUtil,
-  TAGraph, TASeries,
-  TAFuncSeries, TAMultiSeries, TATools, TASources,
+
   ZMConnection, laz_synapse,
 {$ENDIF}
+{$IFDEF TACHART}
+  TAGraph, TASeries,
+  TAFuncSeries, TAMultiSeries, TATools, TASources,
+{$ENDIF}
+{$IFDEF TEECHART}
+  VclTee.TeeGDIPlus, VclTee.Series,  VclTee.TeEngine,
+  VclTee.TeeProcs, VclTee.Chart,VCLTee.BubbleCh,
+{$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, Grids, ComCtrls,
-  StdCtrls, Buttons, ExtCtrls, // ExtDlgs, ComCtrls,
+  StdCtrls, Buttons, ExtCtrls, // ExtDlgs,
   kantu_definitions,
   kantu_simulation, kantu_pricepattern, Math, kantu_filters,
   kantu_custom_filter,
-  kantu_loadSymbol, kantu_portfolioresults, dateUtils, kantu_singleSystem;
+  kantu_loadSymbol, kantu_portfolioresults, dateUtils, kantu_singleSystem,
+  VclTee.TeeGDIPlus, VCLTee.Series, VCLTee.BubbleCh, VCLTee.TeEngine,
+  VCLTee.TeeProcs, VCLTee.Chart
 
+
+
+
+;
 type
 
   { TMainForm }
 
   TMainForm = class(TForm)
-{$IFDEF TEECHART}
-    BalanceCurve: TLineSeries;
-    BalanceCurveFit: TLineSeries;
-    BalanceCurveFitPortfolio: TLineSeries;
-    BalanceCurvePortfolio: TLineSeries;
-    Chart1: TChart;
-    Chart2: TChart;
-    ChartOHLC: TChart;
-    GraphOpenTrades: TBubbleSeries;
-    GraphCloseTrades: TBubbleSeries;
 
-{$ENDIF}
     Button1: TButton;
     Button2: TButton;
 
@@ -89,8 +86,30 @@ type
     MenuItem67: TMenuItem;
     ohlcCheck: TCheckBox;
     LabelCheck: TCheckBox;
-{$IFDEF DELPHI}
-{$ELSE}
+
+    Chart1: TChart;
+    Chart2: TChart;
+    ChartOHLC: TChart;
+
+
+
+{$IFDEF TEECHART}
+BalanceCurve: TLineSeries;
+    ME_Shorts: TBarSeries;
+    ME_Longs: TBarSeries;
+    Splitter1: TSplitter;
+    GraphOHLC_Up: TLineSeries;
+    GraphOHLC_Down: TLineSeries;
+    GraphOpenTrades: TBubbleSeries;
+    GraphCloseTrades: TBubbleSeries;
+{$ENDIF}
+{$IFDEF TACHART}
+   BalanceCurve: TLineSeries;
+    ME_Shorts: TBarSeries;
+    ME_Longs: TBarSeries;
+    Splitter1: TSplitter;
+        GraphOpenTrades: TBubbleSeries;
+    GraphCloseTrades: TBubbleSeries;
     GraphOHLC_Up: TBoxAndWhiskerSeries;
     GraphOHLC_Down: TBoxAndWhiskerSeries;
     inSampleEndLine: TConstantLine;
@@ -142,6 +161,18 @@ type
     StatusLabel: TLabel;
     TradeGrid: TStringGrid;
     ProgressBar1: TProgressBar;
+    plStatus: TPanel;
+    plChartOHLC: TPanel;
+    PageControl1: TPageControl;
+    PageControl2: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+
+
+
+
 
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -171,13 +202,13 @@ type
       ACol, ARow, BCol, BRow: Integer; var Result: Integer);
     procedure ResultsGridGetCellHint(Sender: TObject; ACol, ARow: Integer;
       var HintText: String);
-    procedure TabSheet1Show(Sender: TObject);
+
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { private declarations }
   public
-    atrMultiplier: Integer;
-    isVolumeUsed: boolean;
-    mainProgramFolder: string;
+
     isCancel: boolean;
     simulationRuns: Integer;
     simulationTime: Integer;
@@ -185,13 +216,30 @@ type
     selectedSystem: Integer;
     selectedSymbol: Integer;
     totalSystems: double;
-{$IFDEF TEECHART}
+ {$IF Defined(TEECHART) or Defined(TACHART)}
+
     tradeLines: array of TLineSeries;
+
+    // BalanceCurve: TLineSeries;
+    BalanceCurveFit: TLineSeries;
+    BalanceCurveFitPortfolio: TLineSeries;
+    BalanceCurvePortfolio: TLineSeries;
+
+
+    upperStdDev: TLineSeries;
+    lowerStdDev: TLineSeries;
+   // ME_Shorts: TBarSeries;
+   // ME_Longs: TBarSeries;
+   // GraphOHLC_Up: TLineSeries;
+   // GraphOHLC_Down: TLineSeries;
+    inSampleEndLine: TLineSeries;
+    OutOfSampleEndLine: TLineSeries;
+    zeroLine: TLineSeries;
+
 {$ENDIF}
     function CheckBeforeSimulation: boolean;
 
-
-   {$IFNDEF DELPHI}
+{$IFNDEF DELPHI}
     procedure ExportToMQL4;
     procedure LinearLeastSquares(data: TRealPointArray; var M, B, R: extended);
     procedure LinearLeastSquaresNormal(data: TRealPointArray;
@@ -204,7 +252,7 @@ type
     function findSymbol(symbolString: string): Integer;
     procedure pricePatternToMQL4(var Code_MQL4: TStringList;
       pricePattern: TIndicatorPattern; logic: Integer);
-   {$ENDIF}
+{$ENDIF}
     procedure parseConfig;
   end;
 
@@ -219,7 +267,7 @@ implementation
 {$R *.lfm}
 {$ENDIF}
 
-uses kantu_utils,
+uses ktCode, ktUtils,
   kantu_indicators, kantu_regular_simulation, kantu_simulation_show;
 
 procedure TMainForm.parseConfig;
@@ -232,12 +280,16 @@ begin
     exit;
 
 {$IFDEF DELPHI}
-  DefaultFormatSettings := FormatSettings;
-{$ENDIF}
+  // DefaultFormatSettings := FormatSettings;
+
+  FormatSettings.ShortDateFormat := 'yyyy.mm.dd';
+  FormatSettings.DateSeparator := '.';
+  FormatSettings.DecimalSeparator := '.';
+{$ELSE}
   DefaultFormatSettings.ShortDateFormat := 'yyyy.mm.dd';
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.DecimalSeparator := '.';
-
+{$ENDIF}
   SetCurrentDir(mainProgramFolder);
   j := 0;
 
@@ -246,13 +298,16 @@ begin
   configFile.LoadFromFile('config.ini');
   if configFile.Count < 110 then
     exit;
-    {$IFDEF DELPHI}
-         for i := 0 to length(OptionNames) - 1 do
-         begin
-          SimulationForm.OptionsGrid.Cells[0, i] :=OptionNames[i];
-          SimulationForm2.OptionsGrid.Cells[0, i] :=OptionNames[i];
-         end;
-     {$ENDIF}
+{$IFDEF DELPHI}
+  SimulationForm.OptionsGrid.Cells[1, 0] := OptionValueTitle;
+  SimulationForm2.OptionsGrid.Cells[1, 0] := OptionValueTitle;
+
+  for i := 0 to length(OptionNames) - 1 do
+  begin
+    SimulationForm.OptionsGrid.Cells[0, i + 1] := OptionNames[i];
+    SimulationForm2.OptionsGrid.Cells[0, i + 1] := OptionNames[i];
+  end;
+{$ENDIF}
   for i := 1 to SimulationForm2.OptionsGrid.RowCount - 1 do
   begin
     SimulationForm2.OptionsGrid.Cells[1, i] := configFile[j];
@@ -276,21 +331,17 @@ begin
 
   SimulationForm2.BeginInSampleCalendar.Date := StrToDateTime(configFile[j]);
 
-
-    SimulationForm.BeginInSampleCalendar.Date := StrToDateTime(configFile[j]);
+  SimulationForm.BeginInSampleCalendar.Date := StrToDateTime(configFile[j]);
 {$IFDEF DELPHI}
-
 {$ELSE}
-    SimulationForm2.BeginInSampleEdit.Text := configFile[j];
+  SimulationForm2.BeginInSampleEdit.Text := configFile[j];
   SimulationForm.BeginInSampleEdit.Text := configFile[j];
 {$ENDIF}
   j := j + 1;
   SimulationForm2.EndInSampleCalendar.Date := StrToDateTime(configFile[j]);
 
-
-    SimulationForm.EndInSampleCalendar.Date := StrToDateTime(configFile[j]);
+  SimulationForm.EndInSampleCalendar.Date := StrToDateTime(configFile[j]);
 {$IFDEF DELPHI}
-
 {$ELSE}
   SimulationForm2.EndInSampleEdit.Text := configFile[j];
   SimulationForm.EndInSampleEdit.Text := configFile[j];
@@ -298,13 +349,10 @@ begin
   j := j + 1;
   SimulationForm2.EndOutOfSampleCalendar.Date := StrToDateTime(configFile[j]);
 
-
-
-    SimulationForm.EndOutOfSampleCalendar.Date := StrToDateTime(configFile[j]);
+  SimulationForm.EndOutOfSampleCalendar.Date := StrToDateTime(configFile[j]);
 {$IFDEF DELPHI}
-
 {$ELSE}
-    SimulationForm2.EndOutOfSampleEdit.Text := configFile[j];
+  SimulationForm2.EndOutOfSampleEdit.Text := configFile[j];
   SimulationForm.EndOutOfSampleEdit.Text := configFile[j];
 {$ENDIF}
   j := j + 1;
@@ -351,56 +399,11 @@ begin
 
 end;
 
-
-
 procedure TMainForm.showloadSymbol(Sender: TObject);
-var
-  Items, rows: TStringList;
-  i: Integer;
 begin
-
-  loadSymbol.SymbolsList.Clear;
-
-{$IFDEF DELPHI}
-  Items := TStringList.Create;
-  rows := TStringList.Create;
-  Items.LoadFromFile('data/symbols.csv');
-  for i := 0 to Items.Count - 1 do
-  begin
-    rows.CommaText := Items[i];
-    if rows.Count > 0 then
-
-      loadSymbol.SymbolsList.Items.Add(rows[0]);
-  end;
-
-  Items.Free;
-  rows.Free;
-{$ELSE}
-  loadSymbol.Datasource1.Enabled := False; // Manual refresh of linked DBGrid
-  loadSymbol.Datasource1.Enabled := True;
-
-  loadSymbol.ZMQueryDataSet1.SQL.Clear;
-  loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
-  loadSymbol.ZMQueryDataSet1.QueryExecute;
-
-  with loadSymbol.SymbolsGrid.DataSource.DataSet do
-    // begin
-    // first;
-    while not loadSymbol.SymbolsGrid.DataSource.DataSet.EOF do
-    begin
-      loadSymbol.SymbolsList.Items.Add(loadSymbol.SymbolsGrid.Columns[0]
-        .Field.AsString);
-      loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
-    end;
-
-  // loadSymbol.SymbolsGrid.Columns[0].Width := 150;
-  // loadSymbol.SymbolsGrid.Columns[1].Width := 250;
-{$ENDIF}
   loadSymbol.Visible := True;
 
 end;
-
-
 
 function TMainForm.CheckBeforeSimulation: boolean;
 begin
@@ -443,8 +446,6 @@ begin
 {$ENDIF}
 end;
 
-
-
 procedure TMainForm.ResultsGridClick(Sender: TObject);
 var
   Val: double;
@@ -460,7 +461,7 @@ var
     : TIndicatorSimulationResults;
 begin
 
-{$IFDEF DELPHI}
+{$IFDEF DELPHI1}
 {$ELSE}
   for Col := ResultsGrid.Selection.Left to ResultsGrid.Selection.Right do
     for Row := ResultsGrid.Selection.Top to ResultsGrid.Selection.Bottom do
@@ -520,6 +521,9 @@ begin
             SimulationForm.UseTPCheck.Checked,
             SimulationForm.BeginInSampleCalendar.Date, Now, False);
 
+ {$IF Defined(TEECHART) or Defined(TACHART)}
+
+
           BalanceCurve.Clear;
           BalanceCurveFit.Clear;
           BalanceCurvePortfolio.Clear;
@@ -528,24 +532,37 @@ begin
           lowerStdDev.Clear;
           ME_Longs.Clear;
           ME_Shorts.Clear;
+          GraphOHLC_Up.Clear;
 
-          for i := 0 to Length(tradeLines) - 1 do
+          GraphOHLC_Down.Clear;
+
+          GraphOpenTrades.Clear;
+          GraphCloseTrades.Clear;
+
+{$ENDIF}
+
+{$IFDEF TEECHART}
+          ChartOHLC.SeriesList.Clear;
+{$ENDIF}
+
+{$IFDEF TACHART}
+          for i := 0 to length(tradeLines) - 1 do
           begin
+
             ChartOHLC.DeleteSeries(tradeLines[i]);
             tradeLines[i].Free;
           end;
-
-          GraphOHLC_Up.Clear;
-          GraphOHLC_Up.Source.YCount := 5;
-          GraphOHLC_Down.Clear;
-          GraphOHLC_Down.Source.YCount := 5;
-          GraphOpenTrades.Clear;
-          GraphCloseTrades.Clear;
-          GraphOpenTrades.Source.YCount := 2;
-          GraphCloseTrades.Source.YCount := 2;
           tradeLines := nil;
 
-          for i := 0 to Length(LoadedIndiHistoryData[symbol].OHLC) - 1 do
+          GraphOHLC_Up.Source.YCount := 5;
+          GraphOHLC_Down.Source.YCount := 5;
+          GraphOpenTrades.Source.YCount := 2;
+          GraphCloseTrades.Source.YCount := 2;
+{$ENDIF}
+
+
+
+          for i := 0 to length(LoadedIndiHistoryData[symbol].OHLC) - 1 do
           begin
 
             if LoadedIndiHistoryData[symbol].OHLC[i].close >
@@ -557,15 +574,23 @@ begin
               ylist[4] := LoadedIndiHistoryData[symbol].OHLC[i].high;
               ylist[3] := LoadedIndiHistoryData[symbol].OHLC[i].low;
               ylist[2] := LoadedIndiHistoryData[symbol].OHLC[i].close;
+{$IFDEF TEECHART}
               GraphOHLC_Up.AddXY(LoadedIndiHistoryData[symbol].Time[i] * 100 /
-                LoadedIndiHistoryData[symbol].pointConversion, ylist[4], ylist);
+                LoadedIndiHistoryData[symbol].pointConversion, ylist[4],
+'' //{$ELSE}ylist
+);
+{$ENDIF}
               ylist[0] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[1] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[4] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[3] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[2] := LoadedIndiHistoryData[symbol].OHLC[i].close;
+{$IFDEF TEECHART}
               GraphOHLC_Down.AddXY(LoadedIndiHistoryData[symbol].Time[i] * 100 /
-                LoadedIndiHistoryData[symbol].pointConversion, ylist[4], ylist)
+                LoadedIndiHistoryData[symbol].pointConversion, ylist[4],
+'')
+//{$ELSE}ylist
+{$ENDIF}
             end
             else
             begin
@@ -575,20 +600,30 @@ begin
               ylist[3] := LoadedIndiHistoryData[symbol].OHLC[i].low;
               ylist[1] := (LoadedIndiHistoryData[symbol].OHLC[i].open +
                 LoadedIndiHistoryData[symbol].OHLC[i].close) / 2;
+{$IFDEF TEECHART}
               GraphOHLC_Down.AddXY(LoadedIndiHistoryData[symbol].Time[i] * 100 /
-                LoadedIndiHistoryData[symbol].pointConversion, ylist[4], ylist);
+                LoadedIndiHistoryData[symbol].pointConversion, ylist[4],
+'');//{$ELSE}ylist
+{$ENDIF}
               ylist[0] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[1] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[4] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[3] := LoadedIndiHistoryData[symbol].OHLC[i].close;
               ylist[2] := LoadedIndiHistoryData[symbol].OHLC[i].close;
+{$IFDEF TEECHART}
+
               GraphOHLC_Up.AddXY(LoadedIndiHistoryData[symbol].Time[i] * 100 /
-                LoadedIndiHistoryData[symbol].pointConversion, ylist[4], ylist);
+                LoadedIndiHistoryData[symbol].pointConversion, ylist[4],
+'');
+//{$ELSE}ylist
+{$ENDIF}
+
             end;
           end;
+ {$IF Defined(TEECHART) or Defined(TACHART)}
 
           // plot long trade ME
-          for i := 0 to Length
+          for i := 0 to length
             (indicatorSimulationResultsInSample.MFE_Longs) - 1 do
           begin
             ME_Longs.AddXY(i, indicatorSimulationResultsInSample.MFE_Longs[i] -
@@ -596,9 +631,7 @@ begin
             ME_Shorts.AddXY(i, indicatorSimulationResultsInSample.MFE_Shorts[i]
               - indicatorSimulationResultsInSample.MUE_Shorts[i]);
           end;
-
-          Chart1.AxisList[1].Marks.Source := BalanceCurve.Source;
-
+{$ENDIF}
           TradeGrid.RowCount := 1;
 
           if MenuItem29.Checked then
@@ -607,16 +640,18 @@ begin
             StatusLabel.Visible := True;
             ProgressBar1.Position := 0;
             ProgressBar1.Max :=
-              Length(indicatorSimulationResults.BalanceCurve) - 1;
+              length(indicatorSimulationResults.BalanceCurve) - 1;
           end;
 
-          zeroLine.Position := INITIAL_BALANCE;
+{$IFDEF TACHART}
 
+          Chart1.AxisList[1].Marks.Source := BalanceCurve.Source;
+          zeroLine.Position := INITIAL_BALANCE;
           inSampleEndLine.Position := SimulationForm.EndInSampleCalendar.Date;
           OutOfSampleEndLine.Position :=
             SimulationForm.EndOutOfSampleCalendar.Date;
-
-          for i := 1 to Length(indicatorSimulationResults.BalanceCurve) - 1 do
+{$ENDIF}
+          for i := 1 to length(indicatorSimulationResults.BalanceCurve) - 1 do
           begin
 
             if indicatorSimulationResults.trades[i - 1].orderType = BUY then
@@ -628,29 +663,30 @@ begin
               .pointConversion;
             ylistBubble[1] := indicatorSimulationResults.trades[i - 1]
               .openPrice * 1.03;
-
+ {$IFDEF TEECHART}
             GraphOpenTrades.AddXY(indicatorSimulationResults.trades[i - 1]
               .openTime * 100 / LoadedIndiHistoryData[symbol].pointConversion,
-              ylistBubble[1], ylistBubble,
-              DateTimeToStr(indicatorSimulationResults.trades[i - 1].openTime) +
-              '- open ' + IntToStr(i));
+              ylistBubble[1],
+'');//{$ELSE}ylistylistBubble,              DateTimeToStr(indicatorSimulationResults.trades[i - 1].openTime) +             '- open ' + IntToStr(i)
+              {$ENDIF}
 
             ylistBubble[0] := 10 / LoadedIndiHistoryData[symbol]
               .pointConversion;
             ylistBubble[1] := indicatorSimulationResults.trades[i - 1]
               .closePrice * 0.97;
-
+ {$IFDEF TEECHART}
             GraphCloseTrades.AddXY(indicatorSimulationResults.trades[i - 1]
               .closeTime * 100 / LoadedIndiHistoryData[symbol].pointConversion,
-              ylistBubble[1], ylistBubble,
-              DateTimeToStr(indicatorSimulationResults.trades[i - 1].closeTime)
-              + '- close ' + IntToStr(i));
+              ylistBubble[1],
+'');//{$ELSE}ylistylistBubble,              DateTimeToStr(indicatorSimulationResults.trades[i - 1].closeTime)              + '- close ' + IntToStr(i));
+{$ENDIF}
 
-            SetLength(tradeLines, Length(tradeLines) + 1);
+ {$IF Defined(TEECHART) or Defined(TACHART)}
+            SetLength(tradeLines, length(tradeLines) + 1);
 
-            tradeLines[Length(tradeLines) - 1] := TLineSeries.Create(ChartOHLC);
+            tradeLines[length(tradeLines) - 1] := TLineSeries.Create(ChartOHLC);
 
-            with tradeLines[Length(tradeLines) - 1] do
+            with tradeLines[length(tradeLines) - 1] do
             begin
               LinePen.Width := 3;
 
@@ -667,7 +703,7 @@ begin
                 indicatorSimulationResults.trades[i - 1].closePrice);
             end;
 
-            ChartOHLC.AddSeries(tradeLines[Length(tradeLines) - 1]);
+            ChartOHLC.AddSeries(tradeLines[length(tradeLines) - 1]);
             ChartOHLC.Repaint;
 
             // this line draws the balance curve
@@ -702,13 +738,13 @@ begin
                 FormatDateTime('mm/yyyy', indicatorSimulationResults.trades
                 [i - 1].closeTime));
             end;
-
+ {$ENDIF}
             if MenuItem29.Checked then
             begin
 
               StatusLabel.Caption := 'Creating trade table entries ' +
                 IntToStr(i) + '/' +
-                IntToStr(Length(indicatorSimulationResults.BalanceCurve) - 1);
+                IntToStr(length(indicatorSimulationResults.BalanceCurve) - 1);
               ProgressBar1.Position := ProgressBar1.Position + 1;
 
               if i Mod 10 = 0 then
@@ -754,20 +790,28 @@ begin
             end;
 
           end;
-
-          Chart1.AxisList.BottomAxis.Range.Max :=
-            indicatorSimulationResults.trades
-            [Length(indicatorSimulationResults.trades) - 1].closeTime;
-          Chart1.AxisList.BottomAxis.Range.Min :=
-            indicatorSimulationResults.trades[0].closeTime;
-
+{$IFDEF TEECHART}
+          Chart1.Axes.Bottom.Maximum := indicatorSimulationResults.trades
+            [length(indicatorSimulationResults.trades) - 1].closeTime;
+          Chart1.Axes.Bottom.Minimum  :=  indicatorSimulationResults.trades[0].closeTime;
+  {$ENDIF}
+{$IFDEF TACHART}
+        Chart1.AxisList.BottomAxis.Range.Max
+          := indicatorSimulationResults.trades
+            [length(indicatorSimulationResults.trades) - 1].closeTime;
+          Chart1.AxisList.BottomAxis.Range.Min
+          :=  indicatorSimulationResults.trades[0].closeTime;
+ {$ENDIF}
           // only show this info on trade analysis on click
           if MenuItem29.Checked then
           begin
+          plChartOHLC.Visible:=true;
+          {
             ChartOHLC.Visible := True;
             LabelCheck.Visible := True;
             Button2.Visible := True;
             ohlcCheck.Visible := True;
+          }
           end;
 
         end;
@@ -817,8 +861,6 @@ begin
   end;
 {$ENDIF}
 end;
-
-
 
 procedure TMainForm.ResultsGridCompareCells(Sender: TObject;
   ACol, ARow, BCol, BRow: Integer; var Result: Integer);
@@ -915,11 +957,8 @@ begin
   end;
 end;
 
-procedure TMainForm.TabSheet1Show(Sender: TObject);
-begin
-end;
 
-// end;
+
 
 procedure TMainForm.Button1Click(Sender: TObject);
 begin
@@ -928,12 +967,12 @@ end;
 
 procedure TMainForm.Button2Click(Sender: TObject);
 begin
-{$IFDEF TEECHART}
-  ChartOHLC.Visible := False;
-{$ENDIF}
+ plChartOHLC.Visible := False;
+ {
   Button2.Visible := False;
   LabelCheck.Visible := False;
   ohlcCheck.Visible := False;
+ }
 end;
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -987,14 +1026,72 @@ begin
 {$ENDIF}
   configFile.Add(BoolToStr(FiltersForm.isLastYearProfitCheck.Checked));
 
- // configFile.SaveToFile('config.ini');
+  // configFile.SaveToFile('config.ini');
 
   configFile.Free;
 
 end;
 
-procedure TMainForm.FormShow(Sender: TObject);
+procedure TMainForm.FormCreate(Sender: TObject);
 begin
+
+{$IFDEF TEECHART}
+  // BalanceCurve := TLineSeries.Create(Chart1);
+  BalanceCurveFit := TLineSeries.Create(Chart1);
+  BalanceCurveFitPortfolio := TLineSeries.Create(Chart1);
+  BalanceCurvePortfolio := TLineSeries.Create(Chart1);
+
+  upperStdDev := TLineSeries.Create(Chart1);
+  lowerStdDev := TLineSeries.Create(Chart1);
+
+  inSampleEndLine := TLineSeries.Create(Chart1);
+  OutOfSampleEndLine := TLineSeries.Create(Chart1);
+  zeroLine := TLineSeries.Create(Chart1);
+
+ // ME_Shorts := TBarSeries.Create(Chart2);
+ // ME_Longs := TBarSeries.create(Chart2);
+
+ // GraphOpenTrades := TBubbleSeries.Create(ChartOHLC);
+ // GraphCloseTrades := TBubbleSeries.Create(ChartOHLC);
+  //GraphOHLC_Up := TLineSeries.Create(ChartOHLC);
+ // GraphOHLC_Down := TLineSeries.Create(ChartOHLC);
+{$ENDIF}
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+{$IFDEF TEECHART}
+  // BalanceCurve.Free;
+  BalanceCurveFit.Free;
+  BalanceCurveFitPortfolio.Free;
+  BalanceCurvePortfolio.Free;
+
+ // GraphOpenTrades.Free;
+ // GraphCloseTrades.Free;
+  upperStdDev.Free;
+  lowerStdDev.Free;
+  //ME_Shorts.Free;
+  //ME_Longs.Free;
+  //GraphOHLC_Up.Free;
+  //GraphOHLC_Down.Free;
+  inSampleEndLine.Free;
+  OutOfSampleEndLine.Free;
+  zeroLine.Free;
+
+{$ENDIF}
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+var
+  i: Integer;
+begin
+{$IFDEF DELPHI}
+  for i := Low(ResultNames) to High(ResultNames) do
+    ResultsGrid.Cells[i , 0] := ResultNames[i];
+ {$IFNDEF LLCL}
+  TradeGrid.rows[0].commatext := TradeTitle;
+{$ENDIF}
+{$ENDIF}
   // MainForm.Enabled := False;
 
 end;
@@ -1044,7 +1141,7 @@ begin
 
   if CheckBeforeSimulation = False then
     exit;
-   SimulationForm.EndOutOfSampleCalendar.Date := now;
+  SimulationForm.EndOutOfSampleCalendar.Date := Now;
 
   // match everything between normal and ghost forms
   for i := 1 to SimulationForm2.OptionsGrid.RowCount - 1 do
@@ -1055,7 +1152,7 @@ begin
 
   if isDataLoaded = False then
   begin
-  ShowMessage('Please load data before running a simulation.');
+    ShowMessage('Please load data before running a simulation.');
     exit;
   end;
 
@@ -1074,10 +1171,10 @@ begin
   if CheckBeforeSimulation = False then
     exit;
 
-   SimulationForm.EndOutOfSampleCalendar.Date := now;
+  SimulationForm.EndOutOfSampleCalendar.Date := Now;
 
   begin
-  ShowMessage('Please load data before running a simulation.');
+    ShowMessage('Please load data before running a simulation.');
     exit;
   end;
 
@@ -1139,7 +1236,7 @@ begin
 
   if isDataLoaded = False then
   begin
-  ShowMessage('Please load data before running a simulation.');
+    ShowMessage('Please load data before running a simulation.');
     exit;
   end;
 
@@ -1160,16 +1257,20 @@ end;
 
 procedure TMainForm.MenuItem29Click(Sender: TObject);
 begin
-  if MenuItem29.Checked = False then
-  begin
+
+  MenuItem29.Checked := not MenuItem29.Checked;
+  {
+    if MenuItem29.Checked = False then
+    begin
     MenuItem29.Checked := True;
     exit;
-  end;
-  if MenuItem29.Checked = True then
-  begin
+    end;
+    if MenuItem29.Checked = True then
+    begin
     MenuItem29.Checked := False;
     exit;
-  end;
+    end;
+  }
 end;
 
 procedure TMainForm.MenuItem30Click(Sender: TObject);
@@ -1191,9 +1292,8 @@ end;
 
 procedure TMainForm.MenuItem3Click(Sender: TObject);
 begin
+
   SimulationForm2.Visible := True;
 end;
-
-
 
 end.

@@ -12,8 +12,11 @@ object SimulationForm2: TSimulationForm2
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsStayOnTop
+  OldCreateOrder = True
   Position = poMainFormCenter
-  OnCreate = FormCreate
+  OnHide = OptionsGridEditingDone
+  OnShow = FormShow
+  PixelsPerInch = 96
   TextHeight = 13
   object Label15: TLabel
     Left = 321
@@ -90,6 +93,68 @@ object SimulationForm2: TSimulationForm2
     ParentColor = False
     ParentFont = False
   end
+   object EndInSampleCalendar: TDateTimePicker
+    Left = 321
+    Top = 197
+    Width = 183
+    Height = 22
+
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 9
+    OnClick = EndInSampleEditClick
+  end
+  object BeginInSampleCalendar: TDateTimePicker
+    Left = 321
+    Top = 144
+    Width = 183
+    Height = 22
+
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 10
+    OnClick = BeginInSampleEditClick
+  end
+  object EndOutOfSampleCalendar: TDateTimePicker
+    Left = 321
+    Top = 253
+    Width = 183
+    Height = 22
+
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 11
+    OnClick = EndOutOfSampleEditClick
+  end
+  object OptionsGrid: TStringGrid
+    Left = 8
+    Top = 8
+    Width = 284
+    Height = 504
+    ColCount = 2
+    RowCount = 15
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 7
+    OnClick = OptionsGridEditingDone
+    OnExit = OptionsGridEditingDone
+  end
   object OptTargetComboBox: TComboBox
     Left = 321
     Top = 96
@@ -125,54 +190,7 @@ object SimulationForm2: TSimulationForm2
       'Custom Filter'
       '')
   end
-  object EndInSampleCalendar: TDateTimePicker
-    Left = 321
-    Top = 197
-    Width = 183
-    Height = 22
-    Date = 45512.000000000000000000
-    Time = 0.838751249997585500
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 9
-    OnClick = EndInSampleEditClick
-  end
-  object BeginInSampleCalendar: TDateTimePicker
-    Left = 321
-    Top = 144
-    Width = 183
-    Height = 22
-    Date = 45512.000000000000000000
-    Time = 0.838800636571249900
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 10
-    OnClick = BeginInSampleEditClick
-  end
-  object EndOutOfSampleCalendar: TDateTimePicker
-    Left = 321
-    Top = 253
-    Width = 183
-    Height = 22
-    Date = 45512.000000000000000000
-    Time = 0.838800659723347100
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 11
-    OnClick = EndOutOfSampleEditClick
-  end
+
   object UsedInputsList: TListBox
     Left = 521
     Top = 32
@@ -184,6 +202,7 @@ object SimulationForm2: TSimulationForm2
     Font.Name = 'Tahoma'
     Font.Style = []
     ItemHeight = 14
+    MultiSelect = True
     ParentFont = False
     TabOrder = 12
   end
@@ -202,93 +221,59 @@ object SimulationForm2: TSimulationForm2
     TabOrder = 13
   end
   object UseSLCheck: TCheckBox
-    Left = 22
-    Top = 16
+    Left = 321
+    Top = 280
     Width = 104
     Height = 29
     Caption = 'Use Stop-Loss'
     TabOrder = 0
   end
   object UseTPCheck: TCheckBox
-    Left = 22
-    Top = 45
+    Left = 321
+    Top = 309
     Width = 111
     Height = 29
     Caption = 'Use Take-Profit'
     TabOrder = 1
   end
   object UseHourFilter: TCheckBox
-    Left = 22
-    Top = 132
+    Left = 321
+    Top = 396
     Width = 108
     Height = 29
     Caption = 'Use Hour Filter'
     TabOrder = 2
   end
   object UseDayFilter: TCheckBox
-    Left = 22
-    Top = 161
+    Left = 321
+    Top = 425
     Width = 101
     Height = 29
     Caption = 'Use Day Filter'
     TabOrder = 3
   end
   object LROriginCheck: TCheckBox
-    Left = 22
-    Top = 190
+    Left = 321
+    Top = 454
     Width = 123
     Height = 29
     Caption = 'LR through origin'
     TabOrder = 4
   end
   object UseFixedSLTP: TCheckBox
-    Left = 22
-    Top = 74
+    Left = 321
+    Top = 338
     Width = 113
     Height = 29
     Caption = 'Use Fixed SL/TP'
     TabOrder = 5
   end
   object UseFixedHour: TCheckBox
-    Left = 22
-    Top = 103
+    Left = 321
+    Top = 367
     Width = 109
     Height = 29
     Caption = 'Use Fixed Hour'
     TabOrder = 6
-  end
-  object OptionsGrid: TStringGrid
-    Left = 20
-    Top = 8
-    Width = 284
-    Height = 504
-    ColCount = 2
-    RowCount = 15
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 7
-    ColWidths = (
-      180
-      81)
-    RowHeights = (
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24)
   end
 end

@@ -2,8 +2,8 @@ object loadSymbol: TloadSymbol
   Left = 205
   Top = 193
   Caption = 'loadSymbol'
-  ClientHeight = 420
-  ClientWidth = 867
+  ClientHeight = 472
+  ClientWidth = 875
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,6 +12,8 @@ object loadSymbol: TloadSymbol
   Font.Style = []
   OldCreateOrder = True
   Position = poMainFormCenter
+  OnCreate = UpdateData
+  OnShow = UpdateData
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -40,12 +42,13 @@ object loadSymbol: TloadSymbol
     Font.Name = 'Tahoma'
     Font.Style = []
     ItemHeight = 14
+    MultiSelect = True
     ParentFont = False
     TabOrder = 0
   end
   object Button1: TButton
     Left = 710
-    Top = 384
+    Top = 378
     Width = 131
     Height = 25
     Caption = 'Save Database'
@@ -56,10 +59,11 @@ object loadSymbol: TloadSymbol
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    OnClick = Button1Click
   end
   object Button2: TButton
     Left = 560
-    Top = 384
+    Top = 378
     Width = 131
     Height = 25
     Caption = 'Add new entry to DB'
@@ -70,10 +74,11 @@ object loadSymbol: TloadSymbol
     Font.Style = []
     ParentFont = False
     TabOrder = 2
+    OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 434
-    Top = 387
+    Left = 424
+    Top = 378
     Width = 120
     Height = 25
     Caption = 'Load '
@@ -82,12 +87,22 @@ object loadSymbol: TloadSymbol
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
+    ModalResult = 1
     ParentFont = False
     TabOrder = 3
-    OnClick = Button3Click
+    OnClick = LoadData
+  end
+  object SymbolsGrid: TStringGrid
+    Left = 240
+    Top = 36
+    Width = 601
+    Height = 336
+    ColCount = 11
+    RowCount = 2
+    TabOrder = 4
   end
   object OpenDialog1: TOpenDialog
-    Left = 243
-    Top = 368
+    Left = 155
+    Top = 72
   end
 end

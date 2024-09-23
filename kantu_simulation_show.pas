@@ -6,13 +6,14 @@ unit kantu_simulation_show;
 interface
 
 uses
-{$IFDEF DELPHI}
- Vcl.ComCtrls,
-{$ELSE}
+{$IFDEF VCL}
+ Vcl.ComCtrls,Vcl.CheckLst, Vcl.ExtDlgs,
+ {$ENDIF}
+ {$IFDEF FPC}
   FileUtil,
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Grids, ExtDlgs, kantu_simulation, kantu_definitions;
+  StdCtrls, Grids,  kantu_simulation, kantu_definitions, Vcl.ComCtrls;
 
 type
   { TSimulationForm2 }
@@ -26,7 +27,7 @@ type
     Label3: TLabel;
     OptionsGrid: TStringGrid;
     UseDayFilter: TCheckBox;
-    UsedInputsList: TListBox;
+    UsedInputsList:TListBox ;
     Label1: TLabel;
     Label15: TLabel;
     Label16: TLabel;
@@ -53,7 +54,7 @@ type
     procedure BeginInSampleEditClick(Sender: TObject);
     procedure EndInSampleEditClick(Sender: TObject);
     procedure EndOutOfSampleEditClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { private declarations }
   public
@@ -160,11 +161,17 @@ begin
   end;
 end;
 
-procedure TSimulationForm2.FormCreate(Sender: TObject);
+procedure TSimulationForm2.FormShow(Sender: TObject);
+var
+  I: Integer;
 begin
-{$IFDEF DELPHI}
 
+{$IFDEF DELPHI}
+for i := 1 to High(OptionNames) do
+  OptionsGrid.Cells[0,i]:=OptionNames[i];
+  OptionsGrid.Cells[1,0]:=OptionValueTitle;
 {$ENDIF}
+
 end;
 
 procedure TSimulationForm2.BeginInSampleEditClick(Sender: TObject);
@@ -248,11 +255,11 @@ procedure TSimulationForm2.UsedInputsListClickCheck(Sender: TObject);
 var
   i: integer;
 begin
-{$IFDEF LLCL1}
+    {$IFDEF VCL}
   for i := 0 to SimulationForm.UsedInputsList.Count - 1 do
-    SimulationForm.UsedInputsList.Checked[i] :=
-      SimulationForm2.UsedInputsList.Checked[i];
-{$ENDIF}
+    SimulationForm.UsedInputsList.Selected[i] :=
+      SimulationForm2.UsedInputsList.Selected[i];
+    {$ENDIF}
 end;
 
 procedure TSimulationForm2.UseFixedHourChange(Sender: TObject);

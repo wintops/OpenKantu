@@ -32,13 +32,7 @@ object CustomFilterForm: TCustomFilterForm
     Width = 195
     Height = 160
     AutoSize = False
-    Caption = 
-      'Create a custom filter formula using any performance variables. ' +
-      'Simply enter the equation you want to use on the edit box below.' +
-      ' For example if you want to calculate the custom criteria as the' +
-      ' absolute profit divided by the SQN you can enter AP/SQN. More c' +
-      'omplex formula, like SW*0.1+CL/MD*0.4-APT (only an example) are ' +
-      'also possible.'
+    Caption = ' '
     Color = clBtnFace
     ParentColor = False
     WordWrap = True
@@ -75,7 +69,7 @@ object CustomFilterForm: TCustomFilterForm
     Left = 160
     Top = 208
     Width = 187
-    Height = 23
+    Height = 21
     TabOrder = 2
     Text = '0'
   end

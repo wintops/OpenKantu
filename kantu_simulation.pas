@@ -7,14 +7,15 @@ unit kantu_simulation;
 interface
 
 uses
-{$IFDEF DELPHI}
-Vcl.ComCtrls,
- {$ELSE}
+{$IFDEF VCL}
+Vcl.ComCtrls, Vcl.CheckLst, Vcl.ExtDlgs,
+{$ENDIF}
+{$IFDEF FPC}
   FileUtil,
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, ExtDlgs, kantu_definitions, Math, dateutils, Grids,
-  Buttons;
+  ExtCtrls,  kantu_definitions, Math, dateutils, Grids,
+  Buttons, Vcl.ComCtrls;
 
 type
   TGridDrawState = integer;
@@ -44,7 +45,7 @@ type
 
     OptTargetComboBox: TComboBox;
     UseDayFilter: TCheckBox;
-    UsedInputsList: TListBox;
+    UsedInputsList:TListBox ;
     UseFixedHour: TCheckBox;
     UseFixedSLTP: TCheckBox;
     UseHourFilter: TCheckBox;

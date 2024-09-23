@@ -9,10 +9,13 @@ interface
 uses
 {$IFDEF DELPHI}
   Grids, ExtCtrls,
+  {$IFDEF VCL}
+  Vcl.CheckLst,
+  {$ENDIF}
 {$ELSE}
-  ZMConnection, ZMQueryDataSet, FileUtil, DbCtrls, DBGrids, db,
+  // ZMConnection, ZMQueryDataSet, FileUtil, DbCtrls, DBGrids, db,
 {$ENDIF}
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, //CheckLst,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, // CheckLst,
   StdCtrls, kantu_definitions, kantu_simulation, kantu_singleSystem;
 
 type
@@ -27,15 +30,17 @@ type
     SymbolsList: TListBox;
 
     Label1: TLabel;
-    procedure Button3Click(Sender: TObject);
+    SymbolsGrid: TStringGrid;
+    procedure LoadData(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure UpdateData(Sender: TObject);
 {$IFNDEF DELPHI}
     Datasource1: TDatasource;
     SymbolsGrid: TDBGrid;
     DBNavigator1: TDBNavigator;
     ZMConnection1: TZMConnection;
     ZMQueryDataSet1: TZMQueryDataSet;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
 
 {$ENDIF}
   private
@@ -61,8 +66,6 @@ implementation
 { TloadSymbol }
 uses kantu_main, kantu_indicators;
 
-
-
 procedure TloadSymbol.updateIndicatorLoadedSymbols;
 var
   i: integer;
@@ -70,7 +73,33 @@ begin
 
   LoadedIndiHistoryData := nil;
   SingleSystem.SymbolsCombo.Clear;
-  {$IFNDEF DELPHI}
+{$IFDEF DELPHI}
+
+{$IFDEF LLCL}
+     i:= SymbolsList.ItemIndex;
+     if i>=0 then
+      begin
+      LoadIndicatorsAndHistory(GetCurrentDir+'/data/' + loadSymbol.SymbolsGrid.Cells[1,i+1]);
+      SingleSystem.SymbolsCombo.Items.Add(SymbolsList.Items[i]);
+      end;
+
+{$ELSE}
+  for i := 0 to SymbolsList.Count - 1 do
+  begin
+
+    if SymbolsList.Selected[i] then
+    begin
+      LoadIndicatorsAndHistory(GetCurrentDir+'/data/' + loadSymbol.SymbolsGrid.Cells[1,i+1]);
+      SingleSystem.SymbolsCombo.Items.Add(SymbolsList.Items[i]);
+      break;
+    end;
+
+  end;
+ {$ENDIF}
+
+  if Length(LoadedIndiHistoryData) = 0 then
+    ShowMessage('Data not found');
+{$ELSE}
   for i := 0 to SymbolsList.Count - 1 do
   begin
 
@@ -105,14 +134,12 @@ begin
   loadSymbol.ZMQueryDataSet1.SQL.Clear;
   loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
   loadSymbol.ZMQueryDataSet1.QueryExecute;
-  {$ENDIF}
+{$ENDIF}
 end;
-
-
-{$IFNDEF DELPHI}
 
 procedure TloadSymbol.Button1Click(Sender: TObject);
 begin
+{$IFNDEF DELPHI}
   ZMQueryDataSet1.TableName := 'symbols';
   ShowMessage('Dataset is going to be saved to: ' +
     ZMQueryDataSet1.ZMConnection.DatabasePathFull + ZMQueryDataSet1.TableName
@@ -136,6 +163,7 @@ begin
         .Field.AsString);
       loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
     end;
+{$ENDIF}
 end;
 
 procedure TloadSymbol.Button2Click(Sender: TObject);
@@ -197,10 +225,11 @@ begin
   database.SaveToFile(GetCurrentDir +
     '/kantu.app/Contents/MacOS/symbols/symbols.csv');
 {$ELSE}
-  database.SaveToFile(GetCurrentDir + '/symbols/symbols.csv');
+  database.SaveToFile(GetCurrentDir + '/data/symbols.csv');
 {$ENDIF}
   database.Free;
 
+{$IFNDEF DELPHI}
   loadSymbol.SymbolsList.Clear;
 
   loadSymbol.Datasource1.Enabled := false; // Manual refresh of linked DBGrid
@@ -218,14 +247,12 @@ begin
         .Field.AsString);
       loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
     end;
-
+{$ENDIF}
 end;
 
-{$ENDIF}
-
-procedure TloadSymbol.Button3Click(Sender: TObject);
+procedure TloadSymbol.LoadData(Sender: TObject);
 begin
-
+  Hide;
   updateIndicatorLoadedSymbols;
   MainForm.simulationTime := 0;
   MainForm.simulationRuns := 0;
@@ -233,8 +260,60 @@ begin
 
 end;
 
+procedure TloadSymbol.UpdateData(Sender: TObject);
+var
+  database: TStringList;
+  i: integer;
+begin
 
+  loadSymbol.SymbolsList.Clear;
 
+{$IFDEF DELPHI}
+  database := TStringList.Create;
+{$IFDEF DARWIN}
+  database.LoadFromFile(GetCurrentDir +
+    '/kantu.app/Contents/MacOS/symbols/symbols.csv');
+{$ELSE}
+  database.LoadFromFile(GetCurrentDir + '/data/symbols.csv');
+{$ENDIF}
+  SymbolsGrid.RowCount := database.Count;
 
+  for i := 0 to database.Count - 1 do
+  begin
+  {$IFNDEF LLCL}
+ SymbolsGrid.Rows[i].CommaText := database.Strings[i];
+{$ENDIF}
+
+    if(i>0) then
+    loadSymbol.SymbolsList.Items.Add(SymbolsGrid.Cells[0, i]);
+  end;
+
+  database.Free;
+
+{$ELSE}
+  loadSymbol.Datasource1.Enabled := false; // Manual refresh of linked DBGrid
+  loadSymbol.Datasource1.Enabled := True;
+
+  loadSymbol.ZMQueryDataSet1.SQL.Clear;
+  loadSymbol.ZMQueryDataSet1.SQL.Add('SELECT * FROM symbols');
+  loadSymbol.ZMQueryDataSet1.QueryExecute;
+
+  with loadSymbol.SymbolsGrid.DataSource.DataSet do
+    // begin
+    // first;
+    while not loadSymbol.SymbolsGrid.DataSource.DataSet.EOF do
+    begin
+      loadSymbol.SymbolsList.Items.Add(loadSymbol.SymbolsGrid.Columns[0]
+        .Field.AsString);
+      loadSymbol.SymbolsGrid.DataSource.DataSet.Next;
+    end;
+
+  // loadSymbol.SymbolsGrid.Columns[0].Width := 150;
+  // loadSymbol.SymbolsGrid.Columns[1].Width := 250;
+{$ENDIF}
+
+  SymbolsList.ItemIndex:=0;
+
+end;
 
 end.

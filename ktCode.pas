@@ -24,7 +24,7 @@ procedure pricePatternToMQL4(var Code_MQL4: TStringList;
 
 implementation
 
-uses kantu_main;
+uses kantu_main,ktUtils;
 
 function isDataLoaded: boolean;
 begin
@@ -223,7 +223,7 @@ begin
   if MainForm.SaveDialogMQL4.Execute then
   begin
 
-    SetCurrentDir(MainForm.mainProgramFolder);
+    SetCurrentDir(mainProgramFolder);
     template_MQL4.LoadFromFile('kantu_template.mq4');
 
     for i := 0 to template_MQL4.Count - 1 do

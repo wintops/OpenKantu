@@ -3,10 +3,11 @@ unit ktInit;
 interface
 
 uses SysUtils, Classes, Forms,
-kantu_singleSystem,kantu_indicators,
-   kantu_definitions,kantu_main;
+  kantu_singleSystem, kantu_indicators, kantu_loadsymbol,
+  kantu_definitions, kantu_main;
 
 procedure init;
+procedure start;
 
 implementation
 
@@ -45,7 +46,7 @@ var
 {$ENDIF}
 begin
 
-  MainForm.mainProgramFolder := GetCurrentDir;
+  mainProgramFolder := GetCurrentDir;
 
 {$IFDEF DARWIN}
   MainForm.mainProgramFolder := copy(getinstalldir, 1,
@@ -57,18 +58,27 @@ end;
 
 procedure init;
 begin
-  Application.Title := 'Kantu  Trading System ';
+  Application.Title := KANTU_NAME;
   Randomize;
   // CheckValidity();
   assignMainCaption;
 
-
   MainForm.Enabled := true;
   setMainFolder;
-  MainForm.parseConfig;
- LoadIndicatorsAndHistory('data/RM409.TXT');
- SingleSystem.SymbolsCombo.Items.Add('RM409');
+ MainForm.parseConfig;
+
 
 end;
 
+procedure start;
+begin
+  loadSymbol.UpdateData(nil);
+ // loadSymbol.SymbolsList.Selected[0]:=True;
+  loadSymbol.LoadData(nil);
+  MainForm.MenuItem16Click(nil);
+
+  //LoadIndicatorsAndHistory(mainProgramFolder+'/data/RM409.TXT');
+  //SingleSystem.SymbolsCombo.Items.Add('RM409');
+  //SingleSystem.SymbolsCombo.ItemIndex := 0;
+end;
 end.

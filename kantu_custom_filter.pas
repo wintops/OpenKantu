@@ -6,9 +6,8 @@ unit kantu_custom_filter;
 interface
 uses
 
-{$IFDEF DELPHI}
+{$IFDEF FPC}
 
-{$ELSE}
   FileUtil,
 {$ENDIF}
   Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, Grids,
