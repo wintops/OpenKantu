@@ -73,7 +73,8 @@ end;
 procedure start;
 begin
   loadSymbol.UpdateData(nil);
- // loadSymbol.SymbolsList.Selected[0]:=True;
+
+
   loadSymbol.LoadData(nil);
   MainForm.MenuItem16Click(nil);
 

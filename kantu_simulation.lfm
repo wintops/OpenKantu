@@ -1,7 +1,7 @@
 object SimulationForm: TSimulationForm
-  Left = 297
+  Left = 592
   Height = 623
-  Top = 67
+  Top = 398
   Width = 640
   BorderStyle = bsToolWindow
   Caption = 'GHOST'
@@ -9,13 +9,13 @@ object SimulationForm: TSimulationForm
   ClientWidth = 640
   FormStyle = fsStayOnTop
   Position = poMainFormCenter
-  LCLVersion = '1.2.6.0'
+  LCLVersion = '3.4.0.0'
   object OptTargetComboBox: TComboBox
     Left = 304
-    Height = 33
+    Height = 25
     Top = 96
     Width = 183
-    ItemHeight = 25
+    ItemHeight = 17
     ItemIndex = 0
     Items.Strings = (
       'Balance'
@@ -42,65 +42,69 @@ object SimulationForm: TSimulationForm
   end
   object Label15: TLabel
     Left = 304
-    Height = 25
+    Height = 17
     Top = 72
-    Width = 156
+    Width = 116
     Caption = 'Optimization Target'
     ParentColor = False
+    Transparent = False
   end
   object EndInSampleEdit: TEdit
     Left = 304
-    Height = 33
+    Height = 25
     Top = 197
     Width = 183
-    OnClick = EndInSampleEditClick
     ReadOnly = True
     TabOrder = 1
     Text = '01/01/2009'
+    OnClick = EndInSampleEditClick
   end
   object Label16: TLabel
     Left = 304
-    Height = 25
+    Height = 17
     Top = 173
-    Width = 97
+    Width = 71
     Caption = 'Ending Date'
     ParentColor = False
+    Transparent = False
   end
   object Label1: TLabel
     Left = 304
-    Height = 25
+    Height = 17
     Top = 128
-    Width = 103
+    Width = 76
     Caption = 'Starting Date'
     ParentColor = False
+    Transparent = False
   end
   object BeginInSampleEdit: TEdit
     Left = 304
-    Height = 33
+    Height = 25
     Top = 144
     Width = 183
-    OnChange = BeginInSampleEditChange
-    OnClick = BeginInSampleEditClick
     TabOrder = 2
     Text = '01/01/1985'
+    OnChange = BeginInSampleEditChange
+    OnClick = BeginInSampleEditClick
   end
   object Label2: TLabel
     Left = 304
-    Height = 25
+    Height = 17
     Top = 229
-    Width = 126
+    Width = 92
     Caption = 'OS Ending Date'
     ParentColor = False
+    Transparent = False
   end
   object EndOutOfSampleEdit: TEdit
     Left = 304
-    Height = 33
+    Height = 25
     Top = 253
     Width = 183
-    OnClick = EndOutOfSampleEditClick
     ReadOnly = True
     TabOrder = 3
     Text = '01/01/2020'
+    OnClick = EndOutOfSampleEditClick
   end
   object UsedInputsList: TCheckListBox
     Left = 504
@@ -112,11 +116,12 @@ object SimulationForm: TSimulationForm
   end
   object Label3: TLabel
     Left = 504
-    Height = 25
+    Height = 17
     Top = 8
-    Width = 122
+    Width = 92
     Caption = 'Input Variables '
     ParentColor = False
+    Transparent = False
   end
   object Button1: TButton
     Left = 304
@@ -137,57 +142,57 @@ object SimulationForm: TSimulationForm
     Visible = False
     object UseSLCheck: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 16
-      Width = 144
+      Width = 102
       Caption = 'Use Stop-Loss'
       TabOrder = 0
     end
     object UseTPCheck: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 43
-      Width = 150
+      Width = 108
       Caption = 'Use Take-Profit'
       TabOrder = 1
     end
     object UseHourFilter: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 127
-      Width = 147
+      Width = 105
       Caption = 'Use Hour Filter'
       TabOrder = 2
     end
     object UseDayFilter: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 154
-      Width = 138
+      Width = 98
       Caption = 'Use Day Filter'
       TabOrder = 3
     end
     object LROriginCheck: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 192
-      Width = 169
+      Width = 120
       Caption = 'LR through origin'
       TabOrder = 4
     end
     object UseFixedSLTP: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 72
-      Width = 154
+      Width = 110
       Caption = 'Use Fixed SL/TP'
       TabOrder = 5
     end
     object UseFixedHour: TCheckBox
       Left = 23
-      Height = 29
+      Height = 21
       Top = 100
-      Width = 150
+      Width = 107
       Caption = 'Use Fixed Hour'
       TabOrder = 6
     end
@@ -296,21 +301,21 @@ object SimulationForm: TSimulationForm
     Date = 39814
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
-    left = 588
-    top = 196
+    Left = 588
+    Top = 196
   end
   object BeginInSampleCalendar: TCalendarDialog
     Date = 31048
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
-    left = 588
-    top = 396
+    Left = 588
+    Top = 396
   end
   object EndOutOfSampleCalendar: TCalendarDialog
     Date = 41326
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
-    left = 572
-    top = 300
+    Left = 572
+    Top = 300
   end
 end

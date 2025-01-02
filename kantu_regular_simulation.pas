@@ -7,11 +7,16 @@ unit kantu_regular_simulation;
 interface
 
 uses
+
+{$IFDEF LLCL}
+LLCLmore,
+{$ENDIF}
+
 {$IFDEF DELPHI}
 {$ELSE}
-  fpexprpars,FileUtil,
+  fpexprpars, FileUtil,
 {$ENDIF}
-  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, Menus, Grids,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, Grids,
   Buttons, kantu_definitions, Math, dateUtils, kantu_main, kantu_loadSymbol,
   kantu_simulation, kantu_filters, kantu_custom_filter, kantu_multithreading,
   kantu_pricepattern, kantu_portfolioResults;
@@ -31,7 +36,7 @@ procedure saveResultsToFile(filename: string;
 
 implementation
 
-uses kantu_utils;
+uses ktChart,ktUtils;
 
 function round2(const Number: extended; const Places: longint): extended;
 var
@@ -134,42 +139,42 @@ procedure updateBalanceChart(simulationResultsFinal,
 var
   i: integer;
 begin
-  {$IFDEF TEECHART}
-  MainForm.BalanceCurve.Clear;
-  MainForm.BalanceCurveFit.Clear;
-  MainForm.BalanceCurvePortfolio.Clear;
-  MainForm.BalanceCurveFitPortfolio.Clear;
-  MainForm.upperStdDev.Clear;
-  MainForm.lowerStdDev.Clear;
+{$IFDEF TEECHART}
+  ChartForm.BalanceCurve.Clear;
+  ChartForm.BalanceCurveFit.Clear;
+  ChartForm.BalanceCurvePortfolio.Clear;
+  ChartForm.BalanceCurveFitPortfolio.Clear;
+  ChartForm.upperStdDev.Clear;
+  ChartForm.lowerStdDev.Clear;
 {$IFNDEF DELPHI}
-  MainForm.Chart1.AxisList[1].Marks.Source := MainForm.BalanceCurve.Source;
-  MainForm.Chart1.AxisList[2].Marks.Source :=
-    MainForm.BalanceCurvePortfolio.Source;
+  ChartForm.Chart1.AxisList[1].Marks.Source := ChartForm.BalanceCurve.Source;
+  ChartForm.Chart1.AxisList[2].Marks.Source :=
+    ChartForm.BalanceCurvePortfolio.Source;
 
-  MainForm.TradeGrid.RowCount := 1;
+  ChartForm.TradeGrid.RowCount := 1;
 
-  MainForm.zeroLine.Position := INITIAL_BALANCE;
+  ChartForm.zeroLine.Position := INITIAL_BALANCE;
 
-  MainForm.inSampleEndLine.Position := SimulationForm.EndInSampleCalendar.Date;
+  ChartForm.inSampleEndLine.Position := SimulationForm.EndInSampleCalendar.Date;
 {$ENDIF}
   for i := 1 to Length(simulationResultsFinal.BalanceCurve) - 1 do
   begin
 
     // this line draws the balance curve
-    MainForm.BalanceCurve.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
+    ChartForm.BalanceCurve.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
       simulationResultsFinal.BalanceCurve[i], FormatDateTime('mm/yyyy',
       simulationResultsFinal.trades[i - 1].closeTime));
 
     if simulationResultsFinal.linearFitR2 > 0.1 then
     begin
-      MainForm.upperStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
+      ChartForm.upperStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
         simulationResultsFinal.linearFitSlope *
         (simulationResultsFinal.trades[i - 1].closeTime -
         simulationResultsFinal.trades[0].closeTime) +
         simulationResultsFinal.linearFitIntercept - 0.01 * INITIAL_BALANCE *
         simulationResultsFinal.maximumDrawDown, FormatDateTime('mm/yyyy',
         simulationResultsFinal.trades[i - 1].closeTime));
-      MainForm.lowerStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
+      ChartForm.lowerStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
         simulationResultsFinal.linearFitSlope *
         (simulationResultsFinal.trades[i - 1].closeTime -
         simulationResultsFinal.trades[0].closeTime) +
@@ -177,7 +182,7 @@ begin
         simulationResultsFinal.maximumDrawDown * 2,
         FormatDateTime('mm/yyyy', simulationResultsFinal.trades[i - 1]
         .closeTime));
-      MainForm.BalanceCurveFit.AddXY(simulationResultsFinal.trades[i - 1]
+      ChartForm.BalanceCurveFit.AddXY(simulationResultsFinal.trades[i - 1]
         .closeTime, simulationResultsFinal.linearFitSlope *
         (simulationResultsFinal.trades[i - 1].closeTime -
         simulationResultsFinal.trades[0].closeTime) +
@@ -191,17 +196,17 @@ begin
   begin
 
     // this line draws the balance curve
-    MainForm.BalanceCurvePortfolio.AddXY
+    ChartForm.BalanceCurvePortfolio.AddXY
       (IncMinute(simulationResultsFinalPortfolio.trades[i - 1].closeTime, 1),
       simulationResultsFinalPortfolio.BalanceCurve[i],
       FormatDateTime('mm/yyyy', IncMinute(simulationResultsFinalPortfolio.trades
       [i - 1].closeTime, 1)));
 
     // if simulationResultsFinalPortfolio.linearFitR2 > 0.1 then
-    // MainForm.BalanceCurveFitPortfolio.AddXY(simulationResultsFinalPortfolio.trades[i-1].closeTime, simulationResultsFinalPortfolio.linearFitSlope*simulationResultsFinalPortfolio.trades[i-1].closeTime + simulationResultsFinalPortfolio.linearFitIntercept, FormatDateTime('mm/yyyy', simulationResultsFinalPortfolio.trades[i-1].closeTime));
+    // ChartForm.BalanceCurveFitPortfolio.AddXY(simulationResultsFinalPortfolio.trades[i-1].closeTime, simulationResultsFinalPortfolio.linearFitSlope*simulationResultsFinalPortfolio.trades[i-1].closeTime + simulationResultsFinalPortfolio.linearFitIntercept, FormatDateTime('mm/yyyy', simulationResultsFinalPortfolio.trades[i-1].closeTime));
 
   end;
-  {$ENDIF}
+{$ENDIF}
   MainForm.StatusLabel.Visible := false;
 
 end;
@@ -261,11 +266,8 @@ var
 {$IFDEF DELPHI}
 begin
 {$ELSE}
-
-FParser:
-TFPExpressionParser;
-parserResult:
-TFPExpressionResult;
+  FParser: TFPExpressionParser;
+  parserResult: TFPExpressionResult;
 begin
 
   Result := 0;

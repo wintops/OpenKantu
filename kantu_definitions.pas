@@ -7,9 +7,9 @@ unit kantu_definitions;
 interface
 
 uses
-{$IFDEF DELPHI}
-  Types,
-{$ENDIF}
+
+{$IFDEF FPC} Windows {$ELSE} Types {$ENDIF},
+
   Classes, SysUtils;
 
 type
@@ -392,7 +392,7 @@ OptionNames:array of string=   ['Number of rules','Max Shift','Shift variation s
 OptionValueTitle='Value';
 
 ResultNames:array of string=   ['', 'No.', 'Symbol', 'Abs. Profit'    , 'Profit/trade'     , 'Profit Longs'      , 'Profit Shorts'     , 'No. Longs'     , 'No. Shorts'        , 'Total Trades'      , 'Max DD'        , 'Ideal R', 'R^2', 'Ulcer Index' , 'Max DD Length'  , 'Cons.Loss' , 'Cons.Wins', 'Profit:Max DD'  , 'Win %', 'Reward:Risk'  , 'Skewness', 'Kurtosis'  , 'PF', 'Std.Dev', 'Std.Dev Breach'  , 'Total ME', 'SQN', 'Mod. Sharpe Ratio'  , 'Custom Criteria'    , 'Bars out', 'OSP', 'OSP/trade'  , 'OS_ProfitLongs'  , 'OS_ProfitShorts'  , 'OS_TotalLongs'  , 'OS_TotalShorts'  , 'OS_TotalTrades'  , 'OS_MaxDD'  , 'OS_UlcerIndex'  , 'OS_MaxDDLength'  , 'OS_Cons.Loss'  , 'OS_Cons.Wins'  , 'OS_ProfitToMaxDD'  , 'OS_WinningPercentage'  , 'OS_RewardToRisk'  , 'OS_Skewness'  , 'OS_Kurtosis'  , 'OS_PF'  , 'OS_StdDev'  , 'OS_StdDevBreach'  , 'OS_TotalME'  , 'OS_R2'  , 'OS_SQN'  , 'OS_ModifiedSharpeRatio'  , 'OS_CustomCriteria'  , 'OS_BarsOut' , 'Lowest Lag'];
-TradeTitle=  '" " ,"Trade Number" , "Open Time" , "Close Time"  , "Open price" , "Close Price" , "SL"    , "TP" , "Profit" , "Type" , "Volume"';
+TradeTitle=  '"Trade Number" , "Open Time" , "Close Time"  , "Open price" , "Close Price" , "SL"    , "TP" , "Profit" , "Type" , "Volume"';
 //var   DefaultFormatSettings: TFormatSettings;
 {$ENDIF}
   var

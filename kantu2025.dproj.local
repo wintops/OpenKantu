@@ -20,5 +20,9 @@
     <Transaction>2024/08/08 19:29:51.000.516,D:\ATOP2022\OpenKantu-master\kantu_utils.pas=D:\ATOP2022\OpenKantu-master\ktUtils.pas</Transaction>
     <Transaction>2024/08/08 20:51:44.000.610,D:\ATOP2022\OpenKantu-master\kantu_init.pas=D:\ATOP2022\OpenKantu-master\ktInit.pas</Transaction>
     <Transaction>2024/09/11 19:47:42.000.466,C:\work\OpenKantu-master\kantu.dproj=C:\work\OpenKantu-master\kantu2025.dproj</Transaction>
+    <Transaction>2024/11/08 19:33:37.000.587,=C:\work\OpenKantu-master\ktChart.pas</Transaction>
+    <Transaction>2024/12/27 12:42:26.980,=C:\work\OpenKantu-master\Unit1.pas</Transaction>
+    <Transaction>2024/12/27 12:43:48.878,C:\work\OpenKantu-master\ktTradeGrid.pas=C:\work\OpenKantu-master\Unit1.pas</Transaction>
+    <Transaction>2024/12/27 12:43:48.878,C:\work\OpenKantu-master\ktTradeGrid.dfm=C:\work\OpenKantu-master\Unit1.dfm</Transaction>
   </Transactions>
 </BorlandProject>

@@ -280,12 +280,15 @@ begin
 
   for i := 0 to database.Count - 1 do
   begin
+
   {$IFNDEF LLCL}
+  SymbolsGrid.Rows[i].CommaText := database.Strings[i];
+  {$ELSE}
  SymbolsGrid.Rows[i].CommaText := database.Strings[i];
 {$ENDIF}
 
     if(i>0) then
-    loadSymbol.SymbolsList.Items.Add(SymbolsGrid.Cells[0, i]);
+     SymbolsList.Items.Add(SymbolsGrid.Cells[0, i]);
   end;
 
   database.Free;
@@ -312,6 +315,9 @@ begin
   // loadSymbol.SymbolsGrid.Columns[1].Width := 250;
 {$ENDIF}
 
+{$IFNDEF LLCL}
+SymbolsList.Selected[0]:=True;
+ {$ENDIF}
   SymbolsList.ItemIndex:=0;
 
 end;

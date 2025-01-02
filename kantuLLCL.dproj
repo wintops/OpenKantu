@@ -242,6 +242,11 @@
         <DCCReference Include="ktUtils.pas"/>
         <DCCReference Include="ktInit.pas"/>
         <DCCReference Include="ktCode.pas"/>
+        <DCCReference Include="..\LLCL-master\LLCLmore.pas"/>
+        <DCCReference Include="ktChart.pas">
+            <Form>ktFormChart</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

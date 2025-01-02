@@ -5,7 +5,7 @@ unit kantu_simulation_show;
 
 interface
 
-uses
+uses   ktUtils,
 {$IFDEF VCL}
  Vcl.ComCtrls,Vcl.CheckLst, Vcl.ExtDlgs,
  {$ENDIF}
@@ -13,15 +13,15 @@ uses
   FileUtil,
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Grids,  kantu_simulation, kantu_definitions, Vcl.ComCtrls;
+  StdCtrls, Grids,  kantu_simulation, kantu_definitions;
 
 type
   { TSimulationForm2 }
   TSimulationForm2 = class(TForm)
-      BeginInSampleCalendar: TDateTimePicker;
+      BeginInSampleCalendar:TEdit;
 
-    EndInSampleCalendar: TDateTimePicker;
-    EndOutOfSampleCalendar: TDateTimePicker;
+    EndInSampleCalendar: TEdit;
+    EndOutOfSampleCalendar: TEdit;
     Button1: TButton;
     LROriginCheck: TCheckBox;
     Label3: TLabel;

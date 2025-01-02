@@ -1,5 +1,7 @@
 program kantuLLCL;
 
+{$APPTYPE CONSOLE}
+
 {$IFNDEF FPC}
 {$DEFINE DELPHI}
 
@@ -22,7 +24,9 @@ uses
   kantu_multithreading in 'kantu_multithreading.pas',
   ktUtils in 'ktUtils.pas',
   ktInit in 'ktInit.pas',
-  ktCode in 'ktCode.pas';
+  ktCode in 'ktCode.pas',
+  LLCLmore in '..\LLCL-master\LLCLmore.pas',
+  ktChart in 'ktChart.pas' {ktFormChart};
 
 {$R *.res}
 
@@ -33,6 +37,8 @@ begin
   Application.CreateForm(TComponentClass(TMainForm), MainForm);
 
   Application.CreateForm(TComponentClass(TSimulationForm), SimulationForm);
+  Application.CreateForm(TComponentClass(TSimulationForm2), SimulationForm2);
+
   Application.CreateForm(TComponentClass(TloadSymbol), loadSymbol);
 
   Application.CreateForm(TComponentClass(TPricePatternForm), PricePatternForm);
@@ -41,7 +47,6 @@ begin
 
   Application.CreateForm(TComponentClass(TPortfolioResultForm),
     PortfolioResultForm);
-  Application.CreateForm(TComponentClass(TSimulationForm2), SimulationForm2);
   Application.CreateForm(TComponentClass(TSingleSystem), SingleSystem);
 
   init;
@@ -49,3 +54,5 @@ begin
   Application.Run;
 
 end.
+
+

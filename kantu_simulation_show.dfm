@@ -93,12 +93,11 @@ object SimulationForm2: TSimulationForm2
     ParentColor = False
     ParentFont = False
   end
-   object EndInSampleCalendar: TDateTimePicker
+  object EndInSampleCalendar: TEdit
     Left = 321
     Top = 197
     Width = 183
     Height = 22
-
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -108,12 +107,11 @@ object SimulationForm2: TSimulationForm2
     TabOrder = 9
     OnClick = EndInSampleEditClick
   end
-  object BeginInSampleCalendar: TDateTimePicker
+  object BeginInSampleCalendar: TEdit
     Left = 321
     Top = 144
     Width = 183
     Height = 22
-
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -123,12 +121,11 @@ object SimulationForm2: TSimulationForm2
     TabOrder = 10
     OnClick = BeginInSampleEditClick
   end
-  object EndOutOfSampleCalendar: TDateTimePicker
+  object EndOutOfSampleCalendar: TEdit
     Left = 321
     Top = 253
     Width = 183
     Height = 22
-
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -190,7 +187,6 @@ object SimulationForm2: TSimulationForm2
       'Custom Filter'
       '')
   end
-
   object UsedInputsList: TListBox
     Left = 521
     Top = 32

@@ -4,6 +4,11 @@ unit kantu_singleSystem;
 {$ENDIF}
 interface
 uses
+
+
+{$IFDEF LLCL}
+LLCLmore,
+{$ENDIF}
 {$IFDEF DELPHI}
 
 {$ELSE}

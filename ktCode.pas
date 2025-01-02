@@ -2,7 +2,12 @@ unit ktCode;
 
 interface
 
-uses Classes, SysUtils, dateUtils, Math,
+uses
+
+{$IFDEF LLCL}
+LLCLmore,
+{$ENDIF}
+Classes, SysUtils, dateUtils, Math,
   kantu_definitions,  kantu_indicators,
   kantu_simulation, kantu_pricepattern, kantu_filters,
   kantu_custom_filter,

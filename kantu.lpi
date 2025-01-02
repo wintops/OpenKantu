@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="12"/>
     <PathDelim Value="\"/>
     <General>
-      <MainUnit Value="0"/>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <Title Value="Kantu - Price Pattern Parameter-lessTrading System Generator"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <i18n>
       <EnableI18N LFM="False"/>
@@ -19,48 +20,38 @@
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="1"/>
       <RevisionNr Value="1"/>
-      <StringTable ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="1" Active="Default">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
-      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
-      <ExcludeFileFilter Value="*.(bak|ppu|o|so);*~;backup"/>
     </PublishOptions>
     <RunParams>
-      <local>
-        <FormatVersion Value="1"/>
-      </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default"/>
+      </Modes>
     </RunParams>
-    <RequiredPackages Count="5">
+    <RequiredPackages Count="3">
       <Item1>
         <PackageName Value="FCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="zmsql"/>
-      </Item2>
-      <Item3>
-        <PackageName Value="laz_synapse"/>
-      </Item3>
-      <Item4>
         <PackageName Value="TAChartLazarusPkg"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item4>
-      <Item5>
+      </Item2>
+      <Item3>
         <PackageName Value="LCL"/>
-      </Item5>
+      </Item3>
     </RequiredPackages>
-    <Units Count="26">
+    <Units Count="49">
       <Unit0>
-        <Filename Value="kantu.lpr"/>
+        <Filename Value="kantu.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="kantu"/>
-        <EditorIndex Value="12"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="53"/>
-        <CursorPos X="1" Y="90"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="11"/>
+        <CursorPos X="39" Y="85"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -70,11 +61,8 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_main"/>
-        <EditorIndex Value="11"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="612"/>
-        <CursorPos X="11" Y="642"/>
+        <EditorIndex Value="10"/>
+        <CursorPos X="17" Y="26"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -82,11 +70,9 @@
       <Unit2>
         <Filename Value="kantu_definitions.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="kantu_definitions"/>
-        <EditorIndex Value="7"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="346"/>
-        <CursorPos X="44" Y="373"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="292"/>
+        <CursorPos Y="383"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -96,14 +82,11 @@
         <ComponentName Value="SimulationForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_simulation"/>
-        <EditorIndex Value="5"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="30"/>
-        <CursorPos X="85" Y="40"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="21" Y="40"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="1">
-          <Item0 X="1" Y="59" ID="9"/>
+          <Item0 Y="59" ID="9"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -113,8 +96,6 @@
         <ComponentName Value="StatusForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_status"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="9"/>
         <CursorPos X="64" Y="34"/>
         <UsageCount Value="198"/>
@@ -125,11 +106,8 @@
         <ComponentName Value="PricePatternForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_pricepattern"/>
-        <EditorIndex Value="2"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="92"/>
-        <CursorPos X="68" Y="109"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="34" Y="109"/>
         <UsageCount Value="215"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -140,11 +118,8 @@
         <ComponentName Value="FiltersForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_filters"/>
-        <EditorIndex Value="10"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="37" Y="7"/>
+        <EditorIndex Value="9"/>
+        <CursorPos X="38" Y="20"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit6>
@@ -154,10 +129,7 @@
         <ComponentName Value="CustomFilterForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_custom_filter"/>
-        <EditorIndex Value="9"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="35" Y="13"/>
         <UsageCount Value="211"/>
         <Loaded Value="True"/>
@@ -167,10 +139,8 @@
         <ComponentName Value="ISOSStudyForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_isosstudy"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="6"/>
-        <CursorPos X="1" Y="38"/>
+        <CursorPos Y="38"/>
         <FoldState Value=" T3b0*-"/>
         <UsageCount Value="301"/>
       </Unit8>
@@ -181,22 +151,18 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="kantu_loadSymbol"/>
-        <EditorIndex Value="4"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="19"/>
-        <CursorPos X="102" Y="177"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="14"/>
+        <CursorPos X="5" Y="32"/>
         <UsageCount Value="253"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit9>
       <Unit10>
         <Filename Value="kantu_multithreading.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="kantu_multithreading"/>
-        <EditorIndex Value="8"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="106"/>
-        <CursorPos X="19" Y="7"/>
+        <CursorPos Y="7"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit10>
@@ -205,8 +171,6 @@
         <ComponentName Value="LicenseForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_license"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="22" Y="43"/>
         <UsageCount Value="208"/>
@@ -218,30 +182,22 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="kantu_portfolioResults"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
         <CursorPos X="126" Y="6"/>
         <UsageCount Value="200"/>
       </Unit12>
       <Unit13>
         <Filename Value="kantu_indicators.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="kantu_indicators"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="0"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="2138"/>
-        <CursorPos X="73" Y="2171"/>
+        <CursorPos X="24" Y="62"/>
         <UsageCount Value="237"/>
         <Bookmarks Count="1">
-          <Item0 X="1" Y="2047" ID="0"/>
+          <Item0 Y="2051"/>
         </Bookmarks>
         <Loaded Value="True"/>
       </Unit13>
       <Unit14>
         <Filename Value="C:\lazarus\lcl\grids.pas"/>
         <UnitName Value="Grids"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="8659"/>
         <CursorPos X="9" Y="8667"/>
         <UsageCount Value="103"/>
@@ -249,9 +205,6 @@
       <Unit15>
         <Filename Value="kantu_regular_simulation.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="kantu_regular_simulation"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
         <CursorPos X="22" Y="20"/>
         <UsageCount Value="235"/>
       </Unit15>
@@ -261,11 +214,9 @@
         <ComponentName Value="SimulationForm2"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="kantu_simulation_show"/>
-        <EditorIndex Value="6"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="243"/>
-        <CursorPos X="92" Y="258"/>
+        <CursorPos X="17" Y="258"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -273,22 +224,18 @@
       <Unit17>
         <Filename Value="C:\lazarus\components\tachart\tagraph.pas"/>
         <UnitName Value="TAGraph"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="454"/>
-        <CursorPos X="1" Y="475"/>
+        <CursorPos Y="475"/>
         <UsageCount Value="138"/>
       </Unit17>
       <Unit18>
         <Filename Value="..\vendor\TZMSQL-0.1.13\janSQL.pas"/>
-        <UnitName Value="janSQL"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="2912"/>
-        <CursorPos X="1" Y="2932"/>
+        <CursorPos Y="2932"/>
         <UsageCount Value="9"/>
       </Unit18>
       <Unit19>
         <Filename Value="C:\lazarus\lcl\include\customlistbox.inc"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="177"/>
         <CursorPos X="38" Y="191"/>
         <UsageCount Value="13"/>
@@ -300,10 +247,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="kantu_singleSystem"/>
-        <EditorIndex Value="3"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="40" Y="22"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="26" Y="22"/>
         <UsageCount Value="324"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -311,166 +256,263 @@
       <Unit21>
         <Filename Value="C:\lazarus\components\tachart\tasources.pas"/>
         <UnitName Value="TASources"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="566"/>
-        <CursorPos X="1" Y="587"/>
+        <CursorPos Y="587"/>
         <UsageCount Value="116"/>
       </Unit21>
       <Unit22>
         <Filename Value="C:\lazarus\components\tachart\tacustomseries.pas"/>
         <UnitName Value="TACustomSeries"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="704"/>
-        <CursorPos X="1" Y="725"/>
+        <CursorPos Y="725"/>
         <UsageCount Value="114"/>
       </Unit22>
       <Unit23>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="3626"/>
         <CursorPos X="108" Y="3644"/>
         <UsageCount Value="8"/>
       </Unit23>
       <Unit24>
         <Filename Value="kantu_loadsymbol.lfm"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
         <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit24>
       <Unit25>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-base\src\fpexprpars.pp"/>
-        <UnitName Value="fpexprpars"/>
-        <EditorIndex Value="1"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="599"/>
         <CursorPos X="14" Y="617"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit25>
+      <Unit26>
+        <Filename Value="C:\dev\fpc\lazarus\lcl\themes.pas"/>
+        <UnitName Value="Themes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="507"/>
+        <CursorPos X="18" Y="528"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\dev\fpc\lazarus\lcl\lclintf.pas"/>
+        <UnitName Value="LCLIntf"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="36"/>
+        <CursorPos X="43" Y="57"/>
+        <UsageCount Value="20"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\dev\fpc\lazarus\lcl\lclproc.pas"/>
+        <UnitName Value="LCLProc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="13" Y="22"/>
+        <UsageCount Value="10"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\dev\fpc\lazarus\lcl\include\lcl_defines.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="20"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="C:\dev\fpc\lazarus\components\lazutils\utf8process.pp"/>
+        <UnitName Value="UTF8Process"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="128"/>
+        <CursorPos X="39" Y="155"/>
+        <UsageCount Value="20"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="C:\dev\fpc\lazarus\components\lazutils\fileutil.pas"/>
+        <UnitName Value="FileUtil"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="20"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="C:\dev\lazarus\lcl\lclintf.pas"/>
+        <UnitName Value="LCLIntf"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="40"/>
+        <CursorPos X="27" Y="57"/>
+        <UsageCount Value="21"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="C:\dev\lazarus\lcl\lclproc.pas"/>
+        <UnitName Value="LCLProc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5"/>
+        <CursorPos X="17" Y="23"/>
+        <UsageCount Value="10"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="C:\dev\lazarus\lcl\include\lcl_defines.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="23"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\dev\lazarus\components\lazutils\utf8process.pp"/>
+        <UnitName Value="UTF8Process"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="132"/>
+        <CursorPos X="15" Y="149"/>
+        <UsageCount Value="20"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="C:\dev\lazarus\components\lazutils\fileutil.pas"/>
+        <UnitName Value="FileUtil"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9"/>
+        <CursorPos X="10" Y="101"/>
+        <UsageCount Value="10"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="C:\dev\lazarus\lcl\buttons.pp"/>
+        <UnitName Value="Buttons"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <UsageCount Value="10"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="C:\dev\lazarus\lcl\themes.pas"/>
+        <UnitName Value="Themes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="501"/>
+        <CursorPos X="16" Y="526"/>
+        <UsageCount Value="10"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="C:\dev\lazarus\lcl\graphics.pp"/>
+        <UnitName Value="Graphics"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="11" Y="20"/>
+        <UsageCount Value="10"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="C:\dev\lazarus\lcl\extctrls.pp"/>
+        <UnitName Value="ExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1650"/>
+        <CursorPos X="27" Y="1667"/>
+        <UsageCount Value="10"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="C:\dev\lazarus\lcl\widgetset\wsextctrls.pp"/>
+        <UnitName Value="WSExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="C:\dev\lazarus\lcl\interfaces\win32\win32int.pp"/>
+        <UnitName Value="Win32Int"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="70" Y="17"/>
+        <UsageCount Value="22"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="C:\dev\lazarus\lcl\extdlgs.pas"/>
+        <UnitName Value="ExtDlgs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9"/>
+        <CursorPos X="50" Y="28"/>
+        <UsageCount Value="10"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="C:\dev\lazarus\lcl\forms\calcform.pas"/>
+        <UnitName Value="CalcForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="22"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="C:\dev\lazarus\components\ideintf\componenteditors.pas"/>
+        <UnitName Value="ComponentEditors"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="71" Y="17"/>
+        <UsageCount Value="22"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="C:\dev\lazarus\components\tachart\tatransformations.pas"/>
+        <UnitName Value="TATransformations"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="192"/>
+        <CursorPos X="54" Y="207"/>
+        <UsageCount Value="22"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="C:\dev\lazarus\components\tachart\editors\tasubcomponentseditor.pas"/>
+        <ComponentName Value="ComponentListEditorForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TASubcomponentsEditor"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="196"/>
+        <UsageCount Value="22"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="C:\dev\lazarus\components\ideintf\propedits.pp"/>
+        <UnitName Value="PropEdits"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="8043"/>
+        <CursorPos X="63" Y="8068"/>
+        <UsageCount Value="10"/>
+      </Unit48>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <OtherDefines Count="2">
+      <Define0 Value="UseOINormalCheckBox"/>
+      <Define1 Value="DELPHI"/>
+    </OtherDefines>
+    <JumpHistory Count="13" HistoryIndex="12">
       <Position1>
         <Filename Value="kantu_main.pas"/>
-        <Caret Line="648" Column="11" TopLine="624"/>
+        <Caret Line="23" Column="18" TopLine="6"/>
       </Position1>
       <Position2>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="656" Column="181" TopLine="632"/>
+        <Filename Value="kantu_loadsymbol.pas"/>
+        <Caret Line="13" Column="4"/>
       </Position2>
       <Position3>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="1055" Column="15" TopLine="1023"/>
+        <Filename Value="kantu_loadsymbol.pas"/>
+        <Caret Line="36" Column="4" TopLine="14"/>
       </Position3>
       <Position4>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="1158" Column="59" TopLine="1139"/>
+        <Filename Value="kantu_filters.pas"/>
+        <Caret Line="20" Column="93"/>
       </Position4>
       <Position5>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="1175" Column="35" TopLine="1148"/>
+        <Filename Value="kantu_indicators.pas"/>
+        <Caret Line="13" Column="9"/>
       </Position5>
       <Position6>
         <Filename Value="kantu_main.pas"/>
-        <Caret Line="1171" Column="31" TopLine="1152"/>
+        <Caret Line="23" Column="5" TopLine="17"/>
       </Position6>
       <Position7>
         <Filename Value="kantu_main.pas"/>
-        <Caret Line="1172" Column="62" TopLine="1152"/>
+        <Caret Line="365" Column="14" TopLine="35"/>
       </Position7>
       <Position8>
-        <Filename Value="kantu_simulation.pas"/>
-        <Caret Line="76" Column="143" TopLine="64"/>
+        <Filename Value="kantu_loadsymbol.pas"/>
+        <Caret Line="36" Column="2" TopLine="14"/>
       </Position8>
       <Position9>
-        <Filename Value="kantu_simulation.pas"/>
-        <Caret Line="75" Column="143" TopLine="63"/>
+        <Filename Value="kantu_loadsymbol.pas"/>
+        <Caret Line="32" Column="5" TopLine="14"/>
       </Position9>
       <Position10>
-        <Filename Value="kantu_simulation_show.pas"/>
-        <Caret Line="41" Column="61" TopLine="32"/>
+        <Filename Value="kantu_main.pas"/>
+        <Caret Line="31" Column="74"/>
       </Position10>
       <Position11>
-        <Filename Value="kantu_simulation_show.pas"/>
-        <Caret Line="40" Column="61" TopLine="31"/>
+        <Filename Value="kantu_main.pas"/>
+        <Caret Line="26" Column="72"/>
       </Position11>
       <Position12>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="1180" Column="81" TopLine="1152"/>
+        <Filename Value="kantu_indicators.pas"/>
+        <Caret Line="2398" Column="46" TopLine="2359"/>
       </Position12>
       <Position13>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="264" Column="69" TopLine="248"/>
+        <Filename Value="kantu.pas"/>
+        <Caret Line="85" Column="39"/>
       </Position13>
-      <Position14>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="463" Column="7" TopLine="461"/>
-      </Position14>
-      <Position15>
-        <Filename Value="kantu_simulation_show.pas"/>
-        <Caret Line="40" Column="61" TopLine="31"/>
-      </Position15>
-      <Position16>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="927" Column="69" TopLine="910"/>
-      </Position16>
-      <Position17>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="1510" Column="23" TopLine="1495"/>
-      </Position17>
-      <Position18>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="2103" Column="25" TopLine="2078"/>
-      </Position18>
-      <Position19>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="31" Column="36" TopLine="12"/>
-      </Position19>
-      <Position20>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="769" Column="75" TopLine="749"/>
-      </Position20>
-      <Position21>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="774" Column="44" TopLine="756"/>
-      </Position21>
-      <Position22>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="781" Column="89" TopLine="756"/>
-      </Position22>
-      <Position23>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="1024" Column="40" TopLine="993"/>
-      </Position23>
-      <Position24>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="1027" Column="135" TopLine="998"/>
-      </Position24>
-      <Position25>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="1072" Column="67" TopLine="1041"/>
-      </Position25>
-      <Position26>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="29" Column="40" TopLine="10"/>
-      </Position26>
-      <Position27>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="458" Column="68" TopLine="435"/>
-      </Position27>
-      <Position28>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="577" Column="34" TopLine="568"/>
-      </Position28>
-      <Position29>
-        <Filename Value="kantu_main.pas"/>
-        <Caret Line="1107" Column="72" TopLine="1100"/>
-      </Position29>
-      <Position30>
-        <Filename Value="kantu_indicators.pas"/>
-        <Caret Line="48" Column="49" TopLine="11"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -481,6 +523,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="C:\dev\lazarus\lcl\;C:\dev\lazarus\lcl\widgetset\;C:\dev\lazarus\lcl\include\;C:\dev\lazarus\components\lazutils\"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <CodeGeneration>
@@ -492,6 +535,7 @@
     <Linking>
       <Debugging>
         <GenerateDebugInfo Value="False"/>
+        <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
       <Options>
         <Win32>
@@ -500,7 +544,11 @@
       </Options>
     </Linking>
     <Other>
-      <CompilerPath Value="$(CompPath)"/>
+      <CustomOptions Value="-dUseOINormalCheckBox"/>
+      <OtherDefines Count="2">
+        <Define0 Value="UseOINormalCheckBox"/>
+        <Define1 Value="DELPHI"/>
+      </OtherDefines>
     </Other>
   </CompilerOptions>
   <Debugging>
@@ -519,5 +567,4 @@
       </Item4>
     </Exceptions>
   </Debugging>
-  <EditorMacros Count="0"/>
 </CONFIG>

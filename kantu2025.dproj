@@ -242,6 +242,14 @@
         <DCCReference Include="ktUtils.pas"/>
         <DCCReference Include="ktInit.pas"/>
         <DCCReference Include="ktCode.pas"/>
+        <DCCReference Include="ktChart.pas">
+            <Form>ChartForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ktTradeGrid.pas">
+            <Form>FormTradeGrid</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

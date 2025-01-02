@@ -6,6 +6,11 @@ unit kantu_multithreading;
 interface
 
 uses
+
+
+{$IFDEF LLCL}
+LLCLmore,
+{$ENDIF}
 {$IFNDEF DELPHI}
   LCLProc,
 {$ENDIF}

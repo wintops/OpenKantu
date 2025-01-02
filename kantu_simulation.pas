@@ -13,9 +13,12 @@ Vcl.ComCtrls, Vcl.CheckLst, Vcl.ExtDlgs,
 {$IFDEF FPC}
   FileUtil,
 {$ENDIF}
+
+{$IFNDEF LLCL}
+Math,  dateutils,  Buttons,
+{$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls,  kantu_definitions, Math, dateutils, Grids,
-  Buttons, Vcl.ComCtrls;
+  ExtCtrls,  kantu_definitions,  Grids ;
 
 type
   TGridDrawState = integer;
@@ -31,10 +34,12 @@ type
   { TSimulationForm }
 
   TSimulationForm = class(TForm)
-    BeginInSampleCalendar: TDateTimePicker;
+    BeginInSampleCalendar: TEdit;
+
+    EndInSampleCalendar: TEdit;
+    EndOutOfSampleCalendar: TEdit;
+
     Button1: TButton;
-    EndInSampleCalendar: TDateTimePicker;
-    EndOutOfSampleCalendar: TDateTimePicker;
     Label1: TLabel;
     Label15: TLabel;
     Label16: TLabel;

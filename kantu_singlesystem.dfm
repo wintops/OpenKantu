@@ -12,7 +12,9 @@ object SingleSystem: TSingleSystem
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsStayOnTop
+  OldCreateOrder = True
   Position = poMainFormCenter
+  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 24

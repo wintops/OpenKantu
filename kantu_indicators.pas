@@ -7,6 +7,10 @@ unit kantu_indicators;
 interface
 
 uses
+
+{$IFDEF LLCL}
+LLCLmore,
+{$ENDIF}
 {$IFDEF DELPHI}
 {$IFDEF TEECHART}
   VclTee.Series,
@@ -80,7 +84,7 @@ function nCr(n, r: integer): double;
 
 implementation
 
-uses ktCode, ktUtils,
+uses ktCode, ktUtils, ktChart,
   kantu_singleSystem, kantu_main, kantu_regular_simulation,
   kantu_loadSymbol;
 
@@ -155,21 +159,21 @@ var
 begin
 
 {$IFDEF TEECHART}
-  MainForm.balanceCurve.Clear;
-  MainForm.BalanceCurveFit.Clear;
-  MainForm.BalanceCurvePortfolio.Clear;
-  MainForm.BalanceCurveFitPortfolio.Clear;
-  MainForm.upperStdDev.Clear;
-  MainForm.lowerStdDev.Clear;
+  ChartForm.balanceCurve.Clear;
+  ChartForm.BalanceCurveFit.Clear;
+  ChartForm.BalanceCurvePortfolio.Clear;
+  ChartForm.BalanceCurveFitPortfolio.Clear;
+  ChartForm.upperStdDev.Clear;
+  ChartForm.lowerStdDev.Clear;
 
 {$IFDEF DELPHI}
 {$ELSE}
-  MainForm.Chart1.AxisList[1].Marks.Source := MainForm.balanceCurve.Source;
-  // MainForm.Chart1.AxisList[2].Marks.Source := MainForm.BalanceCurvePortfolio.Source;
+  ChartForm.Chart1.AxisList[1].Marks.Source := ChartForm.balanceCurve.Source;
+  // ChartForm.Chart1.AxisList[2].Marks.Source := ChartForm.BalanceCurvePortfolio.Source;
 
   MainForm.TradeGrid.RowCount := 1;
 
-  MainForm.zeroLine.Position := INITIAL_BALANCE;
+  ChartForm.zeroLine.Position := INITIAL_BALANCE;
 
   MainForm.inSampleEndLine.Position := SimulationForm.EndInSampleCalendar.Date;
   MainForm.OutOfSampleEndLine.Position :=
@@ -179,13 +183,13 @@ begin
   begin
 
     // this line draws the balance curve
-    MainForm.balanceCurve.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
+    ChartForm.balanceCurve.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
       simulationResultsFinal.balanceCurve[i], FormatDateTime('mm/yyyy',
       simulationResultsFinal.trades[i - 1].closeTime));
 
     if simulationResultsFinal.linearFitR2 > 0.1 then
     begin
-      MainForm.upperStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
+      ChartForm.upperStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
         simulationResultsFinal.linearFitSlope *
         (simulationResultsFinal.trades[i - 1].closeTime -
         simulationResultsFinal.trades[0].closeTime) +
@@ -193,7 +197,7 @@ begin
         simulationResultsFinal.standardDeviationResiduals,
         FormatDateTime('mm/yyyy', simulationResultsFinal.trades[i - 1]
         .closeTime));
-      MainForm.lowerStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
+      ChartForm.lowerStdDev.AddXY(simulationResultsFinal.trades[i - 1].closeTime,
         simulationResultsFinal.linearFitSlope *
         (simulationResultsFinal.trades[i - 1].closeTime -
         simulationResultsFinal.trades[0].closeTime) +
@@ -201,7 +205,7 @@ begin
         simulationResultsFinal.standardDeviationResiduals * 2,
         FormatDateTime('mm/yyyy', simulationResultsFinal.trades[i - 1]
         .closeTime));
-      MainForm.BalanceCurveFit.AddXY(simulationResultsFinal.trades[i - 1]
+      ChartForm.BalanceCurveFit.AddXY(simulationResultsFinal.trades[i - 1]
         .closeTime, simulationResultsFinal.linearFitSlope *
         (simulationResultsFinal.trades[i - 1].closeTime -
         simulationResultsFinal.trades[0].closeTime) +
@@ -216,7 +220,7 @@ begin
 
     // this line draws the balance curve
 
-    MainForm.BalanceCurvePortfolio.AddXY
+    ChartForm.BalanceCurvePortfolio.AddXY
       (IncMinute(simulationResultsFinalPortfolio.trades[i - 1].closeTime, 1),
       simulationResultsFinalPortfolio.balanceCurve[i],
       FormatDateTime('mm/yyyy', IncMinute(simulationResultsFinalPortfolio.trades
@@ -224,7 +228,7 @@ begin
 
     if simulationResultsFinalPortfolio.linearFitR2 > 0.1 then
     begin
-      MainForm.BalanceCurveFitPortfolio.AddXY
+      ChartForm.BalanceCurveFitPortfolio.AddXY
         (IncMinute(simulationResultsFinalPortfolio.trades[i - 1].closeTime, 1),
         simulationResultsFinalPortfolio.linearFitSlope *
         (simulationResultsFinalPortfolio.trades[i - 1].closeTime -
@@ -454,22 +458,22 @@ begin
       simulationResultsInSample.absoluteProfit < expectedBalance -
       simulationResultsInSample.standardDeviationResiduals * 3 then
     begin
-      SimulationForm.EndOutOfSampleCalendar.Date := simulationResults.trades[i]
-        .closeTime;
+      SimulationForm.EndOutOfSampleCalendar.Text:= DateToStr(simulationResults.trades[i]
+        .closeTime);
       break;
     end;
 
   end;
 
   simulationResults := runIndicatorSimulation
-    (indicatorEntryPatterns[StrToInt(MainForm.ResultsGrid.Cells
-    [IDX_GRID_RESULT_NUMBER, 1]) - 1],
-    indicatorClosePatterns[StrToInt(MainForm.ResultsGrid.Cells
-    [IDX_GRID_RESULT_NUMBER, 1]) - 1], FIRST_SYMBOL,
+    (indicatorEntryPatterns[StrToIntDef(MainForm.ResultsGrid.Cells
+    [IDX_GRID_RESULT_NUMBER, 1],0) - 1],
+    indicatorClosePatterns[StrToIntDef(MainForm.ResultsGrid.Cells
+    [IDX_GRID_RESULT_NUMBER, 1],0) - 1], FIRST_SYMBOL,
     SimulationForm.useSLCheck.Checked, SimulationForm.useTPCheck.Checked,
 
-    SimulationForm.EndInSampleCalendar.Date,
-    SimulationForm.EndOutOfSampleCalendar.Date, true);
+    StrToDate(SimulationForm.EndInSampleCalendar.Text),
+    StrToDate(SimulationForm.EndOutOfSampleCalendar.Text), true);
   simulationResultsFinal.totalLongSignals :=
     simulationResultsFinal.totalLongSignals +
     simulationResults.totalLongSignals;
@@ -653,8 +657,8 @@ begin
 
   randomPattern.hourFilter := RandomRange(0, 23);
   if SimulationForm.UseFixedHour.Checked then
-    randomPattern.hourFilter := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-      IDX_OPT_FIXED_HOUR]);
+    randomPattern.hourFilter := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+      IDX_OPT_FIXED_HOUR],0);
 
   randomPattern.dayFilter := RandomRange(2, 6);
   randomPattern.timeExit := RandomRange(1, 50);
@@ -1509,8 +1513,8 @@ begin
 
   timeframe := LoadedIndiHistoryData[symbol].timeframe;
   totalCandles := Length(LoadedIndiHistoryData[symbol].OHLC);
-  offsetCandles := Max(Round(StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_MAX_CANDLE_SHIFT]) + 20),
+  offsetCandles := Max(Round(StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_MAX_CANDLE_SHIFT],0) + 20),
     Round((ATR_PERIOD + 20) * 1440 / timeframe));
   exitPatternResult := NONE;
   entryPatternResult := NONE;
@@ -1531,16 +1535,16 @@ begin
   simulationResults.isInconsistentLogic := false;
 
   SetLength(simulationResults.MFE_Longs,
-    StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME]));
+    StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME],0));
   SetLength(simulationResults.MUE_Longs,
-    StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME]));
+    StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME],0));
   SetLength(simulationResults.MFE_Shorts,
-    StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME]));
+    StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME],0));
   SetLength(simulationResults.MUE_Shorts,
-    StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME]));
+    StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME],0));
 
-  for n := 0 to StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_BARS_ME]) - 1 do
+  for n := 0 to StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_BARS_ME],0) - 1 do
   begin
     simulationResults.MFE_Longs[n] := 0;
     simulationResults.MUE_Longs[n] := 0;
@@ -1717,7 +1721,7 @@ begin
     if (((entryPatternResult = BUY) and (usedEntryPattern.allowLongSignals)) or
       ((entryPatternResult = SELL)) and (usedEntryPattern.allowShortSignals))
       and (currentCandle < totalCandles - 1 -
-      StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME])) then
+      StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_BARS_ME],0)) then
     begin
 
       if entryPatternResult = BUY then
@@ -1731,8 +1735,8 @@ begin
       MUE := 0;
 
       // measure expectancy values for this trade and average them into the arrays.
-      for n := 0 to StrToInt(SimulationForm.OptionsGrid.Cells[1,
-        IDX_OPT_BARS_ME]) - 1 do
+      for n := 0 to StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+        IDX_OPT_BARS_ME],0) - 1 do
       begin
         if entryPatternResult = BUY then
         begin
@@ -2542,12 +2546,12 @@ var
   testedPatterns: TIndicatorPatternGroup;
 begin
 
-  maxRulesPerCandle := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_MAX_RULES_PER_CANDLE]);
-  maxCandleShift := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_MAX_CANDLE_SHIFT]);
-  resultQuota := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_REQUESTED_SYSTEMS]);
+  maxRulesPerCandle := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_MAX_RULES_PER_CANDLE],0);
+  maxCandleShift := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_MAX_CANDLE_SHIFT],0);
+  resultQuota := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_REQUESTED_SYSTEMS],0);
 
   startDate := SimulationForm.BeginInSampleCalendar.Date;
   endDate := SimulationForm.EndInSampleCalendar.Date;
@@ -2564,8 +2568,8 @@ begin
   MainForm.isCancel := false;
 
   MainForm.ProgressBar1.Position := 0;
-  MainForm.ProgressBar1.Max := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_REQUESTED_SYSTEMS]);
+  MainForm.ProgressBar1.Max := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_REQUESTED_SYSTEMS],0);
 {$IFDEF LLCL1}
 {$ENDIF}
 
@@ -2573,11 +2577,11 @@ begin
 
   validResults := 0;
 
-  if StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES]) > 1 then
+  if StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES],0) > 1 then
   begin
 
-    SetLength(RunningSimulations, StrToInt(SimulationForm.OptionsGrid.Cells[1,
-      IDX_OPT_NO_OF_CORES]) - 1);
+    SetLength(RunningSimulations, StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+      IDX_OPT_NO_OF_CORES],0) - 1);
 
     for i := 0 to Length(RunningSimulations) - 1 do
     begin
@@ -2649,7 +2653,7 @@ begin
 
   Application.ProcessMessages;
 
-  if StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES]) > 1 then
+  if StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES],0) > 1 then
     for i := 0 to Length(RunningSimulations) - 1 do
     begin
       RunningSimulations[i].Terminate;
@@ -2675,12 +2679,12 @@ var
   testedPatterns: TIndicatorPatternGroup;
 begin
 
-  maxRulesPerCandle := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_MAX_RULES_PER_CANDLE]);
-  resultQuota := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_REQUESTED_SYSTEMS]);
-  maxCandleShift := StrToInt(SimulationForm.OptionsGrid.Cells[1,
-    IDX_OPT_MAX_CANDLE_SHIFT]);
+  maxRulesPerCandle := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_MAX_RULES_PER_CANDLE],0);
+  resultQuota := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_REQUESTED_SYSTEMS],0);
+  maxCandleShift := StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+    IDX_OPT_MAX_CANDLE_SHIFT],0);
 
   indicatorEntryPatterns := nil;
   indicatorClosePatterns := nil;
@@ -2701,11 +2705,11 @@ begin
 
   SetLength(simulationResults, Length(LoadedIndiHistoryData));
 
-  if StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES]) > 1 then
+  if StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES],0) > 1 then
   begin
 
-    SetLength(RunningSimulations, StrToInt(SimulationForm.OptionsGrid.Cells[1,
-      IDX_OPT_NO_OF_CORES]) - 1);
+    SetLength(RunningSimulations, StrToIntDef(SimulationForm.OptionsGrid.Cells[1,
+      IDX_OPT_NO_OF_CORES],0) - 1);
 
     for i := 0 to Length(RunningSimulations) - 1 do
     begin
@@ -2724,7 +2728,7 @@ begin
 
     if (MainForm.isCancel) then
     begin
-      if StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES]) > 1
+      if StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES],0) > 1
       then
         for i := 0 to Length(RunningSimulations) - 1 do
         begin
@@ -2789,7 +2793,7 @@ begin
 
   end;
 
-  if StrToInt(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES]) > 1 then
+  if StrToIntDef(SimulationForm.OptionsGrid.Cells[1, IDX_OPT_NO_OF_CORES],0) > 1 then
     for i := 0 to Length(RunningSimulations) - 1 do
     begin
       RunningSimulations[i].Terminate;
@@ -2806,7 +2810,7 @@ procedure ShowIndicatorPatternDecomposition;
 var
   selectedPattern: integer;
 begin
-  selectedPattern := StrToInt(MainForm.selectedPatternLabel.Caption);
+  selectedPattern := StrToIntDef(MainForm.selectedPatternLabel.Caption,0);
 
   PricePatternForm.Memo1.Lines.Clear;
 
@@ -2834,9 +2838,9 @@ begin
 
       simulationResults[Length(simulationResults) - 1] :=
         runIndicatorSimulation(indicatorEntryPatterns
-        [StrToInt(MainForm.ResultsGrid.Cells[IDX_GRID_RESULT_NUMBER, i]) - 1],
-        indicatorClosePatterns[StrToInt(MainForm.ResultsGrid.Cells
-        [IDX_GRID_RESULT_NUMBER, i]) - 1],
+        [StrToIntDef(MainForm.ResultsGrid.Cells[IDX_GRID_RESULT_NUMBER, i],0) - 1],
+        indicatorClosePatterns[StrToIntDef(MainForm.ResultsGrid.Cells
+        [IDX_GRID_RESULT_NUMBER, i],0) - 1],
         findSymbol(MainForm.ResultsGrid.Cells[IDX_GRID_SYMBOL, i]),
         SimulationForm.useSLCheck.Checked, SimulationForm.useTPCheck.Checked,
         SimulationForm.BeginInSampleCalendar.Date,
@@ -2870,19 +2874,19 @@ begin
   // ShowMessage(FloatToStr(simulationResultsPortfolio.modifiedSharpeRatio));
 
 {$IFDEF TEECHART}
-  MainForm.balanceCurve.Clear;
-  MainForm.balanceCurve.Clear;
-  MainForm.BalanceCurveFit.Clear;
-  MainForm.upperStdDev.Clear;
-  MainForm.lowerStdDev.Clear;
+  ChartForm.balanceCurve.Clear;
+  ChartForm.balanceCurve.Clear;
+  ChartForm.BalanceCurveFit.Clear;
+  ChartForm.upperStdDev.Clear;
+  ChartForm.lowerStdDev.Clear;
 {$ENDIF}
 {$IFDEF DELPHI}
 {$ELSE}
-  MainForm.Chart1.AxisList[1].Marks.Source := MainForm.balanceCurve.Source;
+  ChartForm.Chart1.AxisList[1].Marks.Source := MainForm.balanceCurve.Source;
 
   MainForm.TradeGrid.RowCount := 1;
 
-  MainForm.zeroLine.Position := INITIAL_BALANCE;
+  ChartForm.zeroLine.Position := INITIAL_BALANCE;
 
   MainForm.inSampleEndLine.Position := SimulationForm.EndInSampleCalendar.Date;
 {$ENDIF}
@@ -2960,14 +2964,14 @@ begin
   begin
 
     // this line draws the balance curve
-    MainForm.balanceCurve.AddXY(simulationResultsPortfolio.trades[i - 1]
+    ChartForm.balanceCurve.AddXY(simulationResultsPortfolio.trades[i - 1]
       .closeTime, simulationResultsPortfolio.balanceCurve[i],
       FormatDateTime('mm/yyyy', simulationResultsPortfolio.trades[i - 1]
       .closeTime));
 
     if simulationResultsPortfolio.linearFitR2 > 0.1 then
     begin
-      MainForm.upperStdDev.AddXY(simulationResultsPortfolio.trades[i - 1]
+      ChartForm.upperStdDev.AddXY(simulationResultsPortfolio.trades[i - 1]
         .closeTime, simulationResultsPortfolio.linearFitSlope *
         (simulationResultsPortfolio.trades[i - 1].closeTime -
         simulationResultsPortfolio.trades[0].closeTime) +
@@ -2975,7 +2979,7 @@ begin
         simulationResultsPortfolio.standardDeviationResiduals,
         FormatDateTime('mm/yyyy', simulationResultsPortfolio.trades[i - 1]
         .closeTime));
-      MainForm.lowerStdDev.AddXY(simulationResultsPortfolio.trades[i - 1]
+      ChartForm.lowerStdDev.AddXY(simulationResultsPortfolio.trades[i - 1]
         .closeTime, simulationResultsPortfolio.linearFitSlope *
         (simulationResultsPortfolio.trades[i - 1].closeTime -
         simulationResultsPortfolio.trades[0].closeTime) +
@@ -2983,7 +2987,7 @@ begin
         simulationResultsPortfolio.standardDeviationResiduals * 2,
         FormatDateTime('mm/yyyy', simulationResultsPortfolio.trades[i - 1]
         .closeTime));
-      MainForm.BalanceCurveFit.AddXY(simulationResultsPortfolio.trades[i - 1]
+      ChartForm.BalanceCurveFit.AddXY(simulationResultsPortfolio.trades[i - 1]
         .closeTime, simulationResultsPortfolio.linearFitSlope *
         (simulationResultsPortfolio.trades[i - 1].closeTime -
         simulationResultsPortfolio.trades[0].closeTime) +

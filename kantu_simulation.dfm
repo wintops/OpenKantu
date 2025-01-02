@@ -17,39 +17,6 @@ object SimulationForm: TSimulationForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object OptionsGrid: TStringGrid
-    Left = 0
-    Top = 32
-    Width = 261
-    Height = 600
-    ColCount = 2
-    RowCount = 15
-    TabOrder = 7
-  end
-  object EndInSampleCalendar: TDateTimePicker
-    Left = 304
-    Top = 197
-    Width = 183
-    Height = 21
-
-    TabOrder = 9
-  end
-  object BeginInSampleCalendar: TDateTimePicker
-    Left = 304
-    Top = 144
-    Width = 183
-    Height = 21
-
-    TabOrder = 10
-  end
-  object EndOutOfSampleCalendar: TDateTimePicker
-    Left = 304
-    Top = 253
-    Width = 183
-    Height = 21
-
-    TabOrder = 11
-  end
   object Label15: TLabel
     Left = 304
     Top = 72
@@ -95,8 +62,36 @@ object SimulationForm: TSimulationForm
     Color = clBtnFace
     ParentColor = False
   end
-
-
+  object OptionsGrid: TStringGrid
+    Left = 0
+    Top = 32
+    Width = 261
+    Height = 600
+    ColCount = 2
+    RowCount = 15
+    TabOrder = 7
+  end
+  object EndInSampleCalendar: TEdit
+    Left = 304
+    Top = 197
+    Width = 183
+    Height = 21
+    TabOrder = 9
+  end
+  object BeginInSampleCalendar: TEdit
+    Left = 304
+    Top = 144
+    Width = 183
+    Height = 21
+    TabOrder = 10
+  end
+  object EndOutOfSampleCalendar: TEdit
+    Left = 304
+    Top = 253
+    Width = 183
+    Height = 21
+    TabOrder = 11
+  end
   object UsedInputsList: TListBox
     Left = 504
     Top = 32

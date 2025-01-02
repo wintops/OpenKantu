@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 740
   Top = 473
   Caption = 'Kantu'
-  ClientHeight = 902
-  ClientWidth = 879
+  ClientHeight = 460
+  ClientWidth = 677
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,8 +16,6 @@ object MainForm: TMainForm
   Visible = True
   WindowState = wsMaximized
   OnClose = FormClose
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -29,309 +27,97 @@ object MainForm: TMainForm
     Color = clBtnFace
     ParentColor = False
   end
-  object PageControl2: TPageControl
+  object extraLabel: TLabel
+    Left = 657
+    Top = 2
+    Width = 214
+    Height = 19
+    AutoSize = False
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object selectedPatternLabel: TLabel
+    Left = 559
+    Top = 4
+    Width = 6
+    Height = 13
+    Caption = '0'
+    Color = clBtnFace
+    ParentColor = False
+    Visible = False
+  end
+  object StatusLabel: TLabel
+    Left = 288
+    Top = 2
+    Width = 265
+    Height = 19
+    AutoSize = False
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object ResultsGrid: TStringGrid
+    Left = 0
+    Top = 65
+    Width = 677
+    Height = 395
+    Align = alClient
+    ColCount = 57
+    RowCount = 2
+    FixedRows = 0
+    ParentShowHint = False
+    PopupMenu = PopupMenu1
+    ShowHint = True
+    TabOrder = 0
+    OnClick = ResultsGridClick
+    ExplicitWidth = 585
+    ExplicitHeight = 344
+  end
+  object plStatus: TPanel
     Left = 0
     Top = 0
-    Width = 879
-    Height = 902
-    ActivePage = TabSheet1
-    Align = alClient
-    TabOrder = 0
-    object TabSheet1: TTabSheet
-      Caption = 'Simulation Results'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object Splitter1: TSplitter
-        Left = 0
-        Top = 259
-        Width = 871
-        Height = 3
-        Cursor = crVSplit
-        Align = alBottom
-        ExplicitTop = 59
-        ExplicitWidth = 203
-      end
-      object ResultsGrid: TStringGrid
-        Left = 0
-        Top = 59
-        Width = 871
-        Height = 200
-        Align = alClient
-        ColCount = 57
-        RowCount = 2
-        FixedRows = 0
-        ParentShowHint = False
-        PopupMenu = PopupMenu1
-        ShowHint = True
-        TabOrder = 3
-        OnClick = ResultsGridClick
-      end
-      object plChartOHLC: TPanel
-        Left = 0
-        Top = 59
-        Width = 871
-        Height = 200
-        Align = alClient
-        Caption = 'plChartOHLC'
-        TabOrder = 1
-        Visible = False
-        object ChartOHLC: TChart
-          Left = 1
-          Top = 1
-          Width = 869
-          Height = 198
-          Legend.Visible = False
-          Title.Text.Strings = (
-            ' ')
-          View3D = False
-          Align = alClient
-          TabOrder = 0
-          DefaultCanvas = 'TGDIPlusCanvas'
-          ColorPaletteIndex = 13
-          object GraphOHLC_Up: TLineSeries
-            Brush.BackColor = clDefault
-            Pointer.InflateMargins = True
-            Pointer.Style = psRectangle
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Y'
-            YValues.Order = loNone
-          end
-          object GraphOHLC_Down: TLineSeries
-            Brush.BackColor = clDefault
-            Pointer.InflateMargins = True
-            Pointer.Style = psRectangle
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Y'
-            YValues.Order = loNone
-          end
-          object GraphOpenTrades: TBubbleSeries
-            Marks.Frame.Visible = False
-            ClickableLine = False
-            Pointer.HorizSize = 16
-            Pointer.InflateMargins = True
-            Pointer.Style = psCircle
-            Pointer.VertSize = 16
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Y'
-            YValues.Order = loNone
-            RadiusValues.Name = 'Radius'
-            RadiusValues.Order = loNone
-          end
-          object GraphCloseTrades: TBubbleSeries
-            Marks.Frame.Visible = False
-            ClickableLine = False
-            Pointer.HorizSize = 16
-            Pointer.InflateMargins = True
-            Pointer.Style = psCircle
-            Pointer.VertSize = 16
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Y'
-            YValues.Order = loNone
-            RadiusValues.Name = 'Radius'
-            RadiusValues.Order = loNone
-          end
-        end
-        object Button2: TButton
-          Left = 26
-          Top = 6
-          Width = 75
-          Height = 25
-          Caption = 'Hide graph'
-          TabOrder = 1
-          OnClick = Button2Click
-        end
-        object LabelCheck: TCheckBox
-          Left = 26
-          Top = 67
-          Width = 177
-          Height = 29
-          Caption = 'Show Trade Labels'
-          TabOrder = 2
-        end
-        object ohlcCheck: TCheckBox
-          Left = 26
-          Top = 37
-          Width = 125
-          Height = 29
-          Caption = 'Show OHLC'
-          TabOrder = 3
-        end
-      end
-      object plStatus: TPanel
-        Left = 0
-        Top = 0
-        Width = 871
-        Height = 59
-        Align = alTop
-        Caption = ' '
-        TabOrder = 0
-        object StatusLabel: TLabel
-          Left = 4
-          Top = 2
-          Width = 549
-          Height = 19
-          AutoSize = False
-          Color = clBtnFace
-          ParentColor = False
-        end
-        object extraLabel: TLabel
-          Left = 657
-          Top = 2
-          Width = 214
-          Height = 19
-          AutoSize = False
-          Color = clBtnFace
-          ParentColor = False
-        end
-        object selectedPatternLabel: TLabel
-          Left = 559
-          Top = 4
-          Width = 6
-          Height = 13
-          Caption = '0'
-          Color = clBtnFace
-          ParentColor = False
-          Visible = False
-        end
-        object ProgressBar1: TProgressBar
-          Left = 125
-          Top = 23
-          Width = 497
-          Height = 23
-          TabOrder = 0
-        end
-        object Button1: TButton
-          Left = 44
-          Top = 23
-          Width = 75
-          Height = 18
-          Caption = 'Cancel'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Times New Roman'
-          Font.Pitch = fpVariable
-          Font.Style = []
-          Font.Quality = fqDraft
-          ParentFont = False
-          TabOrder = 1
-          OnClick = Button1Click
-        end
-      end
-      object PageControl1: TPageControl
-        Left = 0
-        Top = 262
-        Width = 871
-        Height = 612
-        ActivePage = TabSheet3
-        Align = alBottom
-        TabOrder = 2
-        object TabSheet3: TTabSheet
-          Caption = 'Balance Curve'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-          object Chart1: TChart
-            Left = 0
-            Top = 0
-            Width = 863
-            Height = 584
-            Legend.Title.Text.Strings = (
-              'Balance')
-            Legend.Visible = False
-            Title.Text.Strings = (
-              ' ')
-            BottomAxis.Title.Caption = 'Date'
-            LeftAxis.Title.Caption = 'Balance'
-            View3D = False
-            Align = alClient
-            TabOrder = 0
-            DefaultCanvas = 'TGDIPlusCanvas'
-            ColorPaletteIndex = 13
-            object BalanceCurve: TLineSeries
-              Brush.BackColor = clDefault
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
-          end
-        end
-        object TabSheet4: TTabSheet
-          Caption = 'Mathematical Expectancy'
-          ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-          object Chart2: TChart
-            Left = 0
-            Top = 0
-            Width = 863
-            Height = 584
-            Legend.Visible = False
-            Title.Text.Strings = (
-              ' ')
-            BottomAxis.Title.Caption = 'Bas from entry'
-            LeftAxis.Title.Caption = 'Total ME(MFE-MAE)'
-            View3D = False
-            Align = alClient
-            TabOrder = 0
-            DefaultCanvas = 'TGDIPlusCanvas'
-            ColorPaletteIndex = 13
-            object ME_Shorts: TBarSeries
-              Marks.Visible = False
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
-            object ME_Longs: TBarSeries
-              Marks.Visible = False
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
-          end
-        end
-      end
-    end
-    object TabSheet2: TTabSheet
-      Caption = 'Trade Analysis'
-      ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object TradeGrid: TStringGrid
-        Left = 0
-        Top = 0
-        Width = 871
-        Height = 874
-        Align = alClient
-        ColCount = 10
-        FixedCols = 0
-        RowCount = 2
-        FixedRows = 0
-        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goFixedRowDefAlign]
-        PopupMenu = PopupMenu2
-        TabOrder = 0
-      end
-    end
+    Width = 677
+    Height = 65
+    Align = alTop
+    Caption = ' '
+    TabOrder = 1
+    ExplicitWidth = 804
+  end
+  object Button3: TButton
+    Left = 8
+    Top = 0
+    Width = 105
+    Height = 25
+    Caption = 'Trade Analysis'
+    TabOrder = 2
+    OnClick = Button3Click
+  end
+  object Button1: TButton
+    Left = 44
+    Top = 31
+    Width = 75
+    Height = 18
+    Caption = 'Cancel'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Times New Roman'
+    Font.Pitch = fpVariable
+    Font.Style = []
+    Font.Quality = fqDraft
+    ParentFont = False
+    TabOrder = 3
+    OnClick = Button1Click
+  end
+  object ProgressBar1: TProgressBar
+    Left = 125
+    Top = 31
+    Width = 316
+    Height = 23
+    TabOrder = 4
   end
   object MainMenu1: TMainMenu
-    Left = 16
-    Top = 24
+    Left = 112
+    Top = 240
     object MenuItem1: TMenuItem
       Caption = 'Simulation'
       object MenuItem3: TMenuItem
@@ -399,16 +185,16 @@ object MainForm: TMainForm
   object OpenSymbolHistoryDialog: TOpenDialog
     DefaultExt = '.csv'
     Filter = 'History data file|*.csv'
-    Left = 456
-    Top = 96
+    Left = 312
+    Top = 200
   end
   object SaveDialog1: TSaveDialog
-    Left = 456
+    Left = 304
     Top = 152
   end
   object PopupMenu1: TPopupMenu
-    Left = 632
-    Top = 240
+    Left = 216
+    Top = 264
     object MenuItem13: TMenuItem
       Caption = 'Save contents to CSV'
       OnClick = MenuItem13Click
@@ -574,57 +360,34 @@ object MainForm: TMainForm
   object SaveDialogMQL4: TSaveDialog
     DefaultExt = '.mq4'
     Filter = '*.mq4'
-    Left = 568
-    Top = 88
+    Left = 472
+    Top = 152
   end
   object PopupMenu2: TPopupMenu
-    Left = 600
-    Top = 344
+    Left = 520
+    Top = 280
     object MenuItem24: TMenuItem
-      Caption = 'Save contents to CSV'
-      OnClick = MenuItem24Click
-    end
-  end
-  object PopupMenu3: TPopupMenu
-    Left = 688
-    Top = 184
-    object MenuItem25: TMenuItem
       Caption = 'Save contents to CSV'
     end
   end
   object PopupMenu4: TPopupMenu
-    Left = 560
-    Top = 392
+    Left = 448
+    Top = 280
     object MenuItem26: TMenuItem
       Caption = 'Save contents to CSV'
     end
   end
-  object PopupMenu5: TPopupMenu
-    Left = 568
-    Top = 280
-    object MenuItem27: TMenuItem
-      Caption = 'Save graph to BMP'
-      OnClick = MenuItem27Click
-    end
-  end
   object PopupMenu6: TPopupMenu
-    Left = 326
-    Top = 365
+    Left = 310
+    Top = 269
     object MenuItem34: TMenuItem
       Caption = 'Save contents to CSV'
-    end
-  end
-  object PopupMenu7: TPopupMenu
-    Left = 319
-    Top = 157
-    object MenuItem33: TMenuItem
-      Caption = 'Save graph to BMP'
     end
   end
   object SaveDialog2: TSaveDialog
     DefaultExt = '.csv'
     Filter = 'csv|*.csv'
-    Left = 558
+    Left = 398
     Top = 150
   end
 end

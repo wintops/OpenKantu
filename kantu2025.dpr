@@ -23,7 +23,9 @@ uses
   kantu_multithreading in 'kantu_multithreading.pas',
   ktUtils in 'ktUtils.pas',
   ktInit in 'ktInit.pas',
-  ktCode in 'ktCode.pas';
+  ktCode in 'ktCode.pas',
+  ktChart in 'ktChart.pas' {ChartForm},
+  ktTradeGrid in 'ktTradeGrid.pas' {FormTradeGrid};
 
 {$R *.res}
 
@@ -44,9 +46,14 @@ begin
     PortfolioResultForm);
   Application.CreateForm(TComponentClass(TSimulationForm2), SimulationForm2);
   Application.CreateForm(TComponentClass(TSingleSystem), SingleSystem);
-
+    Application.CreateForm(TChartForm, ChartForm);
+    Application.CreateForm(TFormTradeGrid, FormTradeGrid);
   init;
-  //start;
+  start;
   Application.Run;
 
 end.
+
+
+
+

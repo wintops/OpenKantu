@@ -2,6 +2,7 @@ program kantu;
 
 {$IFNDEF FPC}
 {$DEFINE DELPHI}
+{$DEFINE TEECHART}
 {$ENDIF}
 
 uses
@@ -20,7 +21,7 @@ uses
   kantu_indicators in 'kantu_indicators.pas',
   kantu_multithreading in 'kantu_multithreading.pas',
   ktUtils in 'ktUtils.pas',
-  kantu_init in 'kantu_init.pas',
+  ktInit in 'ktInit.pas',
   ktCode in 'ktCode.pas';
 
 {$R *.res}

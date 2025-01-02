@@ -4,6 +4,11 @@ unit kantu_pricepattern;
 {$ENDIF}
 interface
 uses
+
+
+{$IFDEF LLCL}
+LLCLmore,
+{$ENDIF}
 {$IFDEF DELPHI}
 
 {$ELSE}
@@ -25,7 +30,7 @@ type
 var
   PricePatternForm: TPricePatternForm;
 implementation
-uses kantu_main,kantu_utils;
+uses kantu_main,ktUtils;
 {$IFDEF DELPHI}
 {$R *.dfm}
 {$ELSE}
